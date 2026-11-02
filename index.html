@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hiragana"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#26282b">
+  <link rel="manifest" href="./manifest.webmanifest">
+<title>Hiragana · allenamento</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#26282b;--bgs:#303337;--paper:#f3ecd9;--paper2:#e8dfc7;--ink:#ede6d3;--pen:#232528;--mute:#a9a79a;--pmute:#5c5b52;--line:#44474c;--pline:#cdc3a9;--shu:#cf3f2f;--shuf:#bd3626;--shut:#b3321f;--lineu:#7a7e86;--plineu:#7d7358;--acc:#cf3f2f;--ok:#3f7a4c;--okbg:#d6e7cb;--ko:#a92d27;--kobg:#f5d3cb;
+--mi:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;--ui:var(--mi);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0}
+html{-webkit-text-size-adjust:100%}
+button,input,select,textarea,summary{touch-action:manipulation}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--ui);min-height:100vh}
+main{max-width:760px;margin:0 auto;padding:16px 16px 56px}
+[hidden]{display:none!important}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:22px 20px;margin-bottom:14px;border-radius:24px;color:var(--paper);background:#1b1c1e url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='20'><g fill='%231b1c1e' stroke='%23f3ecd9' stroke-opacity='.10'><circle cx='0' cy='10' r='20'/><circle cx='0' cy='10' r='15'/><circle cx='0' cy='10' r='10'/><circle cx='0' cy='10' r='5'/><circle cx='40' cy='10' r='20'/><circle cx='40' cy='10' r='15'/><circle cx='40' cy='10' r='10'/><circle cx='40' cy='10' r='5'/><circle cx='20' cy='20' r='20'/><circle cx='20' cy='20' r='15'/><circle cx='20' cy='20' r='10'/><circle cx='20' cy='20' r='5'/></g></svg>");border:1px solid var(--line)}
+.hd h1{font:700 2.7rem/1.1 var(--mi);letter-spacing:.14em;margin:0}
+.hd .sub{margin:6px 0 0;color:var(--mute);font-size:.9rem;letter-spacing:.04em}
+.seal{flex:none;width:60px;height:60px;background:var(--shuf);color:#fff6ee;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-4deg);box-shadow:inset 0 0 0 3px var(--shu),inset 0 0 0 4px rgba(255,246,238,.75)}
+.seal small{font:500 .8rem/1 var(--mi)}.seal b{font:700 1.7rem/1.1 var(--mi)}
+nav{display:flex;overflow-x:auto;gap:4px;background:var(--bgs);border:1px solid var(--line);border-radius:99px;padding:4px;margin-bottom:18px}
+nav button{flex:1 0 auto;border:0;background:none;color:var(--mute);font:500 .9rem var(--ui);padding:10px 12px;border-radius:99px;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--shuf);color:#fff6ee;font-weight:700}
+button:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--pen);outline-offset:2px;box-shadow:0 0 0 5px var(--ink)}
+h2{display:flex;align-items:center;gap:14px;font:700 1.1rem var(--mi);letter-spacing:.06em;margin:26px 0 6px;color:var(--ink)}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.card h2{justify-content:center;color:var(--pen)}.card h2::after{display:none}
+.note{color:var(--mute);font-size:.9rem;margin:0 0 10px}
+.card .note,.card .hint{color:var(--pmute)}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.grid.y{grid-template-columns:repeat(3,1fr)}
+.k{background:var(--paper);border:1.5px solid var(--pline);border-radius:16px;padding:10px 2px 8px;text-align:center;cursor:pointer;color:var(--pen);font:inherit}
+.k b{display:block;font:500 2.1rem/1.25 var(--mi)}
+.k span{display:block;font-size:.82rem;color:var(--pmute);letter-spacing:.04em}
+.k:active,.k.on{border-color:var(--shu);box-shadow:inset 0 0 0 1px var(--shu)}
+.hide .k span{visibility:hidden}.hide .k.on span{visibility:visible}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 12px}
+.chip{border:1px solid var(--lineu);background:var(--bgs);color:var(--ink);font:500 .88rem var(--ui);padding:7px 14px;border-radius:99px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--paper);color:var(--pen);border-color:var(--paper)}
+select.sel{font:inherit;padding:9px 14px;border-radius:99px;border:1px solid var(--lineu);background:var(--bgs);color:var(--ink)}
+.card{position:relative;overflow:hidden;background:var(--paper);color:var(--pen);border-radius:26px;padding:28px 20px;text-align:center;box-shadow:inset 0 0 0 6px var(--paper),inset 0 0 0 7px var(--pline)}
+.q{font:500 5.5rem/1.1 var(--mi);margin:6px 0 2px;word-break:keep-all}
+.q.sm{font-size:3.2rem}.q.ro{font-family:var(--ui);font-size:3.4rem;font-weight:700}
+.hl{color:var(--shut)}
+.hint{color:var(--mute);min-height:1.5em;margin:0 0 12px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{font:500 1.6rem var(--ui);padding:14px 6px;border-radius:18px;border:1.5px solid var(--plineu);background:var(--paper2);color:var(--pen);cursor:pointer;min-height:64px}
+.opt.big,.opt[data-t="k"]{font-family:var(--mi)}.opt.big{font-size:2.2rem}
+.opt .sub{display:block;font-size:.85rem;font-weight:500;color:var(--pmute);visibility:hidden;line-height:1.3;min-height:1.1em}
+.opt.rv .sub{visibility:visible}
+.opt.kn .sub{font:500 1.5rem var(--mi);color:var(--pen)}
+.opt.sel{border-color:var(--shu);box-shadow:inset 0 0 0 2px var(--shu)}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}.opt.ko{background:var(--kobg);border-color:var(--ko)}
+.stats{display:flex;justify-content:space-between;color:var(--mute);font-size:.92rem;margin-bottom:10px}
+.stats b{color:var(--ink);font:700 1.1rem var(--mi)}
+.btn{font:700 .95rem var(--ui);letter-spacing:.04em;background:var(--shuf);color:#fff6ee;border:0;border-radius:99px;padding:11px 24px;cursor:pointer}
+.btn.g{background:none;color:inherit;border:1px solid currentColor;font-weight:500}
+.say{font-size:1.3rem;background:transparent;border:1.5px solid currentColor;border-radius:50%;width:44px;height:44px;cursor:pointer;color:inherit}
+.rule{background:var(--paper);color:var(--pen);border-radius:16px;box-shadow:inset 5px 0 0 var(--shu);padding:12px 18px 12px 20px;margin:10px 0}
+.rule p{margin:4px 0}
+.w{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.w:first-of-type{border-top:0}
+.w .j{font:500 1.6rem var(--mi);min-width:7.5em}.w .r{font-weight:700}.w .m{color:var(--mute);font-size:.9rem;flex:1}
+.warn{background:#3a2a28;color:var(--ink);border-radius:14px;box-shadow:inset 5px 0 0 var(--shu);padding:8px 14px 8px 18px;font-size:.9rem;margin-bottom:12px}
+.lessons{display:grid;grid-template-columns:1fr;gap:10px}
+.topic{background:var(--paper);color:var(--pen);border:1.5px solid var(--pline);border-radius:22px;padding:12px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px}
+.topic.d{border-color:var(--shu);box-shadow:inset 0 0 0 1px var(--shu)}
+.th{display:flex;flex-direction:column;min-width:0}
+.th b{font:500 1.3rem/1.35 var(--mi);letter-spacing:.06em}
+.th span{font-size:.8rem;color:var(--pmute)}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.step{font:500 .85rem var(--ui);padding:8px 14px;border-radius:99px;border:1.5px solid var(--plineu);background:var(--paper2);color:var(--pen);cursor:pointer}
+.step.d{border-color:var(--shu);color:var(--shut);font-weight:700}
+.mic{width:76px;height:76px;border-radius:50%;border:0;background:var(--shuf);color:#fff6ee;font-size:2rem;cursor:pointer}
+.mic.rec{box-shadow:0 0 0 8px rgba(207,63,47,.28)}
+.les{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;min-height:92px;padding:12px 6px 10px;background:var(--paper);color:var(--pen);border:1.5px solid var(--pline);border-radius:20px;font:inherit;cursor:pointer}
+.les b{font:500 1.25rem/1.35 var(--mi);letter-spacing:.06em;text-align:center}
+.les span{font-size:.8rem;color:var(--pmute);text-align:center;line-height:1.3}
+.les.d{border-color:var(--shu);box-shadow:inset 0 0 0 1px var(--shu)}.les.d span{color:var(--shu);font-weight:700}
+.tile{font:500 1.8rem var(--mi);min-width:60px;padding:10px 14px;border-radius:16px;border:1.5px solid var(--plineu);background:var(--paper2);color:var(--pen);cursor:pointer}
+.tile:disabled{opacity:.35;cursor:default}
+.slot{display:inline-block;min-width:56px;border-bottom:3px solid var(--pen);font:500 2rem var(--mi);text-align:center;padding:0 6px;min-height:2.6rem}
+.xp{margin:0 0 10px}
+.goal{margin:0 0 16px}.gt{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:.85rem;color:var(--mute)}.gt select.sel{padding:5px 10px}
+#gf{height:100%;background:#7fb77a;width:0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--paper);color:var(--pen);padding:12px 20px;border-radius:99px;box-shadow:0 6px 24px rgba(0,0,0,.45);z-index:50;font-weight:700;max-width:90vw;text-align:center}
+.xpt{display:flex;justify-content:space-between;font-size:.85rem;color:var(--mute);letter-spacing:.06em}
+#xpn{color:var(--ink);font:700 .95rem var(--mi)}
+.xpb{height:8px;background:var(--line);margin-top:6px;border-radius:99px;overflow:hidden}
+#xpf{height:100%;background:var(--shu);width:0}
+details.vp{background:var(--bgs);border:1px solid var(--line);border-radius:18px;padding:10px 16px;margin-bottom:16px}
+.vp summary{cursor:pointer;font-weight:500}.vp .row{margin:10px 0 0}
+.vp input[type=range]{flex:1;min-width:120px;accent-color:var(--shu)}
+.opt.pr{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:var(--ph,64px);padding:4px 8px;line-height:1.15;overflow:hidden;word-break:break-word}
+.opt.pr .pro{font-size:.8rem;color:var(--pmute);font-weight:500;margin-top:3px}
+.card.win{background:var(--okbg);box-shadow:inset 0 0 0 6px var(--okbg),inset 0 0 0 7px var(--ok)}
+.card.win .note,.card.win .hint{color:var(--pen)}
+.win-b{display:inline-flex;align-items:center;gap:10px;color:var(--ok);font:700 1.5rem var(--mi)}
+.chk{width:36px;height:36px;border-radius:50%;background:var(--ok);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:1.3rem}
+.hl2{color:var(--ok)}
+.pt{position:absolute;left:50%;top:40%;width:10px;height:14px;border-radius:70% 0 70% 0;opacity:0;pointer-events:none}
+@media (prefers-reduced-motion:no-preference){.pt{animation:fly 1.3s ease-out forwards}.pop{animation:pop .5s ease-out}
+@keyframes fly{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r))}}
+@keyframes pop{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.12);opacity:1}100%{transform:scale(1)}}}
+input.inp{font:inherit;padding:10px 16px;border-radius:99px;border:1px solid var(--lineu);background:var(--bgs);color:var(--ink);flex:1;min-width:200px}
+.vc{background:var(--paper);color:var(--pen);border:1.5px solid var(--pline);border-radius:20px;padding:14px 16px;margin-bottom:10px}
+.vt{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.vk b{font:500 1.9rem/1.3 var(--mi)}.vk span{display:block;color:var(--pmute);font-size:.95rem}
+.vm{font-weight:700;margin:6px 0 0}.vc .note{color:var(--pmute);margin:2px 0 10px}
+.ve{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--paper2);border-radius:14px;padding:10px 14px}
+.vj{font:500 1.15rem/1.5 var(--mi)}.vr{color:var(--pmute);font-size:.88rem}.vi{font-size:.92rem;margin-top:2px}
+.tipbox{position:sticky;top:8px;z-index:5;background:var(--paper);color:var(--pen);border-radius:16px;padding:10px 16px 10px 20px;margin:0 0 12px;font-size:.92rem;box-shadow:inset 5px 0 0 var(--shu),0 2px 10px rgba(0,0,0,.35)}
+.tipbox b{font:500 1.5rem var(--mi);margin-right:8px}
+.mn{background:var(--paper2);color:var(--pen);border-radius:14px;padding:8px 14px;margin:8px auto 4px;max-width:420px;font-size:.95rem}
+.stk{display:flex;flex-direction:column;align-items:center;gap:8px;margin:10px 0}
+.stk svg{background:var(--paper2);border-radius:16px;max-width:100%;height:auto}
+.stk .row{margin:0;justify-content:center}
+.sg{stroke:var(--pen);fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.sn{font:700 9px var(--ui);fill:var(--shu)}
+.tipbox{display:flex;align-items:center;gap:12px}.tipbox>span{flex:1}.tipbox .stk{margin:0;flex:none}.tipbox .stk svg{border-radius:12px}
+.fn{margin-top:36px;color:var(--mute);font-size:.8rem;text-align:center}
+.vs{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-bottom:12px}
+.vs label{display:flex;flex-direction:column;gap:4px;font-size:.8rem;color:var(--mute)}.vs .inp{min-width:0;width:100%}
+.sans{min-height:64px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;border-bottom:3px solid var(--pen);padding:8px 0;margin:12px 0}
+.sbank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
+.stile{font:500 1.25rem var(--mi);padding:8px 12px;border-radius:14px;border:1.5px solid var(--plineu);background:var(--paper2);color:var(--pen);cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.25}
+.stile small{font:500 .8rem var(--ui);color:var(--pmute)}.stile:disabled{opacity:.3;cursor:default}.stile.ko{border-color:var(--ko);background:var(--kobg)}
+.opts.one{grid-template-columns:1fr}
+textarea.ta{width:100%;border-radius:16px;padding:10px 14px;font:16px/1.3 ui-monospace,Menlo,monospace;border:1px solid var(--lineu);background:var(--bgs);color:var(--ink);word-break:break-all;resize:vertical;margin:10px 0}
+.bkw{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between}
+.medals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (min-width:560px){.medals{grid-template-columns:repeat(4,1fr)}}
+.medal{background:var(--paper);color:var(--pen);border:1.5px solid var(--pline);border-radius:20px;padding:14px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font:inherit}
+.medal b{font-size:.85rem;line-height:1.25}.medal span{font-size:.8rem;color:var(--pmute)}
+.mseal{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font:700 1.9rem var(--mi);border:2px dashed var(--pline);color:var(--pline);margin-bottom:4px}
+.medal.u .mseal{background:var(--shuf);color:#fff6ee;border:0;transform:rotate(-4deg);box-shadow:inset 0 0 0 3px var(--shu),inset 0 0 0 4px rgba(255,246,238,.75)}
+.medal.u{border-color:var(--shu)}.medal.u span{color:var(--shut);font-weight:700}
+.sg2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.st{background:var(--paper);color:var(--pen);border-radius:18px;padding:12px 6px;text-align:center;display:flex;flex-direction:column}
+.st small{font-size:.8rem;color:var(--pmute)}.st b{font:700 1.6rem/1.25 var(--mi)}.st span{font-size:.8rem;color:var(--pmute)}
+.tmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px}
+.tm{background:var(--bgs);border:1.5px solid var(--line);border-radius:14px;padding:6px 2px;text-align:center;display:flex;flex-direction:column;color:var(--mute)}
+.tm b{font:500 1.3rem var(--mi);color:var(--ink)}.tm span{font-size:.8rem}
+.tm.p{border-color:#7fb77a}.tm.d{background:var(--paper);color:var(--pen);border-color:var(--shu)}.tm.d b{color:var(--pen)}
+.chip,.step,.btn,nav button,select.sel,input.inp{min-height:44px}
+.chip,.step{display:inline-flex;align-items:center;justify-content:center}
+.opt{position:relative}
+.opt.ok::after,.opt.ko::after{position:absolute;top:6px;right:10px;font:700 1rem var(--ui)}
+.opt.ok::after{content:"✓";color:var(--ok)}.opt.ko::after{content:"✗";color:var(--ko)}
+.vm,.note,.hint{overflow-wrap:anywhere}
+@media (prefers-contrast:more){:root{--mute:#d0cfc4;--pmute:#3f3e36;--line:#8a8e96;--pline:#7d7358}}
+@media (prefers-reduced-motion:no-preference){.k,.opt,.les{transition:transform .08s,background .15s,border-color .15s}#xpf{transition:width .4s}}
+</style>
+</head>
+<body>
+<main>
+<header class="hd"><div><h1>ひらがな</h1><p class="sub">Allenamento di lettura e suono</p></div><div class="seal" role="img" aria-label="Livello"><small>級</small><b id="lvl">1</b></div></header>
+<div class="xp"><div class="xpt"><span>Esperienza</span><span id="xpn">0 XP</span></div><div class="xpb"><div id="xpf"></div></div></div>
+<div class="goal"><div class="gt"><span id="gtx"></span><select class="sel" id="goalSel" aria-label="Obiettivo giornaliero"><option value="20">Obiettivo 20 XP</option><option value="30">Obiettivo 30 XP</option><option value="50">Obiettivo 50 XP</option><option value="100">Obiettivo 100 XP</option></select></div><div class="xpb"><div id="gf"></div></div></div>
+<details class="vp"><summary>Voce e velocità</summary>
+<div class="row"><select class="sel" id="voiceSel" aria-label="Voce"></select><button class="btn g" id="voiceTest" type="button">Prova</button></div>
+<div class="row"><label for="voiceRate">Velocità</label><input type="range" id="voiceRate" min="0.5" max="1.1" step="0.05"><span id="rateL"></span></div>
+<p class="note" style="margin-top:10px">Le voci con “Natural”, “Neural” o “Premium” suonano molto meno robotiche. Su Edge e Windows 11 ci sono le voci Microsoft Natural; su iPhone e Mac scarica una voce giapponese “Migliorata” o “Premium” dalle impostazioni di accessibilità; su Android scegli la voce Google di qualità alta.</p></details>
+<details class="vp" id="bk"><summary>Salva e trasferisci i progressi</summary>
+<p class="note" style="margin-top:10px">I progressi sono salvati nel browser di questo dispositivo. Per sicurezza, o per passare a un altro dispositivo (anche iPhone), crea un codice, conservalo e incollalo dove vuoi riprendere.</p>
+<div class="row"><button class="btn" id="bkExp" type="button">Crea codice</button><button class="btn g" id="bkShare" type="button">Condividi</button><button class="btn g" id="bkCopy" type="button">Copia</button></div>
+<textarea class="ta" id="bkTxt" aria-label="Codice dei progressi" rows="3" placeholder="Il codice appare qui. Per importare, incollalo qui e tocca Importa." spellcheck="false" autocapitalize="off" autocorrect="off"></textarea>
+<div class="row"><button class="btn g" id="bkImp" type="button">Importa (unisce ai dati attuali)</button></div>
+<p class="note" id="bkMsg"></p></details>
+<nav role="tablist">
+<button role="tab" aria-selected="true" data-t="lessons">Lezioni</button>
+<button role="tab" aria-selected="false" data-t="vocab">Vocabolario</button>
+<button role="tab" aria-selected="false" data-t="chart">Tabella</button>
+<button role="tab" aria-selected="false" data-t="quiz">Quiz</button>
+<button role="tab" aria-selected="false" data-t="errs">Progressi</button>
+<button role="tab" aria-selected="false" data-t="rules">Regole</button>
+</nav>
+<div id="novoice" class="warn" hidden>Il tuo browser non ha una voce giapponese: l’audio potrebbe non partire. Prova Chrome o Safari, oppure installa la voce giapponese nelle impostazioni del sistema.</div>
+
+<section id="lessons">
+<div id="lessonList"></div>
+<div id="lessonRun" hidden></div>
+</section>
+
+<section id="chart" hidden>
+<div class="row"><button class="chip" id="hideR" aria-pressed="false">Nascondi romaji (autoverifica)</button></div>
+<div class="tipbox" id="mnTip">Tocca un carattere: sentirai il suono e vedrai un trucco per ricordarlo.</div>
+<div id="chartBody"></div>
+</section>
+
+<section id="quiz" hidden>
+<div class="row">
+<select class="sel" id="mode" aria-label="Modalità">
+<option value="jr">Vedo il kana → scelgo la lettura</option>
+<option value="rj">Vedo la lettura → scelgo il kana</option>
+<option value="au">Ascolto → scelgo il kana</option>
+</select>
+</div>
+<div class="row" id="cats" aria-label="Gruppi da allenare"></div>
+<div class="stats"><span>Punti <b id="sc">0</b></span><span>Serie <b id="st">0</b> (record <b id="bs">0</b>)</span><span>Precisione <b id="ac">–</b></span></div>
+<div class="card">
+<div id="prompt"></div>
+<p class="hint" id="hint"></p>
+<div class="opts" id="opts"></div>
+<div class="row" style="justify-content:center;margin:16px 0 0"><button class="btn" id="next" hidden>Avanti</button></div>
+</div>
+<p class="note" style="margin-top:12px">Gli errori tornano più spesso, finché non li sistemi.</p>
+</section>
+
+<section id="vocab" hidden>
+<div class="vs">
+<label>Hiragana<input class="inp" id="vqh" type="search" lang="ja" autocomplete="off" placeholder="Incolla qui: あめ, ひらがな…"></label>
+<label>Romaji → hiragana (ん = nn)<input class="inp" id="vqr" type="text" lang="ja" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Scrivi: ame, nihon…"></label>
+<label>Italiano<input class="inp" id="vqi" type="search" autocomplete="off" placeholder="Scrivi: pioggia, casa…"></label>
+</div>
+<div id="vread"></div>
+<div class="row" id="vcats"></div>
+<div class="row"><button class="btn" id="vtrain" type="button">Allenati con queste parole</button><button class="btn g" id="vsent" type="button">Ordina le frasi</button><button class="btn g" id="vdict" type="button">Dettato</button><select class="sel" id="vdl" aria-label="Difficoltà del dettato"><option value="0">Dettato: automatico</option><option value="1">Dettato: facile</option><option value="2">Dettato: medio</option><option value="3">Dettato: difficile</option></select></div>
+<div id="vList"></div>
+</section>
+
+<section id="errs" hidden>
+<div id="sumBody"></div>
+<div id="errBody"></div>
+<h2>Medaglie</h2>
+<div id="medBody"></div>
+<div id="rstBody"></div>
+</section>
+
+<section id="rules" hidden>
+<h2>っ — il piccolo tsu</h2>
+<div class="rule"><p>Non si pronuncia: è una breve pausa che raddoppia la consonante successiva. き<b>っ</b>て si legge <i>kitte</i>, non “ki-tsu-te”.</p></div>
+<div id="wTsu"></div>
+<h2>Vocali lunghe</h2>
+<div class="rule">
+<p>La vocale dura il doppio. La durata cambia il significato: おばさん (zia) ≠ おばあさん (nonna).</p>
+<p><b>aa</b>: si aggiunge あ → おかあさん · <b>ii</b>: い → おにいさん · <b>uu</b>: う → くうき</p>
+<p><b>ee</b>: si aggiunge え (o い) → おねえさん, せんせい · <b>oo</b>: si aggiunge う (o お) → ありがとう, おおきい</p>
+</div>
+<div id="wLong"></div>
+<h2>Katakana</h2>
+<div class="rule"><p>I katakana si usano soprattutto per le <b>parole straniere</b> (コーヒー, ホテル) e per i nomi di paesi. Hanno gli stessi suoni degli hiragana.</p><p>Il trattino <b>ー</b> allunga la vocale precedente: コーヒー si legge <i>koohii</i>. Il piccolo <b>ッ</b> raddoppia la consonante, come っ.</p><p>Attenzione ai sosia: <b>シ</b> (shi) e <b>ツ</b> (tsu), <b>ソ</b> (so) e <b>ン</b> (n). In シ e ン i tratti sono più orizzontali; in ツ e ソ più verticali.</p></div>
+<h2>Accenni utili</h2>
+<div class="rule"><p>は come particella si legge <i>wa</i>, へ si legge <i>e</i>, を si legge <i>o</i>. じ/ぢ e ず/づ suonano uguali; ぢ e づ sono rari.</p></div>
+</section>
+<footer class="fn">Tracciati dei tratti: KanjiVG, © Ulrich Apel, licenza CC BY-SA 3.0 (kanjivg.tagaini.net).</footer>
+</main>
+
+<script>
+const P=s=>s.trim().split(/\s+/).map(x=>x.split(":"));
+const G=[
+{id:"base",n:"Base",c:5,d:"46 suoni di base. は=wa e へ=e e を=o come particelle.",k:P("あ:a い:i う:u え:e お:o か:ka き:ki く:ku け:ke こ:ko さ:sa し:shi す:su せ:se そ:so た:ta ち:chi つ:tsu て:te と:to な:na に:ni ぬ:nu ね:ne の:no は:ha ひ:hi ふ:fu へ:he ほ:ho ま:ma み:mi む:mu め:me も:mo や:ya ゆ:yu よ:yo ら:ra り:ri る:ru れ:re ろ:ro わ:wa を:wo ん:n")},
+{id:"daku",n:"Dakuon (゛)",c:5,d:"Due trattini: la consonante diventa sonora (k→g, s→z, t→d, h→b).",k:P("が:ga ぎ:gi ぐ:gu げ:ge ご:go ざ:za じ:ji ず:zu ぜ:ze ぞ:zo だ:da ぢ:ji づ:zu で:de ど:do ば:ba び:bi ぶ:bu べ:be ぼ:bo")},
+{id:"han",n:"Handakuon (゜)",c:5,d:"Un cerchietto sulla riga は: h→p.",k:P("ぱ:pa ぴ:pi ぷ:pu ぺ:pe ぽ:po")},
+{id:"yoon",n:"Yōon (や・ゆ・よ piccoli)",c:3,d:"Consonante + や/ゆ/よ piccolo = una sola sillaba: き+ゃ=kya.",k:P("きゃ:kya きゅ:kyu きょ:kyo ぎゃ:gya ぎゅ:gyu ぎょ:gyo しゃ:sha しゅ:shu しょ:sho じゃ:ja じゅ:ju じょ:jo ちゃ:cha ちゅ:chu ちょ:cho にゃ:nya にゅ:nyu にょ:nyo ひゃ:hya ひゅ:hyu ひょ:hyo びゃ:bya びゅ:byu びょ:byo ぴゃ:pya ぴゅ:pyu ぴょ:pyo みゃ:mya みゅ:myu みょ:myo りゃ:rya りゅ:ryu りょ:ryo")}
+];
+const WT=[["きって","kitte","francobollo"],["がっこう","gakkou","scuola"],["ざっし","zasshi","rivista"],["ちょっと","chotto","un po’"],["まって","matte","aspetta"],["いっぱい","ippai","pieno, tanto"]];
+const WL=[["おかあさん","okaasan","mamma"],["おにいさん","oniisan","fratello maggiore"],["おねえさん","oneesan","sorella maggiore"],["くうき","kuuki","aria"],["とおい","tooi","lontano"],["おおきい","ookii","grande"],["せんせい","sensei","insegnante"],["ありがとう","arigatou","grazie"]];
+G.push({id:"tsu",n:"Parole con っ",w:WT},{id:"long",n:"Vocali lunghe",w:WL});
+const kt=c=>String.fromCharCode(c.charCodeAt(0)+96),k2=t=>[...t].map(c=>/[ぁ-ゖ]/.test(c)?kt(c):c).join("");
+G.filter(g=>g.k&&/^(base|daku|han|yoon)$/.test(g.id)).forEach(g=>G.push({id:"k"+g.id,n:"Katakana · "+g.n,c:g.c,d:g.d,k:g.k.map(([j,r])=>[k2(j),r])}));
+G.push({id:"kext",n:"Katakana · suoni stranieri",c:5,d:"Combinazioni per le parole straniere, come ファ (fa) e ティ (ti).",k:P("ファ:fa フィ:fi フェ:fe フォ:fo ティ:ti ディ:di シェ:she チェ:che ジェ:je ウィ:wi")});
+
+/* audio */
+let voice=null;
+const VS=(()=>{try{return JSON.parse(localStorage.getItem("hira-voice")||"{}")||{}}catch(e){return{}}})();
+let rate=+VS.rate||.8,voiceList=[];
+const vscore=v=>(/natural|neural|online|premium|enhanced/i.test(v.name)?4:0)+(/google|microsoft|kyoko|o-?ren|otoya|nanami|keita|haruka|sayaka|hattori/i.test(v.name)?2:0)+(v.localService?0:1);
+function fillVoices(){const s=document.getElementById("voiceSel");if(!s)return;s.replaceChildren();voiceList.forEach(v=>{const o=document.createElement("option");o.value=v.name;o.textContent=v.name+(v.localService?"":" (online)");o.selected=!!voice&&v.name===voice.name;s.append(o)});if(!voiceList.length){const o=document.createElement("option");o.textContent="Nessuna voce giapponese trovata";s.append(o)}}
+function pickVoice(){voiceList=speechSynthesis.getVoices().filter(x=>/^ja/i.test(x.lang)).sort((a,b)=>vscore(b)-vscore(a));voice=voiceList.find(v=>v.name===VS.name)||voiceList[0]||null;fillVoices();document.getElementById("novoice").hidden=!!voice||!speechSynthesis.getVoices().length}
+function warn(m){const n=document.getElementById("novoice");n.textContent=m;n.hidden=false}
+if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;setTimeout(()=>{pickVoice();if(!voice)warn("Non trovo una voce giapponese su questo dispositivo: l’audio potrebbe non partire o suonare strano. Installa la voce giapponese nelle impostazioni di sistema.")},2000)}
+function say(t,rt){
+ if(!("speechSynthesis" in window)){warn("Qui l’audio vocale non è supportato. Apri la pagina in una scheda normale di Chrome o Safari.");return}
+ try{if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="ja-JP";if(voice)u.voice=voice;u.rate=rt||rate;
+  u.onerror=e=>{if(e.error!=="canceled"&&e.error!=="interrupted")warn("L’audio è bloccato in questa vista ("+e.error+"). Apri la pagina in una scheda normale del browser, oppure scarica il file e aprilo da lì.")};
+  speechSynthesis.resume();speechSynthesis.speak(u)}
+ catch(e){warn("L’audio non è disponibile in questa vista. Apri la pagina in una scheda normale del browser.")}}
+const $=id=>document.getElementById(id);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.textContent=h;return e};
+
+/* tabs */
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x===b));
+ ["lessons","vocab","chart","quiz","errs","rules"].forEach(s=>$(s).hidden=s!==b.dataset.t);
+ if(b.dataset.t==="errs"){renderS();renderE();renderB();renderR()}
+ if(b.dataset.t==="quiz"&&!cur)nextQ()});
+
+/* chart */
+const cb=$("chartBody");
+G.filter(g=>g.k).forEach(g=>{
+ cb.append(el("h2",0,g.n),el("p","note",g.d));
+ const gr=el("div","grid"+(g.c===3?" y":""));
+ g.k.forEach(([j,r])=>{const b=el("button","k");b.append(el("b",0,j),el("span",0,r));
+  b.onclick=()=>{say(j);tip(j,r);b.classList.add("on");setTimeout(()=>b.classList.remove("on"),1500)};gr.append(b)});
+ cb.append(gr)});
+$("hideR").onclick=e=>{const p=e.target.getAttribute("aria-pressed")!=="true";e.target.setAttribute("aria-pressed",p);cb.classList.toggle("hide",p)};
+
+/* rules */
+function words(id,list){const box=$(id);list.forEach(([j,r,m])=>{const d=el("div","w");const s=el("button","say","🔊");s.setAttribute("aria-label","Ascolta "+r);s.onclick=()=>say(j);d.append(el("span","j",j),el("span","r",r),el("span","m",m),s);box.append(d)})}
+words("wTsu",WT);words("wLong",WL);
+
+/* quiz */
+const items=[];G.forEach(g=>{(g.k||[]).forEach(([j,r])=>items.push({j,r,g:g.id}));(g.w||[]).forEach(([j,r])=>items.push({j,r,g:g.id,word:1}))});
+const on=new Set(["base"]);
+G.forEach(g=>{const b=el("button","chip",g.n);b.setAttribute("aria-pressed",g.id==="base");b.onclick=()=>{if(on.has(g.id)){if(on.size>1)on.delete(g.id)}else on.add(g.id);b.setAttribute("aria-pressed",on.has(g.id));nextQ()};$("cats").append(b)});
+let cur=null,score=0,streak=0,best=0,tot=0,good=0,answered=false;const miss={};
+$("mode").onchange=nextQ;
+function pool(){return items.filter(i=>on.has(i.g))}
+function pick(){const p=pool();const w=p.map(i=>1+(miss[i.j]||0)*3+((ST.m[i.j]&&ST.m[i.j].k)||0)*3);let t=w.reduce((a,b)=>a+b,0)*Math.random();for(let k=0;k<p.length;k++){t-=w[k];if(t<=0)return p[k]}return p[0]}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function nextQ(){
+ answered=false;$("next").hidden=true;$("hint").textContent="";
+ let q=pick();if(cur&&pool().length>1)while(q.j===cur.j)q=pick();cur=q;
+ const m=$("mode").value,P=$("prompt");P.replaceChildren();
+ if(m==="jr")P.append(el("div","q"+(q.j.length>2?" sm":""),q.j));
+ else if(m==="rj")P.append(el("div","q ro",q.r));
+ else{const b=el("button","say","🔊");b.style.cssText="width:84px;height:84px;font-size:2.4rem";b.setAttribute("aria-label","Riascolta");b.onclick=()=>say(q.j);P.append(b);setTimeout(()=>say(q.j),150)}
+ const same=pool().filter(i=>i.r!==q.r&&!!i.word===!!q.word);
+ const src=same.length>=3?same:items.filter(i=>i.r!==q.r&&!!i.word===!!q.word);
+ const seen=new Set([q.r]),d=[];
+ shuffle(src.slice()).forEach(i=>{if(d.length<3&&!seen.has(i.r)){seen.add(i.r);d.push(i)}});
+ const o=$("opts");o.replaceChildren();
+ shuffle([q,...d]).forEach(i=>{const b=el("button","opt"+(m==="jr"?" kn":" big"));b.append(el("span",0,m==="jr"?i.r:i.j));const sb=el("small",0,m==="jr"?i.j:i.r);sb.className="sub";b.append(sb);if(m!=="jr"&&i.j.length>2)b.style.fontSize="1.2rem";
+  b.onclick=()=>answered?say(i.j):answer(b,i.r===q.r);b.dataset.r=i.r;o.append(b)})}
+function answer(b,ok){
+ if(answered)return;answered=true;tot++;rec(cur.j,cur.r,ok);
+ $("opts").querySelectorAll(".opt").forEach(x=>{x.classList.add("rv");if(x.dataset.r===cur.r)x.classList.add("ok")});
+ if(ok){good++;streak++;score+=10;best=Math.max(best,streak);miss[cur.j]=Math.max(0,(miss[cur.j]||0)-1)}
+ else{b.classList.add("ko");streak=0;miss[cur.j]=(miss[cur.j]||0)+1}
+ say(cur.j);
+ $("hint").textContent=(ok?"Giusto! ":"Quasi. ")+cur.j+" = "+cur.r+(cur.word?"":"");
+ $("sc").textContent=score;$("st").textContent=streak;$("bs").textContent=best;$("ac").textContent=Math.round(good/tot*100)+"%";
+ $("next").hidden=false;$("next").focus()}
+$("next").onclick=nextQ;
+
+/* lezioni */
+const HR={shi:"come “sci” in sciare",chi:"come “ci” in cina",tsu:"una “ts” come in pizza, poi la u",fu:"tra “fu” e “hu”, labbra rilassate",ji:"come “gi” in gelato",zu:"“z” sonora come in zero",wo:"si pronuncia “o”",n:"nasale: una “n” che chiude la sillaba",u:"“u” con le labbra poco arrotondate",ga:"g dura, come in gatto",gi:"come “ghi” in ghiro",gu:"g dura, come in gufo",ge:"come “ghe” in ghepardo",go:"g dura, come in gola",sha:"come “scia”",shu:"come “sciu”",sho:"come “scio”",cha:"come “cia”",chu:"come “ciu”",cho:"come “cio”",ja:"come “gia”",ju:"come “giu”",jo:"come “gio”"};
+const hint=r=>HR[r]||(/^r[aiueo]$/.test(r)?"r molto leggera, tra r ed l":"");
+const SZ={base:[5,5,5,5,5,5,5,3,5,3],daku:[5,5,5,5],han:[5],yoon:[6,6,6,6,6,3],kbase:[5,5,5,5,5,5,5,3,5,3],kdaku:[5,5,5,5],khan:[5],kyoon:[6,6,6,6,6,3],kext:[5,5]};
+const LN={base:"Base",daku:"Dakuon",han:"Handakuon",yoon:"Yōon",kbase:"Katakana · base",kdaku:"Katakana · dakuon",khan:"Katakana · handakuon",kyoon:"Katakana · yōon",kext:"Katakana · suoni stranieri"};
+const L=[];
+G.filter(g=>g.k).forEach(g=>{let i=0;SZ[g.id].forEach((n,x)=>{L.push({t:LN[g.id]+" "+(x+1),g:g.id,k:g.k.slice(i,i+n)});i+=n})});
+let done=[];try{done=JSON.parse(localStorage.getItem("hira-done")||"[]")}catch(e){}
+if(!Array.isArray(done))done=[];
+const lr=$("lessonRun"),ll=$("lessonList");let S=null;
+function isD(i,t){return done.includes(t==="c"?i:i+":"+t)}
+function renderL(){
+ ll.replaceChildren(el("p","note",done.filter(d=>typeof d==="number").length+" argomenti su "+L.length+" con i caratteri completati. Ogni argomento ha tre lezioni: Caratteri, Parole e Pronuncia. Ti consiglio di farle in quest’ordine."));
+ ll.append(backupRow(),dueRow(),oddRow());
+ const dn=done.filter(d=>typeof d==="number");if(dn.length){const rr=el("div","row"),bm=el("button","btn","Ripasso generale");bm.onclick=startMix;rr.append(bm);ll.append(rr)}
+ let lg="",g;
+ L.forEach((l,i)=>{if(l.g!==lg){lg=l.g;ll.append(el("h2",0,LN[l.g]));g=el("div","lessons");ll.append(g)}
+  const hw=topicWords(i).length>=2,all=isD(i,"c")&&isD(i,"p")&&(!hw||isD(i,"w"));
+  const c=el("div","topic"+(all?" d":"")),th=el("div","th"),st=el("div","steps");
+  th.append(el("b",0,l.k.map(x=>x[0]).join(" ")),el("span",0,l.t));
+  [["c","Caratteri"],["w","Parole"],["p","Pronuncia"]].forEach(([t,n])=>{
+   if(t==="w"&&!hw)return;
+   const d=isD(i,t),b=el("button","step"+(d?" d":""),n+(d?" 済":""));
+   b.onclick=()=>t==="c"?startL(i):t==="w"?startW(i):startP(i);st.append(b)});
+  c.append(th,st);g.append(c)})}
+function startL(i){S={i,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["listen","read","pairs"],ws:wordsFor(i)};if(S.ws.length)S.phs.push("word");lr.hidden=false;ll.hidden=true;teach()}
+function exitL(){if(window.speechSynthesis)speechSynthesis.cancel();lr.hidden=true;ll.hidden=false;renderL()}
+function lhead(p){const r=el("div","row"),x=el("button","chip","✕ Esci");x.onclick=exitL;r.append(x);
+ const o=el("div");o.style.cssText="height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:16px";
+ const f=el("div");f.style.cssText="height:100%;background:var(--acc);width:"+Math.round(p*100)+"%";o.append(f);return [r,o]}
+function teach(){
+ const l=L[S.i],n=l.k.length,[j,r]=l.k[S.ix];
+ const c=el("div","card");
+ const sb=el("button","say","🔊");sb.style.cssText="width:64px;height:64px;font-size:1.8rem";sb.setAttribute("aria-label","Ascolta di nuovo");sb.onclick=()=>say(j);
+ const ro=el("div","q ro",r);ro.style.cssText="font-size:2.2rem;margin-bottom:4px";
+ const row=el("div","row");row.style.cssText="justify-content:center;margin:16px 0 0";
+ if(S.ix>0){const bk=el("button","btn g","Indietro");bk.onclick=()=>{S.ix--;teach()};row.append(bk)}
+ const nb=el("button","btn",S.ix<n-1?"Avanti":"Iniziamo l’esercizio");
+ nb.onclick=()=>{if(S.ix<n-1){S.ix++;teach()}else{S.ph=0;startPh()}};
+ row.append(nb);
+ c.append(el("p","note","Nuovo carattere · "+(S.ix+1)+" di "+n),el("div","q",j),ro,el("p","hint",hint(r)),mnEl(j),strokeEl(j),sb,el("p","note","Ascolta e ripeti ad alta voce."),row);
+ lr.replaceChildren(...lhead(0),c);setTimeout(()=>say(j),200)}
+const WV=("あい:ai:amore;いえ:ie:casa;うえ:ue:sopra;あお:ao:blu;いい:ii:buono;あう:au:incontrarsi;え:e:disegno;"+
+"あか:aka:rosso;いか:ika:calamaro;かお:kao:viso;かい:kai:conchiglia;こい:koi:carpa;あき:aki:autunno;いけ:ike:stagno;きく:kiku:ascoltare;こえ:koe:voce;えき:eki:stazione;おか:oka:collina;かう:kau:comprare;"+
+"さけ:sake:alcol, sakè;すし:sushi:sushi;せき:seki:posto a sedere;しお:shio:sale;いす:isu:sedia;あし:ashi:piede;うし:ushi:mucca;かさ:kasa:ombrello;すき:suki:mi piace;あさ:asa:mattina;しか:shika:cervo;さかな:sakana:pesce;せかい:sekai:mondo;すいか:suika:anguria;そこ:soko:lì;"+
+"たこ:tako:polpo;うた:uta:canzone;つき:tsuki:luna;くつ:kutsu:scarpe;くち:kuchi:bocca;いち:ichi:uno;とし:toshi:anno;そと:soto:fuori;たかい:takai:alto;すてき:suteki:bellissimo;かたち:katachi:forma;ちち:chichi:papà;"+
+"なに:nani:cosa;いぬ:inu:cane;ねこ:neko:gatto;なつ:natsu:estate;にく:niku:carne;ぬの:nuno:stoffa;かね:kane:soldi;あなた:anata:tu;なか:naka:dentro;"+
+"はは:haha:mamma;はな:hana:fiore;ひと:hito:persona;ふく:fuku:vestiti;ほし:hoshi:stella;はし:hashi:bacchette;ふた:futa:coperchio;ほか:hoka:altro;ふね:fune:nave;"+
+"まち:machi:città;みち:michi:strada;むし:mushi:insetto;め:me:occhio;もち:mochi:torta di riso;あめ:ame:pioggia;うま:uma:cavallo;まめ:mame:fagiolo;かみ:kami:carta;みせ:mise:negozio;つま:tsuma:moglie;"+
+"やさい:yasai:verdura;ゆき:yuki:neve;よる:yoru:notte;やま:yama:montagna;ゆめ:yume:sogno;さる:saru:scimmia;くるま:kuruma:automobile;さくら:sakura:ciliegio;ひる:hiru:mezzogiorno;いろ:iro:colore;ろく:roku:sei;かれ:kare:lui;りす:risu:scoiattolo;はる:haru:primavera;"+
+"わたし:watashi:io;かわ:kawa:fiume;わに:wani:coccodrillo;にほん:nihon:Giappone;ほん:hon:libro;みかん:mikan:mandarino;てんき:tenki:tempo meteo;みんな:minna:tutti;"+
+"かがみ:kagami:specchio;ごご:gogo:pomeriggio;かぜ:kaze:vento;ともだち:tomodachi:amico;でんわ:denwa:telefono;ばなな:banana:banana;うさぎ:usagi:coniglio;かばん:kaban:borsa;まど:mado:finestra;くだもの:kudamono:frutta;たまご:tamago:uovo;ひらがな:hiragana:hiragana;りんご:ringo:mela;かんじ:kanji:kanji;にんじん:ninjin:carota;だれ:dare:chi;どこ:doko:dove;かぞく:kazoku:famiglia;はがき:hagaki:cartolina;ぶた:buta:maiale;くび:kubi:collo;へび:hebi:serpente;ぼく:boku:io (maschile);"+
+"ぱん:pan:pane;ぺん:pen:penna;さんぽ:sanpo:passeggiata;てんぷら:tenpura:tempura;えんぴつ:enpitsu:matita;"+
+"おちゃ:ocha:tè;ひゃく:hyaku:cento;しゃしん:shashin:fotografia;じてんしゃ:jitensha:bicicletta;りょこう:ryokou:viaggio;しゅみ:shumi:hobby;きゃく:kyaku:ospite;ちゃいろ:chairo:marrone;いしゃ:isha:medico;かいしゃ:kaisha:azienda;りゅう:ryuu:drago;ぎゅうにゅう:gyuunyuu:latte;びょういん:byouin:ospedale;にんぎょう:ningyou:bambola;きょう:kyou:oggi;しょうゆ:shouyu:salsa di soia").split(";").map(x=>x.split(":"));
+const units=w=>{const a=[];for(const ch of w){if("ゃゅょャュョァィゥェォ".includes(ch)&&a.length)a[a.length-1]+=ch;else a.push(ch)}return a};
+const KR={};L.forEach(x=>x.k.forEach(y=>KR[y[0]]=y[1]));KR["っ"]="っ (tsu piccolo)";KR["ッ"]="ッ (tsu piccolo)";KR["ー"]="ー (vocale lunga)";
+function wordsFor(i){const set=new Set(L.slice(0,i+1).flatMap(x=>x.k.map(y=>y[0]))),nw=new Set(L[i].k.map(y=>y[0]));
+ const ok=WV.filter(w=>units(w[0]).every(u=>set.has(u)||u==="ー"||u==="ッ")),nu=ok.filter(w=>units(w[0]).some(u=>nw.has(u)));
+ return shuffle((nu.length?nu:ok).slice()).slice(0,3)}
+const PH={listen:"Ascolta e scegli il carattere",read:"Leggi e scegli la pronuncia",pairs:"Abbina carattere e suono",word:"Costruisci la parola",wlisten:"Ascolta e scegli la parola",wmean:"Cosa significa?",wbuild:"Costruisci la parola",wpairs:"Abbina parola e significato",sent:"Metti in ordine la frase",dict:"Dettato",odd:"Caccia all’intruso"};
+function stepHead(){return el("p","note",S.rev?"Ripasso dei tuoi errori":"Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+PH[S.phs[S.ph]])}
+function startPh(){
+ if(S.ph>=S.phs.length)return fin();
+ const t=S.phs[S.ph];S.ok=0;S.tot=1;
+ if(t==="listen"||t==="read"){S.q=shuffle((S.kq||L[S.i].k).slice());S.tot=S.q.length;prac()}
+ else if(t==="wlisten"||t==="wmean"){S.q=shuffle(S.wl.slice());S.tot=S.q.length;wprac()}
+ else if(t==="pairs")pairs(L[S.i].k.map(x=>[x[0],x[1],x[1]]),"Tocca un carattere, poi il suo suono.");
+ else if(t==="wpairs")pairs(S.wl.map(w=>[w[0],w[2],w[1]]),"Tocca una parola, poi il suo significato.",true);
+ else if(t==="odd"){S.q=S.oq.slice();S.tot=S.q.length;odd()}
+ else if(t==="dict"){S.q=shuffle(S.dq.slice());S.tot=S.q.length;dict()}
+ else if(t==="sent")sentEx();else wordEx()}
+function nextPh(){S.ph++;startPh()}
+function dist(q){
+ const l=S.rev||S.mix?{g:KG[q[0]]}:L[S.i],lg=S.rev||S.mix?L:L.slice(0,S.i+1),ds=[];
+ const fill=a=>shuffle(a.slice()).forEach(y=>{if(ds.length<3&&y[1]!==q[1]&&!ds.some(z=>z[1]===y[1]))ds.push(y)});
+ fill(lg.filter(x=>x.g===l.g).flatMap(x=>x.k));fill(lg.flatMap(x=>x.k));fill(L.flatMap(x=>x.k));return ds}
+function prac(){
+ if(!S.q.length)return S.rev?fin():nextPh();
+ const t=S.phs[S.ph],q=S.q[0],ds=dist(q),c=el("div","card"),hn=el("p","hint","");hn.style.margin="12px 0";
+ const o=el("div","opts"),nx=el("button","btn","Continua");nx.hidden=true;nx.onclick=prac;let ans=false,head;
+ if(t==="listen"){head=el("button","say","🔊");head.style.cssText="width:84px;height:84px;font-size:2.4rem";head.setAttribute("aria-label","Riascolta");head.onclick=()=>say(q[0])}
+ else head=el("div","q",q[0]);
+ shuffle([q,...ds]).forEach(x=>{const b=el("button","opt"+(t==="listen"?" big":" kn"));
+  b.append(el("span",0,t==="listen"?x[0]:x[1]));const sb=el("small",0,t==="listen"?x[1]:x[0]);sb.className="sub";b.append(sb);b.dataset.r=x[1];
+  b.onclick=()=>{
+   if(ans){say(x[0]);return}
+   ans=true;const good=x[1]===q[1];
+   o.querySelectorAll(".opt").forEach(y=>{y.classList.add("rv");if(y.dataset.r===q[1])y.classList.add("ok")});
+   S.q.shift();rec(q[0],q[1],good);
+   if(good){S.ok++;hn.textContent="Giusto! "+q[0]+" = "+q[1]+". Tocca gli altri per ascoltarli."}
+   else{S.err++;b.classList.add("ko");S.q.push(q);hn.textContent="Era "+q[0]+" ("+q[1]+"). Tocca gli altri per ascoltarli, lo rivedrai tra poco."}
+   say(q[0]);nx.hidden=false;nx.focus()};
+  o.append(b)});
+ const rw=el("div","row");rw.style.cssText="justify-content:center;margin:16px 0 0";rw.append(nx);
+ c.append(stepHead(),el("p","note",t==="listen"?"Quale carattere senti?":"Come si legge?"),head,hn,o,rw);
+ lr.replaceChildren(...lhead(S.ok/S.tot),c);if(t==="listen")setTimeout(()=>say(q[0]),200)}
+function pairs(items,msg,rom){
+ const h=lhead(0),c=el("div","card"),hn=el("p","hint",msg),wrap=el("div"),A=el("div"),B=el("div"),rw=el("div","row");
+ wrap.style.cssText="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start";A.style.cssText=B.style.cssText="display:grid;gap:8px;align-content:start";
+ wrap.style.setProperty("--ph",rom?"84px":"64px");
+ rw.style.cssText="justify-content:center;margin:16px 0 0";
+ let sel=null,left=items.length;
+ const mk=(it,t)=>{const b=el("button","opt pr");b.dataset.t=t;b.dataset.j=it[0];b.dataset.r=it[2];
+  if(t==="k"){const k=el("span",0,it[0]);k.style.fontSize=it[0].length>3?"1.3rem":it[0].length>2?"1.6rem":"1.9rem";b.append(k);if(rom)b.append(el("small","pro",it[2]))}
+  else{const m=el("span",0,it[1]);m.style.fontSize=it[1].length>14?".9rem":it[1].length>6?"1rem":"1.3rem";b.append(m)}
+  b.onclick=()=>{
+   if(b.classList.contains("ok"))return;
+   if(!sel||sel.dataset.t===t){if(sel)sel.classList.remove("sel");sel=b;b.classList.add("sel");return}
+   const a=sel;sel=null;a.classList.remove("sel");
+   const kb=a.dataset.t==="k"?a:b;
+   if(a.dataset.r===b.dataset.r){
+    a.classList.add("ok");b.classList.add("ok");rec(kb.dataset.j,kb.dataset.r,true);say(kb.dataset.j);
+    left--;h[1].firstChild.style.width=Math.round((1-left/items.length)*100)+"%";
+    if(!left){hn.textContent="Tutte le coppie! Ottimo lavoro.";burst(c);const nx=el("button","btn","Continua");nx.onclick=nextPh;rw.append(nx);nx.focus()}
+   }else{
+    S.err++;rec(kb.dataset.j,kb.dataset.r,false);a.classList.add("ko");b.classList.add("ko");
+    setTimeout(()=>{a.classList.remove("ko");b.classList.remove("ko")},600)}};
+  return b};
+ shuffle(items.slice()).forEach(x=>A.append(mk(x,"k")));shuffle(items.slice()).forEach(x=>B.append(mk(x,"r")));
+ wrap.append(A,B);c.append(stepHead(),hn,wrap,rw);lr.replaceChildren(...h,c)}
+function burst(c){for(let k=0;k<18;k++){const p=el("span","pt"),a=Math.random()*Math.PI*2,d=70+Math.random()*120;
+ p.style.cssText="--dx:"+Math.round(Math.cos(a)*d)+"px;--dy:"+Math.round(Math.sin(a)*d-30)+"px;--r:"+Math.round(Math.random()*540-270)+"deg;background:"+(k%3?"var(--shu)":"var(--ok)");c.append(p)}}
+function wordEx(){
+ let n=0;const pool=[...new Set(L.slice(0,S.i+1).flatMap(x=>x.k.map(y=>y[0])))];
+ const step=()=>{
+  if(n>=S.ws.length)return nextPh();
+  const [w,r,m]=S.ws[n],tg=units(w),got=[],h=lhead(n/S.ws.length),c=el("div","card"),hn=el("p","hint",""),sl=el("div","row"),tl=el("div","row"),rw=el("div","row");
+  let fin_=false;[sl,tl,rw].forEach(x=>x.style.justifyContent="center");sl.style.margin="14px 0";rw.style.marginTop="16px";hn.style.margin="12px 0";
+  const draw=()=>sl.replaceChildren(...tg.map((_,k)=>el("span","slot",got[k]||"")));
+  const sp=el("button","say","🔊");sp.style.cssText="width:56px;height:56px;font-size:1.6rem";sp.setAttribute("aria-label","Ascolta la parola");sp.onclick=()=>say(w);
+  const mean=el("div","q ro",m);mean.style.cssText="font-size:2rem;margin:4px 0 10px";
+  const nx=el("button","btn",n<S.ws.length-1?"Prossima parola":"Continua");nx.hidden=true;nx.onclick=()=>{n++;step()};
+  const un=el("button","btn g","Cancella");
+  const win=()=>{
+   fin_=true;S.ok++;cnt("wb");tg.forEach(x=>rec(x,KR[x],true));
+   c.classList.add("win");tl.hidden=true;un.hidden=true;
+   const bw=el("div","win-b pop");bw.append(el("span","chk","✓"),el("span",0,"正解！ Perfetto!"));
+   const big=el("div","q hl2 pop",w);
+   sl.style.cssText="justify-content:center;flex-direction:column;gap:4px;margin:10px 0";sl.replaceChildren(bw,big);
+   hn.textContent=r+" = "+m;burst(c);
+   say(w);setTimeout(()=>{if(lr.contains(c))say(w,.7)},2000);
+   nx.hidden=false;nx.focus()};
+  const tiles=shuffle(tg.concat(shuffle(pool.filter(u=>!tg.includes(u)&&isKa(u)===isKa(tg[0]))).slice(0,2))).map(u=>{const b=el("button","tile",u);b.dataset.u=u;
+   b.onclick=()=>{if(fin_||b.disabled||got.length>=tg.length)return;got.push(u);b.disabled=true;draw();
+    if(got.length===tg.length){
+     if(got.join("")===w)win();
+     else{S.err++;tg.forEach((x,k)=>{if(got[k]!==x)rec(x,KR[x],false)});hn.textContent="Non ancora: ascolta bene e riprova.";
+      setTimeout(()=>{got.length=0;tiles.forEach(t=>t.disabled=false);draw()},900)}}};
+   tl.append(b);return b});
+  un.onclick=()=>{if(fin_||!got.length)return;const u=got.pop();const t=tiles.find(x=>x.disabled&&x.dataset.u===u);if(t)t.disabled=false;draw()};
+  rw.append(un,nx);draw();
+  c.append(stepHead(),el("p","note","Come si scrive in giapponese?"),mean,sp,sl,tl,hn,rw);
+  lr.replaceChildren(...h,c);setTimeout(()=>say(w),250)};
+ step()}
+function sentEx(){
+ let n=0;
+ const step=()=>{
+  if(n>=S.sn.length)return nextPh();
+  const [e,tr]=S.sn[n],tg=e.split(" "),h=lhead(n/S.sn.length),c=el("div","card"),hn=el("p","hint",""),ans=el("div","sans"),bank=el("div","sbank"),rw=el("div","row");
+  const dis=shuffle([...new Set(S.sn.filter((_,i)=>i!==n).flatMap(x=>x[0].split(" ")).filter(t=>!tg.includes(t)))]).slice(0,2);
+  const got=[];let fin_=false;rw.style.cssText="justify-content:center;margin:12px 0 0";hn.style.margin="10px 0";
+  const mk=(t,k)=>{const b=el("button","stile");b.append(el("span",0,t),el("small",0,toRo(t)));return b};
+  const draw=()=>ans.replaceChildren(...got.map((g,k)=>{const b=mk(g.t);b.onclick=()=>{if(fin_)return;got.splice(k,1);g.b.disabled=false;ck.hidden=!got.length;draw()};return b}));
+  const sp2=el("button","say","🔊");sp2.style.cssText="width:52px;height:52px;font-size:1.5rem";sp2.setAttribute("aria-label","Ascolta la frase");sp2.onclick=()=>say(sp(e));
+  const mean=el("div","q ro",tr);mean.style.cssText="font-size:1.5rem;margin:4px 0 8px";
+  const ck=el("button","btn","Controlla"),nx=el("button","btn",n<S.sn.length-1?"Prossima frase":"Continua");ck.hidden=true;nx.hidden=true;nx.onclick=()=>{n++;step()};
+  shuffle(tg.concat(dis)).forEach(t=>{const b=mk(t),o={t,b};b.onclick=()=>{if(fin_||b.disabled)return;got.push(o);b.disabled=true;ck.hidden=false;draw()};bank.append(b)});
+  ck.onclick=()=>{
+   if(got.map(g=>g.t).join(" ")===e){
+    fin_=true;S.ok++;ST.xp+=10;svST();xpUI();cnt("so");c.classList.add("win");bank.hidden=true;ck.hidden=true;
+    const bw=el("div","win-b pop");bw.append(el("span","chk","✓"),el("span",0,"正解！ Perfetto!"));
+    const big=el("div","q hl2 pop",e);big.style.fontSize="1.7rem";
+    ans.style.borderBottom="0";ans.replaceChildren(bw,big);hn.textContent=toRo(e);burst(c);
+    say(sp(e));setTimeout(()=>{if(lr.contains(c))say(sp(e),.7)},2800);nx.hidden=false;nx.focus()}
+   else{S.err++;const a=ans.children;got.forEach((g,k)=>{if(g.t!==tg[k])a[k].classList.add("ko")});
+    hn.textContent="Non ancora. In giapponese il verbo (o です) sta di solito alla fine della frase.";ck.hidden=false}};
+  rw.append(ck,nx);c.append(stepHead(),el("p","note","Metti le parole nell’ordine giusto"),mean,sp2,ans,bank,hn,rw);
+  lr.replaceChildren(...h,c)};
+ step()}
+const VP={"か":"が","き":"ぎ","く":"ぐ","け":"げ","こ":"ご","さ":"ざ","し":"じ","す":"ず","せ":"ぜ","そ":"ぞ","た":"だ","て":"で","と":"ど","は":"ば","ひ":"び","ふ":"ぶ","へ":"べ","ほ":"ぼ"},VQ={};Object.keys(VP).forEach(k=>{VP[kt(k)]=kt(VP[k])});for(const k in VP)VQ[VP[k]]=k;
+function lev(a,b){const m=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let p=m[0];m[0]=i;for(let j=1;j<=b.length;j++){const t=m[j];m[j]=Math.min(m[j]+1,m[j-1]+1,p+(a[i-1]===b[j-1]?0:1));p=t}}return m[b.length]}
+function simil(q){
+ const t=q.t,out=[];
+ if(q.w){
+  Object.keys(WM).filter(k=>k!==t&&Math.abs(k.length-t.length)<=1).map(k=>[k,lev(k,t)+Math.random()*.5]).sort((a,b)=>a[1]-b[1]).filter(x=>x[1]<=2.5).slice(0,2).forEach(x=>out.push(x[0]));
+  if(out.length<2)shuffle([...t].map((ch,i)=>VP[ch]||VQ[ch]?i:-1).filter(i=>i>=0)).forEach(i=>{const v=t.slice(0,i)+(VP[t[i]]||VQ[t[i]])+t.slice(i+1);if(out.length<2&&v!==t&&!out.includes(v))out.push(v)})
+  if(out.length<2){const rows=L.filter(l=>l.g==="base"||l.g==="kbase").map(l=>l.k.map(x=>x[0]));shuffle([...t].map((_,i)=>i)).forEach(i=>{const r=rows.find(r=>r.includes(t[i]));if(!r)return;const o2=shuffle(r.filter(x=>x!==t[i]))[0];if(!o2)return;const v=t.slice(0,i)+o2+t.slice(i+1);if(out.length<2&&v!==t&&!out.includes(v))out.push(v)})}
+ }else{
+  const tk=t.split(" "),vs=[];
+  shuffle(tk.flatMap((w,i)=>w.length>=2?[...w].map((ch,j)=>VP[ch]||VQ[ch]?[i,j]:null).filter(Boolean):[])).forEach(([i,j])=>{const v=tk.map((w,x)=>x===i?w.slice(0,j)+(VP[w[j]]||VQ[w[j]])+w.slice(j+1):w).join(" ");if(!vs.includes(v))vs.push(v)});
+  vs.slice(0,2).forEach(v=>out.push(v));
+  if(out.length<2&&tk.length>=3){const a=tk.slice(),k=Math.floor(Math.random()*(a.length-2));[a[k],a[k+1]]=[a[k+1],a[k]];const v=a.join(" ");if(v!==t&&!out.includes(v))out.push(v)}}
+ return out}
+function dict(){
+ if(!S.q.length)return nextPh();
+ const q=S.q[0],ds=simil(q),c=el("div","card"),hn=el("p","hint",""),o=el("div","opts one"),nx=el("button","btn","Continua"),rw=el("div","row"),hd=el("div","row");let ans=false;
+ hn.style.margin="12px 0";nx.hidden=true;nx.onclick=dict;rw.style.cssText="justify-content:center;margin:16px 0 0";rw.append(nx);hd.style.justifyContent="center";
+ const b1=el("button","say","🔊"),b2=el("button","say","🐢");[b1,b2].forEach(b=>b.style.cssText="width:76px;height:76px;font-size:2rem");
+ b1.setAttribute("aria-label","Ascolta");b2.setAttribute("aria-label","Ascolta lentamente");b1.onclick=()=>say(sp(q.t));b2.onclick=()=>say(sp(q.t),.55);hd.append(b1,b2);
+ shuffle([q.t,...ds]).forEach(t=>{const b=el("button","opt"+(q.w?" big":""));b.style.fontSize=q.w?"1.8rem":"1.15rem";
+  b.append(el("span",0,t));const sb=el("small",0,t===q.t?toRo(t)+" · "+q.m:toRo(t));sb.className="sub";b.append(sb);b.dataset.c=t===q.t?"1":"";
+  b.onclick=()=>{
+   if(ans){say(sp(t));return}
+   ans=true;const good=t===q.t;
+   o.querySelectorAll(".opt").forEach(y=>{y.classList.add("rv");if(y.dataset.c)y.classList.add("ok")});
+   S.q.shift();
+   if(q.w)rec(sp(q.t),toRo(q.t),good);else if(good){ST.xp+=10;svST();xpUI()}
+   if(good){S.ok++;hn.textContent="Giusto! "+toRo(q.t)+" = "+q.m}
+   else{S.err++;b.classList.add("ko");S.q.push(q);hn.textContent="Era: "+q.t+" = "+q.m+". Lo rivedrai tra poco. Tocca le altre per sentire la differenza."}
+   let lm="";
+   if(good){cnt("di");ST.ds=(ST.ds||0)+1;ST.df=0;if(ST.ds>=4&&ST.dl<2&&!ST.dm){ST.dl++;ST.ds=0;lm=" Bravo! Alla prossima sessione: livello "+LV[ST.dl]+"."}}
+   else{ST.df=(ST.df||0)+1;ST.ds=0;if(ST.df>=2&&ST.dl>0&&!ST.dm){ST.dl--;ST.df=0;lm=" Alla prossima sessione ti propongo frasi più corte: livello "+LV[ST.dl]+"."}}
+   svST();hn.textContent+=lm;
+   say(sp(q.t));nx.hidden=false;nx.focus()};
+  o.append(b)});
+ c.append(stepHead(),el("p","note","Ascolta e scegli come si scrive · livello "+LV[S.lv||0]),hd,hn,o,rw);
+ lr.replaceChildren(...lhead(S.ok/S.tot),c);setTimeout(()=>say(sp(q.t)),200)}
+const ODD=[["シ","ツ","ソ","ン"],["ク","タ","ケ"],["ア","マ","ヤ"],["コ","ユ","ヨ"],["ナ","メ","ヌ"],["ウ","ワ","フ"],["チ","テ","ナ"],["ぬ","め","ね","わ","れ"],["る","ろ","う","ら"],["は","ほ","ま","け"],["さ","き","ち","ら"],["し","つ","そ","ん","り","い"],["あ","お","す"],["こ","に","い","り"],["ま","む","よ"]];
+const ROWL=["あ行","か行","さ行","た行","な行","は行","ま行","や行","ら行","わ行","が行","ざ行","だ行","ば行","ぱ行",...Array(6).fill(""),"ア行","カ行","サ行","タ行","ナ行","ハ行","マ行","ヤ行","ラ行","ワ行","ガ行","ザ行","ダ行","バ行","パ行"];
+function oddQs(lim){
+ const ls=L.slice(0,lim+1),rows=ls.map((l,i)=>[i,l]).filter(([,l])=>!/yoon|ext/.test(l.g)&&l.k.length>=3),al=ls.flatMap(l=>l.k),aj=al.map(x=>x[0]),qs=[];
+ for(let n=0;n<3&&rows.length>1;n++){const [[i1,l1],[,l2]]=shuffle(rows.slice()).slice(0,2),three=shuffle(l1.k.slice()).slice(0,3),it=shuffle(l2.k.slice())[0];
+  qs.push({t:"s",o:shuffle([...three,it]),a:it[0],r1:i1,tr:three.map(x=>x[0]).join(" ")})}
+ const gr=shuffle(ODD.map(g=>g.filter(j=>aj.includes(j))).filter(g=>g.length>=3));
+ for(let n=0;n<3&&gr.length;n++){const g=shuffle(gr[n%gr.length].slice()),tg=g[0],ds=g.slice(1,4);
+  shuffle(aj.slice()).forEach(j=>{if(ds.length<3&&j!==tg&&!ds.includes(j))ds.push(j)});
+  qs.push({t:"l",o:shuffle([tg,...ds].map(j=>[j,KR[j]])),a:tg,r:KR[tg]})}
+ return shuffle(qs)}
+function oddRow(){const c=el("div","topic"),th=el("div","th"),st=el("div","steps"),b=el("button","btn","Gioca");
+ th.append(el("b",0,"Caccia all’intruso"),el("span",0,"Allena i caratteri che si confondono: righe, suoni e sosia."));b.onclick=startOdd;st.append(b);c.append(th,st);c.style.marginBottom="14px";return c}
+function startOdd(){
+ const mx=Math.max(1,...done.filter(d=>typeof d==="number"))+1,lim=Math.min(L.length-1,mx);
+ S={i:L.length-1,kind:"v",odd:1,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["odd"],oq:oddQs(lim),wl:[],ws:[],vp:[]};
+ if(!S.oq.length)return;goLessons();startPh()}
+function odd(){
+ if(!S.q.length)return nextPh();
+ const q=S.q[0],c=el("div","card"),hn=el("p","hint",""),o=el("div","opts"),nx=el("button","btn","Continua"),rw=el("div","row");let ans=false,head="";
+ hn.style.margin="12px 0";nx.hidden=true;nx.onclick=odd;rw.style.cssText="justify-content:center;margin:16px 0 0";rw.append(nx);
+ if(q.t==="l"){const ro=el("div","q ro",q.r),sb=el("button","say","🔊");sb.setAttribute("aria-label","Ascolta");sb.onclick=()=>say(q.a);head=[ro,sb]}
+ q.o.forEach(x=>{const b=el("button","opt big");b.append(el("span",0,x[0]));const sb=el("small",0,x[1]);sb.className="sub";b.append(sb);b.dataset.c=x[0]===q.a?"1":"";
+  b.onclick=()=>{
+   if(ans){say(x[0]);return}
+   ans=true;const good=x[0]===q.a;
+   o.querySelectorAll(".opt").forEach(y=>{y.classList.add("rv");if(y.dataset.c)y.classList.add("ok")});
+   S.q.shift();rec(q.a,KR[q.a],good);
+   if(good){cnt("od");S.ok++;hn.textContent=q.t==="s"?"Giusto! Gli altri sono della "+ROWL[q.r1]+": "+q.tr+".":"Giusto! "+q.a+" = "+q.r+"."}
+   else{S.err++;b.classList.add("ko");S.q.push(q);hn.textContent=q.t==="s"?"L’intruso era "+q.a+" ("+KR[q.a]+"): gli altri sono della "+ROWL[q.r1]+" ("+q.tr+").":"Era "+q.a+" ("+q.r+"). Guarda bene le differenze."}
+   say(q.a);nx.hidden=false;nx.focus()};
+  o.append(b)});
+ c.append(stepHead(),el("p","note",q.t==="s"?"Tre caratteri hanno la stessa consonante. Trova l’intruso.":"Quale carattere si legge così? Attento ai sosia!"),...[].concat(head),hn,o,rw);
+ lr.replaceChildren(...lhead(S.ok/S.tot),c)}
+function learned(i){const set=new Set(L.slice(0,i+1).flatMap(x=>x.k.map(y=>y[0])));return WV.filter(w=>units(w[0]).every(u=>set.has(u)||u==="ー"||u==="ッ"))}
+function topicWords(i){const nw=new Set(L[i].k.map(y=>y[0]));return learned(i).filter(w=>units(w[0]).some(u=>nw.has(u))).sort((a,b)=>a[0].length-b[0].length||Math.random()-.5)}
+function startW(i){const wl=topicWords(i).slice(0,5);S={i,kind:"w",ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["wlisten","wmean","wbuild","wpairs"],wl,ws:wl.slice(0,4)};lr.hidden=false;ll.hidden=true;teachW()}
+function teachW(){
+ const n=S.wl.length,[w,r,m]=S.wl[S.ix],c=el("div","card");
+ const sb=el("button","say","🔊");sb.style.cssText="width:64px;height:64px;font-size:1.8rem";sb.setAttribute("aria-label","Ascolta di nuovo");sb.onclick=()=>say(w);
+ const ro=el("div","q ro",r);ro.style.cssText="font-size:2rem;margin-bottom:2px";
+ const me=el("p",0,m);me.style.cssText="font-size:1.5rem;font-weight:700;margin:2px 0 8px";
+ const row=el("div","row");row.style.cssText="justify-content:center;margin:16px 0 0";
+ if(S.ix>0){const bk=el("button","btn g","Indietro");bk.onclick=()=>{S.ix--;teachW()};row.append(bk)}
+ const nb=el("button","btn",S.ix<n-1?"Avanti":"Iniziamo l’esercizio");
+ nb.onclick=()=>{if(S.ix<n-1){S.ix++;teachW()}else{S.ph=0;startPh()}};row.append(nb);
+ c.append(el("p","note","Nuova parola · "+(S.ix+1)+" di "+n),el("div","q"+(w.length>2?" sm":""),w),ro,me,el("p","note",units(w).map(u=>u+" "+KR[u]).join("  ·  ")),sb,row);
+ lr.replaceChildren(...lhead(0),c);setTimeout(()=>say(w),200)}
+function wprac(){
+ if(!S.q.length)return nextPh();
+ const t=S.phs[S.ph],q=S.q[0],ds=[];
+ const fill=a=>shuffle(a.slice()).forEach(y=>{if(ds.length<3&&y[0]!==q[0]&&y[2]!==q[2]&&!ds.some(z=>z[0]===y[0]||z[2]===y[2]))ds.push(y)});
+ fill(S.wl);fill(S.vp||[]);fill(learned(S.i).filter(w=>isKa(w[0])===isKa(q[0])));fill(learned(S.i));fill(WV.filter(w=>isKa(w[0])===isKa(q[0])));
+ const c=el("div","card"),hn=el("p","hint",""),o=el("div","opts"),nx=el("button","btn","Continua"),rw=el("div","row");let ans=false,head;
+ hn.style.margin="12px 0";nx.hidden=true;nx.onclick=wprac;rw.style.cssText="justify-content:center;margin:16px 0 0";rw.append(nx);
+ if(t==="wlisten"){head=el("button","say","🔊");head.style.cssText="width:84px;height:84px;font-size:2.4rem";head.setAttribute("aria-label","Riascolta");head.onclick=()=>say(q[0])}
+ else{head=el("div","q sm",q[0]);const sb=el("button","say","🔊");sb.setAttribute("aria-label","Ascolta");sb.onclick=()=>say(q[0]);head=[head,sb]}
+ shuffle([q,...ds]).forEach(x=>{const b=el("button","opt"+(t==="wlisten"?" big":" kn"));b.style.fontSize=t==="wlisten"?"1.7rem":"1.15rem";
+  b.append(el("span",0,t==="wlisten"?x[0]:x[2]));const sb=el("small",0,t==="wlisten"?x[1]+" · "+x[2]:x[0]+" · "+x[1]);sb.className="sub";b.append(sb);b.dataset.r=x[1];
+  b.onclick=()=>{
+   if(ans){say(x[0]);return}
+   ans=true;const good=x[1]===q[1];
+   o.querySelectorAll(".opt").forEach(y=>{y.classList.add("rv");if(y.dataset.r===q[1])y.classList.add("ok")});
+   S.q.shift();rec(q[0],q[1],good);
+   if(good){S.ok++;hn.textContent="Giusto! "+q[0]+" ("+q[1]+") = "+q[2]}
+   else{S.err++;b.classList.add("ko");S.q.push(q);hn.textContent="Era "+q[0]+" ("+q[1]+") = "+q[2]+". Lo rivedrai tra poco."}
+   say(q[0]);nx.hidden=false;nx.focus()};
+  o.append(b)});
+ c.append(stepHead(),el("p","note",t==="wlisten"?"Quale parola senti?":"Che cosa significa?"),...[].concat(head),hn,o,rw);
+ lr.replaceChildren(...lhead(S.ok/S.tot),c);setTimeout(()=>say(q[0]),200)}
+/* pronuncia con microfono */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let micOK=!!SR;
+const KJ=Object.fromEntries("あい:愛 いえ:家 うえ:上 あお:青 いい:良い/いい あう:会う/合う え:絵 あか:赤 かお:顔 かい:貝 こい:恋/鯉 あき:秋 いけ:池 きく:聞く/菊 こえ:声 えき:駅 おか:丘 かう:買う/飼う さけ:酒/鮭 すし:寿司/鮨 せき:席/咳 しお:塩 いす:椅子 あし:足/脚 うし:牛 かさ:傘 すき:好き あさ:朝 しか:鹿 さかな:魚 せかい:世界 すいか:西瓜 そこ:底 たこ:蛸/凧 うた:歌 つき:月 くつ:靴 くち:口 いち:一 とし:年 そと:外 たかい:高い すてき:素敵 かたち:形 ちち:父 なに:何 いぬ:犬 ねこ:猫 なつ:夏 にく:肉 ぬの:布 かね:金 あなた:貴方 なか:中 はは:母 はな:花/鼻 ひと:人 ふく:服 ほし:星 はし:橋/箸 ふた:蓋 ほか:他 ふね:船 まち:町 みち:道 むし:虫 め:目 もち:餅 あめ:雨/飴 うま:馬 まめ:豆 かみ:紙/髪/神 みせ:店 つま:妻 やさい:野菜 ゆき:雪 よる:夜 やま:山 ゆめ:夢 さる:猿 くるま:車 さくら:桜 ひる:昼 いろ:色 ろく:六 かれ:彼 りす:栗鼠 はる:春 わたし:私 かわ:川/皮 わに:鰐 にほん:日本 ほん:本 みかん:蜜柑 てんき:天気 みんな:皆 かがみ:鏡 ごご:午後 かぜ:風/風邪 ともだち:友達 かばん:鞄 まど:窓 くだもの:果物 たまご:卵 りんご:林檎 かんじ:漢字 にんじん:人参 だれ:誰 どこ:何処 かぞく:家族 はがき:葉書 ぶた:豚 くび:首 へび:蛇 ぼく:僕 おちゃ:お茶 ひゃく:百 しゃしん:写真 じてんしゃ:自転車 りょこう:旅行 しゅみ:趣味 きゃく:客 ちゃいろ:茶色 いしゃ:医者 かいしゃ:会社 りゅう:竜/龍 ぎゅうにゅう:牛乳 びょういん:病院 にんぎょう:人形 きょう:今日 しょうゆ:醤油 えんぴつ:鉛筆 さんぽ:散歩 てんぷら:天ぷら/天婦羅 でんわ:電話".split(" ").map(x=>x.split(":")));
+const norm=t=>t.replace(/[ァ-ヶ]/g,ch=>String.fromCharCode(ch.charCodeAt(0)-96)).replace(/[\s、。,.!?！？ー・「」]/g,"").toLowerCase();
+function heardOK(alts,it){const tg=norm(it.j),kj=(KJ[it.j]||"").split("/").filter(Boolean);
+ return alts.some(a=>{const n=norm(a);return n===tg||n===it.r||n.includes(tg)||kj.some(k=>n.includes(k))})}
+function listenJa(cb){
+ let d=false;const end=(h,e)=>{if(!d){d=true;cb(h,e)}};
+ try{const r=new SR();r.lang="ja-JP";r.maxAlternatives=5;r.interimResults=false;
+  r.onresult=e=>end(Array.from(e.results[0]).map(x=>x.transcript),null);
+  r.onerror=e=>end([],e.error);r.onend=()=>end([],"no-speech");r.start()}
+ catch(e){end([],"not-allowed")}}
+function startP(i){
+ const ws=topicWords(i).slice(0,3);
+ S={i,kind:"p",ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["pron"],ws:[],pi:L[i].k.map(x=>({j:x[0],r:x[1],m:""})).concat(ws.map(w=>({j:w[0],r:w[1],m:w[2]})))};
+ lr.hidden=false;ll.hidden=true;pron()}
+function pron(){
+ if(S.ix>=S.pi.length)return fin();
+ const it=S.pi[S.ix],isW=!!it.m,h=lhead(S.ix/S.pi.length),c=el("div","card");
+ const big=el("div","q"+(it.j.length>2?" sm":""),it.j),ro=el("div","q ro",it.r);ro.style.cssText="font-size:1.8rem;margin-bottom:2px";
+ const me=el("p","note",isW?it.m:hint(it.r));
+ const ls=el("button","say","🔊");ls.setAttribute("aria-label","Ascolta");ls.onclick=()=>say(it.j);
+ const mic=el("button","mic","🎤");mic.setAttribute("aria-label","Parla");
+ const ctl=el("div","row"),res=el("p","hint",""),act=el("div","row");
+ [ctl,act].forEach(x=>x.style.justifyContent="center");res.style.margin="12px 0";
+ ctl.append(ls);if(micOK)ctl.append(mic);
+ const next=xp=>{if(xp){ST.xp+=xp;svST();xpUI()}S.ix++;pron()};
+ const btns=a=>act.replaceChildren(...a.map(([t,f,g])=>{const b=el("button","btn"+(g?" g":""),t);b.onclick=f;return b}));
+ const self=()=>btns([["L’ho detta bene",()=>next(5)],["Riascolta",()=>say(it.j),1],["Salta",()=>next(0),1]]);
+ if(micOK)res.textContent="Ascolta, poi tocca il microfono e ripeti ad alta voce (consenti il microfono se richiesto).";
+ else{res.textContent="Il riconoscimento vocale non è disponibile qui: ripeti ad alta voce e valuta tu.";self()}
+ mic.onclick=()=>{
+  if(!micOK)return;if(window.speechSynthesis)speechSynthesis.cancel();
+  mic.classList.add("rec");res.textContent="Ti ascolto…";btns([]);
+  listenJa((alts,err)=>{mic.classList.remove("rec");
+   if(err){
+    if(["not-allowed","service-not-allowed","audio-capture","language-not-supported"].includes(err)){micOK=false;mic.hidden=true;res.textContent="Il microfono non è disponibile in questa vista: aprila in una scheda normale del browser e consenti il microfono. Per ora valuta tu.";self()}
+    else{res.textContent=err==="no-speech"?"Non ho sentito nulla: tocca il microfono e riprova.":"Non sono riuscito ad ascoltarti ("+err+"). Riprova.";btns([["Salta",()=>next(0),1]])}
+    return}
+   if(heardOK(alts,it)){res.textContent="Ottimo! Ho sentito: “"+alts[0]+"”";btns([["Avanti",()=>{cnt("pr");next(10)}]])}
+   else{res.textContent="Ho sentito: “"+alts[0]+"”. Riascolta e riprova."+(isW?"":" Sui singoli suoni il riconoscimento è approssimativo: se eri sicuro, tocca “Era corretta”.");
+    btns([["Era corretta",()=>next(5),1],["Riascolta",()=>say(it.j),1],["Salta",()=>next(0),1]])}})};
+ c.append(el("p","note","Pronuncia · "+(S.ix+1)+" di "+S.pi.length),big,ro,me,ctl,res,act);
+ lr.replaceChildren(...h,c);setTimeout(()=>say(it.j),200)}
+function fin(){
+ const k=S.kind||"c",key=k==="c"?S.i:S.i+":"+k;
+ const first=!S.rev&&k!=="v"&&!done.includes(key);
+ if(first){done.push(key);try{localStorage.setItem("hira-done",JSON.stringify(done))}catch(e){}}
+ if(first&&!S.err&&k!=="p")cnt("pf");
+ const bonus=S.rev?10:k==="v"?15:first?(k==="p"?20:(S.err?20:30)):0;if(bonus){ST.xp+=bonus;svST();xpUI()}
+ const c=el("div","card"),r=el("div","row");r.style.justifyContent="center";
+ const go=(t,f)=>{const b=el("button","btn",t);b.onclick=f;r.append(b)},i=S.i;
+ if(!S.rev){
+  if(k==="c"&&topicWords(i).length>=2)go("Continua: parole",()=>startW(i));
+  else if(k==="w")go("Continua: pronuncia",()=>startP(i));
+  else if(k!=="v"&&i<L.length-1)go("Prossimo argomento",()=>startL(i+1))}
+ const bk=el("button","btn g",S.vocab?"Torna al vocabolario":"Torna alle lezioni");bk.onclick=S.vocab?()=>{exitL();document.querySelector('nav button[data-t="vocab"]').click()}:exitL;r.append(bk);
+ const ttl=S.rev?"Ripasso completato":k==="c"?"Lezione completata":k==="w"?"Parole completate":k==="v"?"Ripasso completato":"Pronuncia completata";
+ c.append(el("div","q sm hl","おめでとう"),el("h2",0,ttl),el("p","hint",(S.err?"Errori: "+S.err+". Rifai per fissarli meglio.":"Nessun errore, ottimo lavoro.")+(bonus?" +"+bonus+" XP":"")),r);
+ lr.replaceChildren(...lhead(1),c);burst(c)}
+
+/* punteggio e memoria errori */
+const ST0=()=>({xp:0,m:{},s:{},dl:0,dm:0,ds:0,df:0,goal:30,dx:{d:0,x:0},sk:{n:0,last:0,best:0},bd:{},ct:{},bi:0});let ST=ST0();
+try{const x=JSON.parse(localStorage.getItem("hira-stats")||"{}");if(x&&typeof x==="object")ST=Object.assign(ST0(),x)}catch(e){}
+const svST=()=>{try{localStorage.setItem("hira-stats",JSON.stringify(ST))}catch(e){}};
+let _lx=ST.xp;
+function toast(m){const t=el("div","toast",m);t.setAttribute("role","status");t.style.bottom="calc("+(20+document.querySelectorAll(".toast").length*58)+"px + env(safe-area-inset-bottom,0px))";document.body.append(t);setTimeout(()=>t.remove(),3800)}
+function goalHit(t){const k=ST.sk;if(k.last===t)return;k.n=k.last===t-1?k.n+1:1;k.last=t;k.best=Math.max(k.best,k.n);toast("🔥 Obiettivo raggiunto! Serie: "+k.n+(k.n===1?" giorno":" giorni"))}
+const curStreak=()=>ST.sk.last>=DAY()-1?ST.sk.n:0;
+function goalUI(){const t=DAY(),x=ST.dx.d===t?ST.dx.x:0,n=curStreak(),g=ST.goal||30;
+ $("gtx").textContent=(x>=g?"✓ Obiettivo raggiunto · ":"")+"🔥 "+(n?n+(n===1?" giorno":" giorni")+" di serie":"inizia la serie")+" · oggi "+Math.min(x,g)+"/"+g+" XP";
+ $("gf").style.width=Math.min(100,Math.round(x/g*100))+"%";$("goalSel").value=g}
+function xpUI(){
+ $("lvl").textContent=Math.floor(ST.xp/100)+1;$("xpn").textContent=ST.xp+" XP";$("xpf").style.width=(ST.xp%100)+"%";
+ const d=ST.xp-_lx;_lx=ST.xp;
+ if(d>0){const t=DAY();if(ST.dx.d!==t)ST.dx={d:t,x:0};const b=ST.dx.x;ST.dx.x+=d;if(b<ST.goal&&ST.dx.x>=ST.goal)goalHit(t);svST()}
+ goalUI();checkBadges()}
+const DAY=()=>Math.floor((Date.now()-new Date().getTimezoneOffset()*6e4)/864e5),IV=[1,3,7];
+function rec(j,r,ok){
+ const m=ST.m[j]||(ST.m[j]={w:0,c:0,k:0,r}),t=DAY();ST.s=ST.s||{};
+ if(ok){m.c++;m.k=Math.max(0,m.k-.5);ST.xp+=10;const q=ST.s[j];if(q&&q.d<=t){q.b++;if(q.b>=IV.length){delete ST.s[j];cnt("sr")}else q.d=t+IV[q.b]}}
+ else{m.w++;m.k++;ST.s[j]={b:0,d:t+IV[0],r}}
+ svST();xpUI()}
+const dueList=()=>Object.entries(ST.s||{}).filter(([,q])=>q.d<=DAY()).sort((a,b)=>a[1].d-b[1].d);
+const KG={};L.forEach(x=>x.k.forEach(y=>KG[y[0]]=x.g));
+function startR(){
+ const a=Object.entries(ST.m).filter(([j,m])=>KG[j]&&m.w>0).sort((x,y)=>(y[1].k-x[1].k)||(y[1].w-x[1].w)).slice(0,8).map(([j,m])=>[j,m.r]);
+ if(!a.length)return;
+ S={i:-1,rev:1,ix:0,ph:0,phs:["listen"],q:shuffle(a.slice()).concat(shuffle(a.slice())),tot:0,ok:0,err:0};S.tot=S.q.length;
+ document.querySelector('nav button[data-t="lessons"]').click();lr.hidden=false;ll.hidden=true;prac()}
+function renderS(){
+ const b=$("sumBody");b.replaceChildren();
+ const es=Object.values(ST.m),tc=es.reduce((a,m)=>a+m.c,0),tw=es.reduce((a,m)=>a+m.w,0),acc=tc+tw?Math.round(tc/(tc+tw)*100)+"%":"–",t=DAY(),xt=ST.dx.d===t?ST.dx.x:0;
+ const tiles=[["Livello",Math.floor(ST.xp/100)+1,ST.xp+" XP"],["Serie",curStreak(),"record "+ST.sk.best],["Oggi",Math.min(xt,ST.goal)+"/"+ST.goal,"XP"],["Precisione",acc,tc+" giuste su "+(tc+tw)],["Argomenti",nTop()+"/"+L.length,"caratteri"],["Medaglie",BD.filter(x=>ST.bd[x.id]).length+"/"+BD.length,"sbloccate"]];
+ const g=el("div","sg2");tiles.forEach(([a,v,c])=>{const d=el("div","st");d.append(el("small",0,a),el("b",0,v),el("span",0,c));g.append(d)});b.append(g);
+ b.append(el("h2",0,"Argomenti"),el("p","note","Ogni riquadro è un argomento: contiamo caratteri, parole e pronuncia completati. Rosso = tutto fatto."));
+ const m=el("div","tmap");
+ L.forEach((l,i)=>{const n=["c","w","p"].filter(x=>x!=="w"||topicWords(i).length>=2).map(x=>isD(i,x)),d=el("div","tm"+(n.every(Boolean)?" d":n.some(Boolean)?" p":""));
+  d.append(el("b",0,l.k[0][0]),el("span",0,n.filter(Boolean).length+"/"+n.length));d.title=l.t;m.append(d)});b.append(m)}
+function renderE(){
+ const b=$("errBody");b.replaceChildren();b.append(dueRow());
+ const es=Object.entries(ST.m),bad=es.filter(([,m])=>m.w>0).sort((x,y)=>(y[1].k-x[1].k)||(y[1].w-x[1].w)).slice(0,5);
+ b.append(el("h2",0,"I tuoi errori principali"));
+ if(!bad.length){b.append(el("p","note",es.length?"Nessun errore registrato: continua così.":"Ancora nessuna risposta registrata. Fai una lezione o il quiz: qui troverai i caratteri che sbagli di più."));return}
+ if(bad.some(([j])=>KG[j])){const rv=el("button","btn","Ripassa i miei errori");rv.onclick=startR;const rw=el("div","row");rw.append(rv);b.append(rw)}
+ bad.forEach(([j,m])=>{const d=el("div","w"),s=el("button","say","🔊");s.setAttribute("aria-label","Ascolta "+m.r);s.onclick=()=>say(j);
+  const q=ST.s[j],dd=q?q.d-DAY():null,nx=dd===null?"":dd<=0?" · da ripassare oggi":" · ripasso tra "+dd+(dd===1?" giorno":" giorni");
+  const jj=el("span","j",j);jj.style.minWidth="3.5em";
+  d.append(jj,el("span","r",m.r),el("span","m","sbagliato "+m.w+(m.w===1?" volta":" volte")+" · giusto "+m.c+" ("+Math.round(m.c/(m.c+m.w)*100)+"%)"+nx),s);b.append(d)})}
+function renderR(){
+ const b=$("rstBody");b.replaceChildren();
+ const rs=el("button","btn g","Azzera tutti i progressi");rs.style.marginTop="28px";let arm=0;
+ rs.onclick=()=>{if(!arm){arm=1;rs.textContent="Sicuro? Tocca di nuovo per azzerare"}else{ST=ST0();done=[];svST();try{localStorage.setItem("hira-done","[]")}catch(e){}xpUI();renderL();renderS();renderE();renderB();renderR()}};
+ b.append(rs)}
+/* controlli voce */
+const vs=$("voiceSel"),vr=$("voiceRate");vr.value=rate;$("rateL").textContent=rate.toFixed(2)+"×";
+function saveV(){try{localStorage.setItem("hira-voice",JSON.stringify({name:voice&&voice.name,rate}))}catch(e){}}
+vs.onchange=()=>{voice=voiceList.find(v=>v.name===vs.value)||voice;VS.name=voice&&voice.name;saveV();say("こんにちは")};
+vr.oninput=()=>{rate=+vr.value;$("rateL").textContent=rate.toFixed(2)+"×"};
+vr.onchange=()=>{saveV();say("ありがとうございます")};
+$("voiceTest").onclick=()=>say("おはようございます");
+$("goalSel").onchange=()=>{ST.goal=+$("goalSel").value;svST();goalUI()};
+xpUI();fillVoices();
+/* vocabolario */
+const VD=`#Saluti e frasi utili
+こんにちは|Buongiorno / Salve|Si usa durante il giorno.|せんせい、 こんにちは。|Buongiorno, professore.
+おはよう ございます|Buongiorno (cortese)|Saluto del mattino; tra amici basta おはよう.|みなさん、 おはよう ございます。|Buongiorno a tutti.
+こんばんは|Buonasera|Si usa dopo il tramonto.|こんばんは。 おげんき です か。|Buonasera. Come sta?
+ありがとう|Grazie|Più cortese: ありがとう ございます.|てつだって くれて ありがとう。|Grazie per avermi aiutato.
+すみません|Mi scusi / Permesso|Per attirare l’attenzione o chiedere scusa.|すみません、 えき は どこ です か。|Mi scusi, dov’è la stazione?
+ごめんなさい|Scusa / Mi dispiace|Più personale di すみません.|おそく なって ごめんなさい。|Scusa per il ritardo.
+いただきます|Buon appetito|Si dice prima di mangiare, per ringraziare.|いただきます。 おいしそう です ね。|Buon appetito. Sembra buono, vero?
+おやすみなさい|Buonanotte|Prima di andare a dormire.|おやすみなさい。 また あした。|Buonanotte. A domani.
+#Parole base
+はい|Sì|Anche per dire “ho capito”.|はい、 わかりました。|Sì, ho capito.
+いいえ|No|Si usa anche per dire “prego”.|いいえ、 ちがい ます。|No, non è così.
+わたし|Io|Neutro e cortese.|わたし は がくせい です。|Io sono uno studente.
+これ|Questo (vicino a me)|Poi それ (vicino a te) e あれ (lontano).|これ は ほん です。|Questo è un libro.
+なに|Che cosa|Davanti a です diventa なん.|これ は なん です か。|Che cos’è questo?
+どこ|Dove|Si usa per chiedere un luogo.|としょかん は どこ です か。|Dov’è la biblioteca?
+だれ|Chi|Per chiedere di una persona.|あの ひと は だれ です か。|Chi è quella persona?
+いくら|Quanto costa|Per chiedere il prezzo.|これ は いくら です か。|Quanto costa questo?
+#Persone e famiglia
+かぞく|Famiglia|Per la famiglia in generale.|かぞく は よにん です。|Siamo una famiglia di quattro persone.
+ともだち|Amico|Anche “amica”.|ともだち と ひるごはん を たべます。|Pranzo con un amico.
+おかあさん|Mamma|Con gli altri, la propria mamma è はは.|おかあさん は りょうり が じょうず です。|La mamma cucina bene.
+おとうさん|Papà|Con gli altri, il proprio papà è ちち.|おとうさん は かいしゃ へ いきます。|Papà va in ufficio.
+こども|Bambino / Figlio|Vale per bambini e figli.|こども が こうえん で あそびます。|I bambini giocano al parco.
+せんせい|Insegnante|Si usa anche come titolo dopo il nome.|せんせい は とても やさしい です。|L’insegnante è molto gentile.
+#Cibo e bevande
+みず|Acqua|Fredda; l’acqua calda è おゆ.|みず を ください。|Mi dà dell’acqua, per favore.
+おちゃ|Tè|Di solito il tè verde.|まいにち おちゃ を のみます。|Bevo tè ogni giorno.
+ごはん|Riso cotto / Pasto|Significa anche “pasto”.|あさごはん を たべます。|Faccio colazione.
+さかな|Pesce|Come cibo e come animale.|さかな が すき です。|Mi piace il pesce.
+たまご|Uovo|Spesso nelle colazioni giapponesi.|たまご を ふたつ ください。|Due uova, per favore.
+りんご|Mela|Un frutto molto amato.|この りんご は おいしい です。|Questa mela è buona.
+すし|Sushi|Riso condito con pesce o altro.|すし が だいすき です。|Adoro il sushi.
+みそしる|Zuppa di miso|Tipica della colazione.|あさ に みそしる を のみます。|La mattina bevo zuppa di miso.
+#Animali
+いぬ|Cane|Per cani di ogni razza.|いぬ と さんぽ します。|Faccio una passeggiata con il cane.
+ねこ|Gatto|Anche “micio”.|ねこ が ねて います。|Il gatto sta dormendo.
+とり|Uccello|Anche “pollo” come carne.|とり が うたって います。|Gli uccelli cantano.
+うさぎ|Coniglio|Si conta con わ.|うさぎ は にんじん が すき です。|Al coniglio piace la carota.
+さる|Scimmia|Animale molto presente nelle fiabe.|さる が き に のぼります。|La scimmia sale sull’albero.
+#Natura e stagioni
+やま|Montagna|Anche in nomi di luoghi.|ふじさん は たかい やま です。|Il monte Fuji è una montagna alta.
+うみ|Mare|Meta delle vacanze estive.|なつ に うみ へ いきます。|D’estate vado al mare.
+そら|Cielo|Compare spesso in poesie e canzoni.|そら が あおい です。|Il cielo è azzurro.
+はな|Fiore|Da qui はなみ, l’ammirare i fiori in primavera.|はな が きれい です。|I fiori sono belli.
+あめ|Pioggia|Attenzione: あめ con altro tono è “caramella”.|きょう は あめ です。|Oggi piove.
+ゆき|Neve|Il paesaggio d’inverno.|ふゆ に ゆき が ふります。|In inverno nevica.
+はる|Primavera|La stagione dei ciliegi.|はる に さくら が さきます。|In primavera sbocciano i ciliegi.
+なつ|Estate|Stagione calda e umida.|なつ は あつい です。|L’estate è calda.
+あき|Autunno|Stagione delle foglie rosse.|あき は すずしい です。|L’autunno è fresco.
+ふゆ|Inverno|Stagione fredda.|ふゆ は さむい です。|L’inverno è freddo.
+#Luoghi
+いえ|Casa|Come edificio; “casa mia” è spesso うち.|わたし の いえ は ちいさい です。|La mia casa è piccola.
+がっこう|Scuola|Dalle elementari all’università.|あした がっこう へ いきます。|Domani vado a scuola.
+えき|Stazione|Dei treni e della metropolitana.|えき で ともだち に あいます。|Incontro un amico alla stazione.
+みせ|Negozio|Anche ristorante o locale.|あの みせ は やすい です。|Quel negozio è economico.
+にほん|Giappone|Si legge anche にっぽん.|にほん へ いきたい です。|Voglio andare in Giappone.
+びょういん|Ospedale|Attenzione: びょういん è ospedale, びよういん è parrucchiere.|びょういん は あそこ です。|L’ospedale è laggiù.
+#Oggetti
+ほん|Libro|Si conta con さつ.|まいばん ほん を よみます。|Ogni sera leggo un libro.
+かさ|Ombrello|Si usa per pioggia e sole.|あめ です から かさ を もって いきます。|Piove, quindi porto l’ombrello.
+くるま|Automobile|Anche “veicolo” in generale.|くるま で かいしゃ へ いきます。|Vado in ufficio in auto.
+でんわ|Telefono|Anche “telefonata”.|でんわ が なって います。|Il telefono sta squillando.
+かばん|Borsa|Per borse, zaini e valigette.|かばん の なか に ほん が あります。|Nella borsa c’è un libro.
+くつ|Scarpe|In Giappone si tolgono entrando in casa.|いえ で くつ を ぬぎます。|In casa mi tolgo le scarpe.
+#Verbi
+たべます|Mangiare|Forma cortese in ます.|ごはん を たべます。|Mangio il riso.
+のみます|Bere|Vale anche per “prendere” una medicina.|おちゃ を のみます。|Bevo tè.
+いきます|Andare|La destinazione prende へ o に.|きょう みせ へ いきます。|Oggi vado al negozio.
+きます|Venire|Verso chi parla.|ともだち が うち へ きます。|Un amico viene a casa mia.
+みます|Guardare / Vedere|Anche per film e TV.|うみ を みます。|Guardo il mare.
+ききます|Ascoltare / Chiedere|Cambia senso secondo il contesto.|おんがく を ききます。|Ascolto musica.
+よみます|Leggere|Per libri, giornali e testi.|ひらがな を よみます。|Leggo l’hiragana.
+かきます|Scrivere|Anche “disegnare”.|なまえ を かきます。|Scrivo il nome.
+はなします|Parlare|Con chi si parla: と.|せんせい と はなします。|Parlo con l’insegnante.
+わかります|Capire|L’oggetto prende が.|ひらがな が わかります。|Capisco l’hiragana.
+あります|Esserci (cose)|Per oggetti e piante.|つくえ の うえ に ほん が あります。|Sulla scrivania c’è un libro.
+います|Esserci (esseri viventi)|Per persone e animali.|へや に ねこ が います。|Nella stanza c’è un gatto.
+#Aggettivi
+おおきい|Grande|Aggettivo in い.|おおきい いぬ です。|È un cane grande.
+ちいさい|Piccolo|Aggettivo in い.|ちいさい かばん が すき です。|Mi piacciono le borse piccole.
+あたらしい|Nuovo|Il contrario è ふるい.|あたらしい くるま を かいました。|Ho comprato un’auto nuova.
+たかい|Alto / Caro|Vale per altezza e prezzo.|この かばん は たかい です。|Questa borsa è cara.
+やすい|Economico|Il contrario è たかい.|ここ の すし は やすい です。|Il sushi qui è economico.
+おいしい|Buono (di sapore)|Per cibi e bevande.|この さかな は おいしい です。|Questo pesce è buono.
+たのしい|Divertente|Per esperienze piacevoli.|がっこう は たのしい です。|La scuola è divertente.
+むずかしい|Difficile|Il contrario è やさしい.|にほんご は むずかしい です か。|Il giapponese è difficile?
+すき|Mi piace|Aggettivo in な; l’oggetto prende が.|ねこ が すき です。|Mi piace il gatto.
+#Colori
+あかい|Rosso|Aggettivo in い.|あかい はな が すき です。|Mi piacciono i fiori rossi.
+あおい|Blu / Azzurro|Indica anche il verde dei semafori.|あおい うみ が きれい です。|Il mare azzurro è bello.
+しろい|Bianco|Aggettivo in い.|しろい いぬ が います。|C’è un cane bianco.
+くろい|Nero|Aggettivo in い.|くろい ねこ が ねて います。|Un gatto nero sta dormendo.
+きいろい|Giallo|Aggettivo in い.|きいろい はな を かいました。|Ho comprato dei fiori gialli.
+みどり|Verde|È un sostantivo.|みどり の くるま です。|È un’auto verde.
+ちゃいろ|Marrone|Letteralmente “colore del tè”.|ちゃいろ の くつ を かいます。|Compro delle scarpe marroni.
+#Giorni e tempo
+きょう|Oggi|Poi あした (domani) e きのう (ieri).|きょう は にちようび です。|Oggi è domenica.
+あした|Domani|Si usa senza particella.|あした ともだち に あいます。|Domani incontro un amico.
+きのう|Ieri|Verbo al passato.|きのう あめ でした。|Ieri pioveva.
+いま|Adesso|Per il momento presente.|いま なんじ です か。|Che ore sono adesso?
+まいにち|Ogni giorno|Senza particella.|まいにち にほんご を べんきょう します。|Studio giapponese ogni giorno.
+あさ|Mattina|Anche “colazione” in あさごはん.|あさ は はやく おきます。|La mattina mi alzo presto.
+ひる|Mezzogiorno|Anche “pranzo” in ひるごはん.|ひる に ごはん を たべます。|A mezzogiorno mangio.
+よる|Sera / Notte|Dal tramonto in poi.|よる は ほん を よみます。|La sera leggo.
+にちようび|Domenica|Letteralmente “giorno del sole”.|にちようび は やすみ です。|La domenica è giorno di riposo.
+#Numeri
+いち|Uno|Per contare: いち, に, さん…|いち じ です。|È l’una.
+に|Due|Con じ indica le ore.|に じ に あいましょう。|Incontriamoci alle due.
+さん|Tre|Con にん si contano le persone.|さん にん かぞく です。|Siamo in tre in famiglia.
+よん|Quattro|Anche し; よん è più comune.|よん じ に おきます。|Mi alzo alle quattro.
+ご|Cinque|Con ふん indica i minuti.|ご ふん まって ください。|Aspetti cinque minuti, per favore.
+ろく|Sei|Si legge anche ろっ davanti a certi contatori.|ろく じ に ばんごはん を たべます。|Ceno alle sei.
+なな|Sette|Anche しち.|なな じ に いえ を でます。|Esco di casa alle sette.
+はち|Otto|Con じ si dice はち じ.|はち じ に がっこう が はじまります。|La scuola inizia alle otto.
+きゅう|Nove|Anche く.|きゅう じ に ねます。|Vado a letto alle nove.
+じゅう|Dieci|È la base dei numeri successivi.|じゅう にん ぐらい います。|Ci sono circa dieci persone.
+#Corpo
+あたま|Testa|Anche “mente”.|あたま が いたい です。|Ho mal di testa.
+め|Occhio|Anche “vista”.|め が おおきい です。|Ha gli occhi grandi.
+みみ|Orecchio|Anche “udito”.|みみ が いい です。|Ha un buon udito.
+くち|Bocca|Anche “apertura” o “ingresso”.|くち を あけて ください。|Apra la bocca, per favore.
+て|Mano|Indica anche il braccio.|て を あらいます。|Mi lavo le mani.
+あし|Gamba / Piede|Si usa per l’intero arto.|あし が はやい です。|Corre veloce.
+おなか|Pancia|Si usa per dire “ho fame”.|おなか が すきました。|Ho fame.
+かお|Viso|Anche “espressione”.|かお を あらいます。|Mi lavo il viso.
+#Katakana
+コーヒー|Caffè|Dal prestito inglese «coffee». La ー allunga la vocale.|まいあさ コーヒー を のみます。|Bevo un caffè ogni mattina.
+ケーキ|Torta|Dall’inglese «cake».|たんじょうび に ケーキ を たべます。|Per il compleanno mangio la torta.
+テレビ|Televisione|Abbreviazione di «television».|テレビ を みます。|Guardo la televisione.
+ホテル|Albergo|Dall’inglese «hotel».|ホテル は えき の ちかく です。|L’albergo è vicino alla stazione.
+パン|Pane|Dal portoghese «pão».|あさ に パン を たべます。|La mattina mangio il pane.
+ビール|Birra|Dall’olandese «bier».|ビール を ください。|Una birra, per favore.
+タクシー|Taxi|Si ferma alzando la mano.|えき から タクシー に のります。|Dalla stazione prendo un taxi.
+カメラ|Macchina fotografica|Dall’inglese «camera».|あたらしい カメラ を かいました。|Ho comprato una macchina fotografica nuova.
+ピザ|Pizza|Molto amata in Giappone.|イタリア の ピザ は おいしい です。|La pizza italiana è buona.
+バス|Autobus|Dall’inglese «bus».|バス で がっこう へ いきます。|Vado a scuola in autobus.
+ギター|Chitarra|Dall’inglese «guitar».|ギター を ひきます。|Suono la chitarra.
+サッカー|Calcio|Dall’inglese «soccer»; il ッ raddoppia la k.|サッカー が すき です。|Mi piace il calcio.
+ノート|Quaderno|Dall’inglese «note».|ノート に なまえ を かきます。|Scrivo il nome sul quaderno.
+アイス|Gelato|Abbreviazione di «ice cream».|なつ は アイス が おいしい です。|D’estate il gelato è buonissimo.
+イタリア|Italia|Il nome del tuo paese!|わたし は イタリア から きました。|Vengo dall’Italia.
+#Cibo giapponese
+てんぷら|Tempura|Pesce e verdure fritti in una pastella leggera.|てんぷら を たべたい です。|Voglio mangiare la tempura.
+おにぎり|Palla di riso|Riso a triangolo con un ripieno, tipico dei bento.|おひる に おにぎり を たべます。|A pranzo mangio un onigiri.
+うどん|Udon|Spaghetti spessi di grano, di solito in brodo.|あつい うどん が すき です。|Mi piacciono gli udon caldi.
+そば|Soba|Spaghetti di grano saraceno.|そば は つめたい の も おいしい です。|Anche i soba freddi sono buoni.
+たこやき|Takoyaki|Polpette di polpo cotte in stampo, street food di Osaka.|たこやき を ひとつ ください。|Una porzione di takoyaki, per favore.
+おこのみやき|Okonomiyaki|Frittella salata con cavolo e ingredienti a scelta.|おこのみやき は たのしい りょうり です。|L’okonomiyaki è un piatto divertente.
+とうふ|Tofu|Formaggio di soia, si mangia caldo o freddo.|とうふ の みそしる が すき です。|Mi piace la zuppa di miso con il tofu.
+のり|Alga nori|Alga secca per onigiri e sushi.|おにぎり に のり を まきます。|Avvolgo l’onigiri con il nori.
+しょうゆ|Salsa di soia|Condimento base della cucina giapponese.|すし に しょうゆ を つけます。|Intingo il sushi nella salsa di soia.
+わさび|Wasabi|Rafano piccante, tipico del sushi.|わさび は からい です。|Il wasabi è piccante.
+せんべい|Cracker di riso|Snack croccante di riso.|おやつ に せんべい を たべます。|Per merenda mangio un cracker di riso.
+だんご|Dango|Dolcetto di riso infilzato su uno stecchino.|だんご を みっつ ください。|Tre dango, per favore.
+#Ristorante
+メニュー|Menù|Dal francese «menu».|メニュー を ください。|Mi porti il menù, per favore.
+ちゅうもん|Ordinazione|Il verbo è ちゅうもん します.|ちゅうもん を おねがい します。|Vorrei ordinare, per favore.
+おすすめ|Consigliato|Per chiedere un consiglio al cameriere.|おすすめ は なん です か。|Che cosa mi consiglia?
+おかんじょう|Conto|Si chiede alla fine del pasto.|おかんじょう を おねがい します。|Il conto, per favore.
+ごちそうさま|Grazie per il pasto|Si dice dopo aver mangiato.|ごちそうさま でした。|Grazie per il pasto.
+いらっしゃいませ|Benvenuto|Lo dicono commessi e camerieri.|いらっしゃいませ。 なんめいさま です か。|Benvenuto. In quanti siete?
+おいしかった|Era buono|Passato di おいしい.|ぜんぶ おいしかった です。|Era tutto buono.
+ベジタリアン|Vegetariano|Dall’inglese «vegetarian».|わたし は ベジタリアン です。|Io sono vegetariano.
+たべほうだい|Mangia quanto vuoi|La formula «all you can eat».|たべほうだい の みせ に いきます。|Vado in un locale all you can eat.
+#Viaggi e spostamenti
+でんしゃ|Treno|Treno urbano e regionale.|でんしゃ で かいしゃ へ いきます。|Vado in ufficio in treno.
+しんかんせん|Shinkansen|Il treno ad alta velocità.|しんかんせん は とても はやい です。|Lo shinkansen è molto veloce.
+ちかてつ|Metropolitana|Abbreviazione di «chika-tetsu».|ちかてつ の えき は どこ です か。|Dov’è la stazione della metropolitana?
+くうこう|Aeroporto|Letteralmente «porto dell’aria».|くうこう は とおい です。|L’aeroporto è lontano.
+ひこうき|Aereo|Letteralmente «macchina che vola».|ひこうき で にほん へ いきます。|Vado in Giappone in aereo.
+きっぷ|Biglietto|Per treni e mezzi.|きっぷ を かいます。|Compro il biglietto.
+パスポート|Passaporto|Dall’inglese «passport».|パスポート を わすれました。|Ho dimenticato il passaporto.
+みち|Strada|Anche «via» o «percorso».|みち が わかりません。|Non conosco la strada.
+みぎ|Destra|Con ひだり (sinistra).|みぎ に まがって ください。|Giri a destra, per favore.
+ひだり|Sinistra|Con みぎ (destra).|ひだり に ぎんこう が あります。|A sinistra c’è una banca.
+まっすぐ|Dritto|Per indicare la direzione.|まっすぐ いって ください。|Vada dritto, per favore.
+ちず|Mappa|Anche «cartina».|ちず を みせて ください。|Mi mostri la mappa, per favore.
+#Famiglia allargata
+おじいさん|Nonno|Anche «uomo anziano».|おじいさん は こうえん に います。|Il nonno è al parco.
+おばあさん|Nonna|Anche «donna anziana».|おばあさん は やさしい です。|La nonna è gentile.
+はは|Mamma (mia)|Per la propria mamma, parlando con altri.|はは は せんせい です。|Mia madre è un’insegnante.
+ちち|Papà (mio)|Per il proprio papà, parlando con altri.|ちち は くるま で いきます。|Mio padre va in auto.
+あに|Fratello maggiore (mio)|Per il proprio fratello maggiore.|あに は だいがくせい です。|Mio fratello maggiore è universitario.
+あね|Sorella maggiore (mia)|Per la propria sorella maggiore.|あね は ぎんこう で はたらいて います。|Mia sorella maggiore lavora in banca.
+おとうと|Fratello minore|Anche «fratellino».|おとうと は サッカー が すき です。|Mio fratello minore ama il calcio.
+いもうと|Sorella minore|Anche «sorellina».|いもうと は ピアノ を ひきます。|Mia sorella minore suona il pianoforte.
+おとこのこ|Bambino (maschio)|Letteralmente «bambino maschio».|おとこのこ が はしって います。|Un bambino sta correndo.
+おんなのこ|Bambina|Letteralmente «bambina».|おんなのこ は うた が じょうず です。|La bambina canta bene.
+かのじょ|Lei / Fidanzata|Il senso dipende dal contesto.|かのじょ は にほんじん です。|Lei è giapponese.`;
+const IRR={"こんにちは":"konnichiwa","こんばんは":"konbanwa"},PN={"は":"wa","を":"o","へ":"e"};
+function toRo(t){return t.split(" ").map(tok=>{
+ const m=tok.match(/^(.*?)([。、！？]*)$/),core=m[1],pu=m[2].replace("。",".").replace("、",",").replace("！","!").replace("？","?");
+ if(PN[core])return PN[core]+pu;if(IRR[core])return IRR[core]+pu;
+ const u=units(core);let o="";
+ u.forEach((x,i)=>{if(x==="っ"||x==="ッ"){const n=KR[u[i+1]]||"";o+=n.startsWith("ch")?"t":n.charAt(0)}else if(x==="ー")o+=o.slice(-1);else o+=KR[x]!==undefined?KR[x]:x});
+ return o+pu}).join(" ")}
+const sp=t=>t.replace(/[ 。、！？]/g,"");
+const V=[];let _c="";VD.trim().split("\n").forEach(l=>{if(l[0]==="#")_c=l.slice(1);else{const [k,m,n,e,tr]=l.split("|");V.push({c:_c,k,m,n,e,tr})}});
+let vcat="";
+function vcard(w){
+ const c=el("div","vc"),top=el("div","vt"),kb=el("div","vk"),r=toRo(w.k);kb.append(el("b",0,w.k),el("span",0,r));
+ const s=el("button","say","🔊");s.setAttribute("aria-label","Ascolta "+r);s.onclick=()=>say(sp(w.k));top.append(kb,s);
+ const ex=el("div","ve"),eb=el("div"),s2=el("button","say","🔊");s2.setAttribute("aria-label","Ascolta la frase");s2.onclick=()=>say(sp(w.e));
+ eb.append(el("div","vj",w.e),el("div","vr",toRo(w.e)),el("div","vi",w.tr));ex.append(eb,s2);
+ c.append(top,el("p","vm",w.m));if(w.n)c.append(el("p","note",w.n));if(w.e)c.append(ex);return c}
+const ALL=V.concat(WV.filter(w=>!V.some(v=>sp(v.k)===w[0])).map(w=>({c:"Dalle lezioni",k:w[0],m:w[2],n:"",e:"",tr:""})));
+const nf=t=>t.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const k2h=t=>t.replace(/[ァ-ヶ]/g,ch=>String.fromCharCode(ch.charCodeAt(0)-96));
+const RK={};
+(()=>{const R={k:"かきくけこ",g:"がぎぐげご",s:"さしすせそ",z:"ざじずぜぞ",t:"たちつてと",d:"だぢづでど",n:"なにぬねの",h:"はひふへほ",b:"ばびぶべぼ",p:"ぱぴぷぺぽ",m:"まみむめも",r:"らりるれろ"},sm={a:"ゃ",u:"ゅ",o:"ょ"};
+ [..."aiueo"].forEach((v,i)=>{RK[v]="あいうえお"[i];for(const c in R)RK[c+v]=R[c][i]});
+ Object.assign(RK,{ya:"や",yu:"ゆ",yo:"よ",wa:"わ",wo:"を",shi:"し",chi:"ち",tsu:"つ",fu:"ふ",ji:"じ",si:"し",ti:"ち",tu:"つ",hu:"ふ",zi:"じ",di:"ぢ",du:"づ"});
+ const Y={k:"き",g:"ぎ",n:"に",h:"ひ",b:"び",p:"ぴ",m:"み",r:"り",sh:"し",ch:"ち",j:"じ",s:"し",t:"ち",c:"ち",z:"じ",d:"ぢ"};
+ for(const c in Y)for(const v in sm){RK[c+"y"+v]=Y[c]+sm[v];if(c==="sh"||c==="ch"||c==="j")RK[c+v]=Y[c]+sm[v]}})();
+function r2k(str){
+ const s=str.toLowerCase();let o="",i=0;
+ while(i<s.length){
+  const c=s[i];
+  if(!/[a-z']/.test(c)){o+=c;i++;continue}
+  let hit=0;
+  for(let n=3;n>0;n--){const k=s.substr(i,n);if(k.length===n&&RK[k]){o+=RK[k];i+=n;hit=1;break}}
+  if(hit)continue;
+  if(c==="n"){const x=s[i+1];if(x==="'"){o+="ん";i+=2;continue}if(x&&!/[aiueoy]/.test(x)){o+="ん";i++;continue}}
+  if(c==="t"&&s.substr(i+1,2)==="ch"||s[i+1]===c&&/[bcdfghjkmpqrstvwxyz]/.test(c)){o+="っ";i++;continue}
+  o+=c;i++}
+ return o}
+function renderV(){
+ const th=norm($("vqh").value),tr=norm($("vqr").value).replace(/n$/,"ん").replace(/[a-z']/g,""),ti=nf($("vqi").value.trim()),b=$("vList"),rd=$("vread"),t=th||tr,raw=$("vqh").value.trim();
+ b.replaceChildren();rd.replaceChildren();
+ if(raw){const h=k2h(raw).replace(/\s+/g," "),c=el("div","vc"),top=el("div","vt"),kb=el("div","vk");
+  if(/[\u4e00-\u9fff]/.test(h)){kb.append(el("b",0,raw),el("span",0,"Contiene kanji: per ora so leggere solo hiragana e katakana."));top.append(kb)}
+  else{const r=toRo(h),s2=el("button","say","🔊");s2.setAttribute("aria-label","Ascolta");s2.onclick=()=>say(sp(h));kb.append(el("b",0,h),el("span",0,"Si legge: "+r));top.append(kb,s2);
+   const pn=[["は","wa"],["へ","e"],["を","o"]].filter(x=>h.includes(x[0]));
+   c.append(top);if(pn.length)c.append(el("p","note","Se sono particelle: "+pn.map(x=>x[0]+" si legge «"+x[1]+"»").join(", ")+"."));rd.append(c);rd.style.marginBottom="10px"}
+  if(!c.children.length){c.append(top);rd.append(c)}}
+ const a=ALL.filter(w=>(!vcat||w.c===vcat)&&(!t||norm(w.k).includes(t)||norm(w.e).includes(t))&&(!ti||nf(w.m+" "+w.n+" "+w.tr).includes(ti)));
+ if(!a.length){b.append(el("p","note","Nessuna parola nel vocabolario con questa ricerca."));return}
+ let lc="";a.forEach(w=>{if(!vcat&&w.c!==lc){lc=w.c;b.append(el("h2",0,lc))}b.append(vcard(w))})}
+const vcs=$("vcats");["Tutte",...new Set(ALL.map(w=>w.c))].forEach(n=>{const b=el("button","chip",n);b.setAttribute("aria-pressed",n==="Tutte");
+ b.onclick=()=>{vcat=n==="Tutte"?"":n;vcs.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===b));renderV()};vcs.append(b)});
+const hb=$("vqh"),rb=$("vqr"),ib=$("vqi"),clr=x=>[hb,rb,ib].forEach(y=>{if(y!==x)y.value=""});
+hb.oninput=()=>{clr(hb);renderV()};ib.oninput=()=>{clr(ib);renderV()};
+rb.onblur=()=>{rb.value=rb.value.replace(/n$/,"ん")};rb.oninput=()=>{clr(rb);const v=r2k(rb.value);if(v!==rb.value)rb.value=v;renderV()};
+function goLessons(){document.querySelector('nav button[data-t="lessons"]').click();lr.hidden=false;ll.hidden=true}
+const LV=["Facile","Medio","Difficile"],lvl=()=>ST.dm?ST.dm-1:ST.dl||0;
+const kn=t=>[...t.replace(/[ 。、！？]/g,"")].length,lvOK=(it,l)=>it.w?kn(it.t)<=[3,5,99][l]:kn(it.t)<=[8,14,99][l];
+function startV(only){
+ const src=shuffle(V.filter(w=>!vcat||w.c===vcat)),ss=src.filter(w=>w.e.split(" ").length>=3),d=only==="dict",lv=lvl();
+ const pick=src.slice(0,6).map(w=>[sp(w.k),toRo(w.k),w.m]),sn=ss.slice(0,d?2:only?5:3).map(w=>[w.e,w.tr]);
+ const dq=src.map(w=>({t:sp(w.k),m:w.m,w:1})).filter(x=>lvOK(x,lv)).slice(0,d?4:3).concat(ss.map(w=>({t:w.e,m:w.tr,w:0})).filter(x=>lvOK(x,lv)).slice(0,2));
+ if(only?(d?!dq.length:!sn.length):pick.length<3)return;
+ S={i:L.length-1,kind:"v",vocab:1,ix:0,q:[],tot:0,ok:0,err:0,ph:0,lv,phs:d?["dict"]:only?["sent"]:["wlisten","wmean","wpairs"],wl:pick,ws:[],sn,dq,vp:V.map(w=>[sp(w.k),toRo(w.k),w.m])};
+ if(!only){const bw=pick.filter(w=>units(w[0]).length<=6).slice(0,3);if(bw.length){S.ws=bw;S.phs.splice(2,0,"wbuild")}if(dq.length)S.phs.push("dict");if(sn.length)S.phs.push("sent")}
+ goLessons();startPh()}
+function startMix(){
+ const dn=done.filter(d=>typeof d==="number");if(!dn.length)return;
+ const mx=Math.max(...dn),wl=shuffle(learned(mx).slice()).slice(0,6);
+ S={i:mx,kind:"v",mix:1,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["listen","read",...(wl.length>2?["wlisten","wmean"]:[])],kq:shuffle(dn.flatMap(i=>L[i].k)).slice(0,8),wl,ws:[],vp:[]};
+ goLessons();startPh()}
+$("vtrain").onclick=()=>startV();$("vsent").onclick=()=>startV(1);$("vdl").value=ST.dm||0;$("vdl").onchange=()=>{ST.dm=+$("vdl").value;svST()};$("vdict").onclick=()=>startV("dict");
+/* trucchi per ricordare */
+const MN={"ア":"Una scure piantata nel ceppo: «a» come «axe».","イ":"Una spada appoggiata a una colonna: «i».","ウ":"Una piccola «u» con una corona sopra: «u».","エ":"Una trave a «I» maiuscola, come un binario: «e».","オ":"Un orso con le braccia aperte, come お senza puntino: «o».","カ":"Il coltello di un cutter: «ka».","キ":"Una chiave con due traverse: «ki» come «key».","ク":"Il becco di un cuculo: «ku-ku».","ケ":"Una «K» e una «e» attaccate: «ke».","コ":"Un angolo di cornice, come «corner»: «ko».","サ":"Tre sbarre come una sdraio: «sa» di «sandalo».","シ":"Due occhietti e un sorriso: «shi». I tratti sono quasi orizzontali.","ス":"Una «Z» con la coda, come il «su» di «sushi».","セ":"Il cappello di un sensei messo di traverso: «se».","ソ":"Un fulmine che cade: «so». I tratti sono più verticali di ン.","タ":"Una tazza con il manico: «ta».","チ":"Somiglia a un 5 stilizzato: «chi» di «cinque».","ツ":"Tre gocce che cadono: «tsu-nami». I tratti sono verticali.","テ":"Un’antenna della tele: «te» di «televisione».","ト":"Un totem con un ramo laterale: «to».","ナ":"Una croce piegata come una nave: «na».","ニ":"Due righe parallele: «ni» significa due.","ヌ":"Una «X» annodata come i noodles: «nu».","ネ":"Un albero con i rami e le radici: «ne».","ノ":"Un solo tratto inclinato, come un’ala: «no».","ハ":"Due gambe aperte come un tetto: «ha».","ヒ":"Una persona seduta di lato: «hi».","フ":"Un gancio che pesca fumetti: «fu».","ヘ":"Il tetto di una casa, identico a へ: «he».","ホ":"Un albero con due foglie: «ho ho».","マ":"Una mano con l’artiglio: «ma-no».","ミ":"Tre righe parallele come le note «do-re-mi»: «mi».","ム":"Un triangolo con la coda, come il muso di una mucca: «mu».","メ":"Due strade che si incrociano: «me».","モ":"Una «E» con la testa tonda: «mo».","ヤ":"Una freccia con l’archetto, come un yacht: «ya».","ユ":"Una «U» squadrata con il fondo: «yu» di «yoga».","ヨ":"Una «E» rovesciata: «yo».","ラ":"Due righe e una gamba: «ra» come la nota «re-la».","リ":"Due canne di bambù affiancate: «ri» come «reed».","ル":"Due gambe e un baffo: «ru» di «ruota».","レ":"Una «L» inclinata: «re».","ロ":"Una scatola quadrata: «ro».","ワ":"Un 7 con il cappello, come ウ senza puntino: «wa».","ヲ":"Come ワ con una riga in più: «wo», che si legge «o».","ン":"Una «n» che pencola: «n». I tratti sono più orizzontali di ソ.","は":"Un uomo che ride a crepapelle: «ha ha ha!». Come particella si legge «wa».","ひ":"Un sorriso con le guance sollevate: «hi hi hi!».","ふ":"Il monte Fuji con le nuvole intorno: «fu».","へ":"Una collinetta o un tetto: «he» come in «hey». Come particella si legge «e».","ほ":"Come は con una sbarra in più: «ho ho ho!», la risata di Babbo Natale.","ま":"Una mamma con le braccia aperte: «ma-ma».","み":"Ha dentro un 2 e un 1: pensa alla nota «mi» del do-re-mi.","む":"Una mucca con le corna e la coda: «muuu».","め":"Un occhio con le ciglia: in giapponese «me» significa occhio.","も":"Un amo con due esche: «mo» di «more», ancora pesce!","や":"Un yak con le corna e la coda: «ya».","ゆ":"Una pentola d’acqua calda con un pesce: «yu» significa acqua calda.","よ":"Una persona in posa di yoga: «yo».","ら":"Un coniglio (in inglese «rabbit») con la coda: «ra».","り":"Due canne di bambù affiancate (in inglese «reeds»): «ri».","る":"Un cappio con il giro finale: «ru» di «ruota».","れ":"Una persona in piedi che fa l’inchino al «re».","ろ":"Una strada con una curva (in inglese «road»): «ro»; è る senza il nodo.","わ":"Un’onda con un cappio: «wa!» di stupore, come «wow».","を":"Un acrobata che salta: si scrive «wo» ma si legge «o» e segna il complemento oggetto.","ん":"Una «n» scritta di corsa: l’unica consonante da sola.","あ":"Sembra una A elegante con un nodo: pensa all’«Ah!» di sorpresa.","い":"Due anguille che nuotano affiancate: sono le due «i» di «ii».","う":"Una piccola «u» con un cappello sopra: «uuu» di meraviglia.","え":"Un uccello esotico che spicca il volo: «e» come in «exotic».","お":"Un omino che lancia una palla e fa «Oh!».","か":"Il coltello di una katana con il manico a sinistra: «ka».","き":"Una chiave con due denti: in inglese «key», suono «ki».","く":"Il becco di un cuculo aperto: «ku-ku».","け":"Un barile con un’asta (in inglese «keg»): «ke».","こ":"Due righe come due coccodrilli stesi uno sull’altro: «ko».","さ":"Il manico e la lama di una sega: «sa-ga».","し":"Un amo da pesca: il suono è «shi», un «sci» di sciare.","す":"Un nodo con la coda arricciata, come il riso del «su-shi».","せ":"Il cappello di un sensei con la bacchetta: «se-nsei».","そ":"Un fulmine a zig-zag che colpisce: «soo!».","た":"Una «t» e una «a» attaccate: «ta».","ち":"Somiglia a un 5: «cinque» inizia con «ci», e si dice «chi».","つ":"Un’onda che si ritira: «tsu-nami».","て":"Una mano che saluta: in giapponese «te» significa mano.","と":"Un alluce con una scheggia: in inglese «toe», si dice «to».","な":"Una suora in preghiera: in inglese «nun», si dice «na».","に":"Le due righe a destra ricordano che «ni» significa due.","ぬ":"Noodles annodati con un cappio: «nu-dles».","ね":"Un gatto (neko) con la coda arricciata: «ne».","の":"Un cerchio con la barra, come un divieto: «no!»."};
+function auto(j){const d=j.normalize("NFD");
+ if(j.length===2&&"ゃゅょャュョァィゥェォ".includes(j[1]))return j[0]+" + "+j[1]+" piccolo si fondono in una sola sillaba: "+KR[j]+".";
+ if(d.includes("\u3099"))return "È "+d[0]+" con i due trattini ゛: il suono diventa sonoro ("+KR[j]+").";
+ if(d.includes("\u309A"))return "È "+d[0]+" con il cerchietto ゜: la «h» diventa «p» ("+KR[j]+").";
+ return ""}
+const mnEl=j=>{const t=MN[j]||auto(j);return t?el("p","mn","💡 "+t):""};
+function tip(j,r){const t=$("mnTip");t.replaceChildren();const b=el("b",0,j);t.append(b,el("span",0,(r?r+": ":"")+(MN[j]||auto(j)||"Ripetilo ad alta voce, guardando la forma.")));const sk=strokeEl(j,64,1);if(sk)t.append(sk)}
+/* ordine dei tratti (dati KanjiVG) */
+const SD={"あ":["M31.01,33c0.88,0.88,2.75,1.82,5.25,1.75c8.62-0.25,20-2.12,29.5-4.25c1.51-0.34,4.62-0.88,6.62-0.5","M49.76,17.62c0.88,1,1.82,3.26,1.38,5.25c-3.75,16.75-6.25,38.13-5.13,53.63c0.41,5.7,1.88,10.88,3.38,13.62","M65.63,44.12c0.75,1.12,1.16,4.39,0.5,6.12c-4.62,12.26-11.24,23.76-25.37,35.76c-6.86,5.83-15.88,3.75-16.25-8.38c-0.34-10.87,13.38-23.12,32.38-26.74c12.42-2.37,27,1.38,30.5,12.75c4.05,13.18-3.76,26.37-20.88,30.49"],"い":["M21.5,29.66c2.01,2.17,2.61,4.68,2.17,7.43c-3.09,19.16-1.03,32.01,7.93,41.45c6.12,6.45,6.26,3.14,7.04-5.21","M72.96,36.51c9.44,8.05,17.79,18.82,18.41,33.83"],"う":["M42,15.5c5.62,2.12,9.62,3,12.88,3c8.27,0,8,1.12-0.38,5.5","M33,42.38c2.12,1.12,4.12,2.88,8.5,1.38c4.38-1.5,12.75-7.12,18.5-7c5.75,0.12,10.25,5,10.25,18c0,15.49-8.25,30.24-24.37,41.24"],"え":["M40.52,13.25c5.62,2.12,10,3,14.12,3c8.27,0,8,1.12-0.38,5.5","M32.52,45.12c1.88,1.25,4.5,1.75,7.38,0.62c3.29-1.29,17-7.88,21.25-9.88c4.25-2,8.32,0.04,4.38,4.62c-12.26,14.27-27.26,31.52-39.51,44.4c-3.26,3.42-0.58,3.54,1.5,1.37c13.5-14.12,18.12-20.12,23.62-20.12c7.13,0,3.5,16.75,6.75,22.38c3.25,5.63,19.12,3.75,26.12,2.12"],"お":["M22.88,35.12c1.38,1,3.62,2.38,6,2.12c2.38-0.26,19.62-5.12,21.12-5.74c1.5-0.62,4-1.25,5.88-2","M41.5,16.12c2.25,1,3.59,4.39,3.12,7.38c-2.5,16.12-3.37,45.53-2.25,58.38c0.75,8.62-0.64,10.45-7.12,7.12c-5.13-2.62-13.75-8-13.75-12.38c0-7.5,24.38-23.62,44.75-23.62c17.25,0,25,8.25,25,17.25c0,8.25-9.38,18.88-26.75,21","M73,22.12c5.38,2.62,8.88,5.88,10.62,8.25c2.27,3.08,0.38,4.5-1.12,5"],"か":["M24.62,38.62c1.88,1.62,4.65,2.33,8.62,1c25.5-8.5,29.5-4.13,29.5,7.62c0,9.38-1.24,17.46-4.25,25.25c-7.62,19.76-10.87,17.39-16.12,10.89","M48.5,17.5c1,1.38,1.29,4.7,0.5,7.12c-5,15.25-18.02,40.93-19.62,43.88c-3.12,5.75-6.38,11.88-9.38,16.25","M77.37,31.62c7.5,6.88,13.25,15.75,15,24.88"],"き":["M30.5,30.25c1.88,0.75,4.64,1.06,5.88,0.88c6.75-1,22.25-4.5,26.5-6c2.17-0.76,3.5-1.25,4.88-2.12","M36.25,48.7c2.01,0.85,4.97,1.2,6.29,0.99c7.23-1.13,23.82-5.09,28.37-6.79c2.32-0.86,3.75-1.41,5.22-2.4","M42,14.12c1.5,0.88,3.13,2.94,4,5.12c5.5,13.76,16,29.26,26.37,40.76c7.64,8.47,9.12,9.38-6,3.88","M33.75,83.25c10.62,9.75,27.25,8.62,38.12,5"],"く":["M60.66,15c0.5,1.62,0.35,5.44-1,7.38c-6.75,9.62-14.3,19.08-18.62,24.5c-4,5-3.79,7.03-0.88,11c5.5,7.5,12.75,18.75,17.62,27.25c1.48,2.59,2.75,4.75,4.5,8.62"],"け":["M24.67,19.75c1.25,1.5,2.62,3.75,2.12,6.38c-3,15.88-6.5,29.5-4.88,44.62c2.02,18.84,2.25,4.75,6.75-3.5","M53.67,38.62c2.12,1.38,4.28,1.89,6.88,1.5c8.25-1.25,15.39-2.57,20.62-4c2.76-0.74,5.26-1.12,6.88-1.12","M71.67,14.38c2.13,1.37,2.88,3.35,2.88,5.12c0,11.62,0.12,20.38,0.12,30.12c0,20.75-0.62,30.88-12.5,42.25"],"こ":["M34.75,26.75c1.12,0.88,2.91,2.01,6,1.5c7.62-1.25,14.11-2.56,22.38-2.62c15.5-0.12,5.88,5-5.75,9","M30,68.12c2.25,14.5,15.26,17.96,31,16.75c6.5-0.5,11.88-1.25,17.62-2.88"],"さ":["M27,38.9c2.42,1.33,5.38,1.47,8.32,1.06c8.79-1.24,28.67-7.76,34.15-10.43c2.79-1.36,3.78-1.91,6.28-3.53","M41.5,13.88c1.5,0.88,3.63,2.94,4.5,5.12c5.5,13.75,15.25,27.62,26.87,39.5c7.98,8.15,6.38,10-6,3.12","M35.25,80.5c4.5,11.75,20.88,12.5,38.38,7.5"],"し":["M39.12,17.5c1.25,3.12,0.93,6.74,0.38,10.25c-2.12,13.5-3,26.5-3,39.12c0,27.38,19.88,30.12,45.5,17.25"],"す":["M15.5,37.12c2.88,2.12,6.94,1.51,12.75,0.25c16.12-3.5,36.14-5.38,46.62-6.5c7-0.75,11.88-0.62,17.75,0.12","M57.62,13.38c2,1.5,2.75,3.25,2.75,5.88c0,10.38,0,35.12,0,40.75c0,14.62-15.62,16.38-15.62,1.75c0-14.25,18-14.12,18,6.38c0,13.25-7.75,21.5-16,28.38"],"せ":["M16.5,49.93c2.88,2.42,6.86,1.57,12.75,0.53c19-3.34,33-5.72,47.12-7.64c6.99-0.95,11.88-1.21,17.75-0.36","M69.74,17.75c2,1.5,2.75,3.25,2.75,5.88c0,10.38,0,17.88,0,23.5c0,25.62-5.75,23.25-11.88,19","M35.62,26.25c2,1.5,2.75,3.25,2.75,5.88c0,10.38,0,28.38,0,34c0,14.5,6.38,19.55,20.14,19.55c10.24,0,13.74,0.07,22.61-1.68"],"そ":["M38.4,22c1.88,1.25,4.98,1.05,7.5,0.38c6.5-1.75,13.25-3.75,19.38-5.38c4.63-1.23,7.18,2.06,3.62,5.25c-12.12,10.87-31.14,24.4-40,30.25c-6.25,4.12-5.88,5.75,1.38,3.88c17.08-4.42,35.96-8.68,50.12-10.38c9.38-1.12,9.62,0.12,0.5,1.38c-15.82,2.17-34.38,14.25-34.38,26.5c0,12.88,11.62,20.38,31.5,16.62"],"た":["M24.38,35.38c1.38,0.62,3.88,1.51,6.38,1.12c6.5-1,16.25-2.88,24.88-4.75c2.64-0.57,5.38-1.5,7.62-2.38","M45,16.88c0.75,1.25,0.87,3.62,0.38,5.25c-6.35,20.94-12.75,36.37-18.88,52.37c-1.36,3.56-4.75,11.75-6,14.62","M56.38,53.25c12.38-2.75,18.25-3.7,23.62-3.12c15.12,1.62-1.12,2.25-4.25,4.88","M54.13,82.25c4.38,7,14.25,8.12,34.5,5.62"],"ち":["M24.5,32.62c1.38,0.62,3.88,1.51,6.38,1.12c6.5-1,18.25-4.12,26.88-6c2.64-0.57,5.38-1.5,7.62-2.38","M45.62,15.62c0.75,1.25,0.71,3.58,0.38,5.25c-3,15-4.25,22.59-8.38,38.62c-3.25,12.62-5.38,11.12,3.62,4.38c8.29-6.21,19.75-9.5,28.5-9.5c8.62,0,14.58,5.88,14.5,14.5c-0.12,13.5-16.5,20.62-29.88,23.25"],"つ":["M14,44.75c1.88,1.62,4.68,2.09,8.12,0.62c17.88-7.62,30-11.12,44.88-10.88c12.56,0.21,22.98,7.17,22.87,19.17c-0.18,18.77-24.75,28.71-45.01,32.08"],"て":["M20.5,26.38c1.87,1.62,4.42,1.97,8.12,1.37c21.75-3.5,33-5.12,50.12-8.38c12.34-2.34,13-0.88,0.38,1.38c-17.89,3.19-33.78,19.12-33.78,37.62c0,20.5,17.91,30.25,35.16,30.25"],"と":["M35.5,18.38c1.74,0.74,3.62,2.62,4.12,5.37c0.5,2.75,4.75,25,5.38,28.12","M78.12,25.5c0.25,1.88,0.04,4.09-2.25,5.75c-6.37,4.63-13.22,8.49-22.75,15.25c-12.88,9.12-21.62,18.38-21.62,27.5c0,10.12,8.5,13.88,26.88,13.88c6.25,0,14.75-0.12,21.62-1.25"],"な":["M22.88,28.96c1.18,0.58,3.3,1.1,5.47,1.05c5.53-0.13,10.9-0.98,16.52-2.42c4.82-1.23,9.13-3.12,11.38-4.22","M42.99,14c0.63,0.89,0.56,2.52,0.31,3.72c-2.96,14.16-7.95,26.56-14.25,37.87c-2.05,3.69-4.25,7.24-6.55,10.65","M72.26,23.25c6.88,2.5,12.62,5.62,14.75,9.5c4.06,7.41-0.25,3.38-3.5,3.88","M68.88,44.62c-1,1.88-2.14,5.24-1.88,8.25c0.62,7,1.5,13.12,1.5,20.62c0,20-27.88,19.75-27.88,9.38c0-5.62,8.25-8.25,13.88-8.25c8.75,0,21.5,3.25,29.75,11.5"],"に":["M24.53,22.75c1.25,1.5,1.62,3.75,1.12,6.38c-3,15.88-9,32.5-7.38,47.62c2.02,18.84,4.5,5.75,8.5-3.5","M53.2,30.64c0.96,0.79,2.44,1.58,5.1,1.35c6.98-0.61,15.01-3.3,22.04-3.36c13.19-0.11,1.5,3.75-8.39,7.35","M52.53,68c1.76,12.92,11.92,16.01,24.23,14.93c5.08-0.45,8.9-0.8,14.27-2.06"],"ぬ":["M25.38,28.5c2,1.38,2.97,3.23,3.38,5.88c1.87,12.18,4.12,23.92,8.54,34.67c1.79,4.36,3.96,8.33,6.84,12.46","M57.12,19.25c0.88,2.12,1.06,3.79,0.62,5.88c-3.12,15-13.14,39.81-18.12,48.62c-11.87,21-20.62,1.25-20.62-4.5c0-22.63,43.75-44.25,62.36-29.59c7.66,6.03,9.8,14.58,9.14,23.34c-2,26.75-32.88,28.38-32.88,16.88c0-9.38,17.38-7.12,27.12-1.12c3.1,1.91,7.25,5.25,9.5,7.5"],"ね":["M33.29,14.5c1.62,1.62,2.1,3.21,1.88,5.88c-1.03,11.93-2.06,31.66-2.53,53.12c-0.1,4.62-0.18,9.31-0.22,14","M17.16,37.88c1.62,0.88,3.25,1.38,5.62,0.75c2.14-0.56,7.8-2.31,12.37-4.03c6.26-2.35,6.88-1.47,3.12,3.63c-5.56,7.53-13.02,17.38-18.48,26.77c-5.6,9.62-3.45,8.3,2,3c19.12-18.62,38.5-39.12,54.12-39.12c11.38,0,12.88,11.25,12.88,32.5c0,28.62-30.18,24.88-30.18,16.26c0-9.63,18.73-7.82,28.06-1.88c2.75,1.75,5.88,4.88,7.5,6.75"],"の":["M53.82,28.62c1,1.5,1.34,4.12,0.88,6.62c-1.75,9.5-6.89,25-10.75,33.12c-9.63,20.26-16.55,14.74-24.38-1.98c-9.13-19.5,23.5-48.88,50.63-40.38c32.38,10.15,28,54.62-4.75,60.88"],"は":["M24.51,18c1.25,1.5,2.15,4,1.62,6.62c-3.5,17.62-6.98,36.4-4,54.88c2.5,15.5,1.12,2,5.62-6.25","M49.64,37.89c2.41,1.57,4.85,2.16,7.8,1.71c9.36-1.43,17.46-2.94,23.4-4.57c3.12-0.86,5.96-1.29,7.8-1.29","M69.77,16.5c2.25,2.12,2.88,4.12,2.88,6.5c0,2.38,1.5,38.62,1.5,48c0,22.5-30.62,19.62-30.62,10.5c0-9.75,23.88-5.62,29.5-2.88c5.62,2.74,11.98,8.26,13.36,9.38"],"ひ":["M20,25.12c1.25,0.88,3.75,2.25,6.5,1.38c2.75-0.87,7.31-2.38,11.38-4.5c6-3.12,8.42-1.01,4.25,4c-27.13,32.62-23.76,58.5-1.52,62.88c18.07,3.56,37.63-16.38,35.63-56.51c-0.72-14.5-0.17-14.78,4.12-1.75c3.76,11.38,10.26,20.76,16.14,26.5"],"ふ":["M42.63,15.62c3.62,3.38,7.5,5.38,12.74,6.13c9.59,1.37,3.5,3.38-1.88,6.12","M43.63,46.88c1.88,4.62,7.5,9.41,14.25,17.5c10.62,12.74,0.49,30-19.13,21.62","M16.5,73.38c0.75,4,1.88,8.12,5,10.12c1.16,0.74,0.12-3.38,13.25-9.12","M80.13,61.88c5.12,3.38,10.28,7.49,11.38,8.88c6.75,8.5-0.25,4.62-4.62,7.12"],"へ":["M15,48.75c2.25,1.62,4.67,1.96,7-0.38c3.62-3.62,7.46-6.54,11.25-10.5c5.5-5.75,8.48-4.75,13.12-0.88c12.12,10.12,30.38,25.12,33.38,27.38c3,2.26,12.37,10.38,13.87,11.63"],"ほ":["M24.51,18.75c1.25,1.5,2.15,4,1.62,6.62c-3.5,17.63-6.98,37.4-4,55.88c2.5,15.5,1.12,2,5.62-6.25","M53.08,21.13c1.9,1.28,3.82,1.76,6.14,1.4c7.36-1.17,13.73-2.4,18.41-3.73c2.46-0.7,4.69-1.05,6.13-1.05","M53.83,44.3c2.21,1.44,4.46,1.98,7.16,1.57c8.59-1.31,15.78-2.44,21.23-3.94c2.87-0.79,5.72-1.18,7.41-1.18","M72.51,23c1.38,1.62,1.62,4.12,1.62,6.5c0,2.38,2,35.12,2,44.5c0,17.5-29.88,17.12-29.88,8c0-9.75,21.38-7.88,29.5-2.88c5.33,3.28,12,8.25,13.38,9.38"],"ま":["M29.83,32.28c2.2,1.15,4.43,1.5,7.14,1.26c11.54-1.04,25.94-3.12,34.66-4.85c2.87-0.57,5.45-0.44,7.13-0.44","M33.83,51.84c2.45,1.61,4.94,1.72,7.94,1.26c9.52-1.46,17.87-3.1,27.03-5.16c3.22-0.72,6.34-1.32,8.21-1.32","M55.81,14c1.52,1.8,1.8,4.57,1.8,7.19c0,2.63,0.46,43.88,0.46,54.25c0,21.3-30.07,19.96-30.07,9.86c0-10.79,25.88-9.93,38.57-3.18c6.12,3.25,11.55,6.38,14.8,9.13"],"み":["M32.5,26c1.88,1.75,4.06,1.7,6.88,1.25c3.88-0.62,7.62-1.75,11.88-3.12c4.26-1.37,6.25-0.12,4.5,5.12c-1.75,5.24-6.66,17.39-12,30.12c-13.63,32.51-29.26,29.26-29.26,18.63c0-14.25,20.48-15.36,33-13.5c18.5,2.75,30,6.62,44.38,14.25","M79.38,54.75c0.75,2.38,0.49,4.37,0,6.25c-2.12,8.12-7.5,25-22.12,33.75"],"む":["M19.59,31.65c2.1,1.55,4.24,1.66,6.81,1.21c8.17-1.41,15.33-2.98,23.19-4.96c2.76-0.69,5.44-1.27,7.05-1.27","M37.02,15.5c1.62,1.25,2.31,2.88,2.12,5.25c-0.88,11.12-1.5,20.75-4,34.88c-3.61,20.44-19.25,16.99-18.62,7.37c0.5-7.74,6.25-12.86,12.62-13.5c5-0.5,14.28,1.93,5.88,15c-12.62,19.62-11.42,24.51,5.11,25.54c10.98,0.68,19.26,0.72,28.49-0.92c14.15-2.5,7.4-2.63,7.4-11.13","M78.52,36.25c6.88,3.12,11.71,5.95,14.88,10.12c6.25,8.25-1.38,3.62-4.5,4.5"],"め":["M27.48,31.75c1.75,1,2.41,3.09,2.5,5.25c0.5,11.62,2.75,23.5,7.25,31.38c1.39,2.44,5.38,8.5,7.25,10.38","M59.6,19.38c1,1.5,1.35,4.12,0.88,6.62c-2.75,14.62-13.62,37.75-20.1,47.24c-12.28,17.14-16.78,13.14-22.28,0.64c-5.38-15.38,26.4-42.18,53.42-35.28c29.08,8.27,23.96,46.02-7.98,50.15"],"も":["M49.17,14.75c1.88,1.88,1.86,4.52,1.12,8c-3,14.25-5,26.62-7,42.12c-2.55,19.73-0.75,29.88,17,29.86c20.25-0.02,28.63-13.11,20.01-35.73","M26.54,34.62c1.12,0.88,2.87,2.21,6,2c11.12-0.75,20-2.12,27.74-3.46c3.88-0.67,5.88-1.17,8.88-1.04","M26.42,53.38c-1.5,4,1,6.75,7.75,6.75c8.75,0,17.62-1,22.88-1.88c2.01-0.33,5.38-1,7.5-1.75"],"や":["M18,49.38c1.88,1.62,5.25,2.5,8.62,0.88c18.51-8.88,35.76-19.38,50.83-19.26c9.02,0.14,16.01,4.13,15.93,12.29c0,8.33-10.88,16.58-24.5,17.83","M47.13,15.88c5.12,0.88,10.41,4.05,11.5,6.62c2.12,5-1,2.38-2.88,2.62","M30,24.38c2.38,1.88,3.28,2.87,3.88,5.25c2.62,10.5,11.12,41.12,14.75,52.5c0.65,2.04,1.88,6.25,2.88,9.38"],"ゆ":["M21.05,25.38c1.38,1.5,2.02,4.13,1.5,6.25c-2.88,11.75-4,22.25-2.12,35c2.77,18.85,1.12,3.88,3.25-1.5c9-22.75,27.24-34.5,44.38-34.5c16.88,0,21.88,11.38,21.88,20.25c0,27.38-30.88,29.62-43,16.75","M58.42,16.75c2.62,1.75,3.17,3.13,3.5,7.12c0.88,10.5,1.4,18.72,1.62,29.38c0.5,24-6.25,32-12.38,39.25"],"よ":["M58.24,35.38c7.5-1.28,13.74-2.63,18.5-4.1c2.5-0.77,4.77-1.15,6.25-1.15","M54.62,13.88c2.25,2.12,2.98,4.13,2.88,6.5c-0.75,17-0.12,34.88,1.39,53.5c1.88,23.07-34.89,20.88-34.89,11.5c0-12,26.25-8,35.98-4.12c8.1,3.23,11.52,4.88,18.52,10.38"],"ら":["M35.33,15c3.75,3,9.22,4.41,16.5,4.25c11.12-0.25-0.25,2.38-1.25,3.5","M35.83,35.75c-2.14,4.34-2.79,8.67-3.11,13.24c-0.42,5.84-0.31,12.05-2.14,19.13c-3.16,12.27,1.49,4.77,3,3.5c11.88-10,21.7-12.67,32.61-12.49c9.21,0.15,16.85,5.19,16.76,13.88c-0.12,13.6-14.24,21.49-32.49,22.49"],"り":["M38.75,25.25c1.25,1.5,2.24,4.03,1.62,6.62c-2.88,12.13-6.29,29.65-4.25,42.38c2,12.5,1.75-0.75,5.62-6.25","M69.37,18.75c2.25,2.12,2.88,4.12,2.88,6.5c0,2.38,0,26.38,0,35.75c0,16.5-5,25.75-12.62,33.12"],"る":["M34.31,20.38c1.75,1.25,4.62,2.62,8.5,1.5c3.88-1.12,9.62-2.5,15.62-4.62c6-2.12,7.5-0.12,4.38,4.25c-3.12,4.37-18.89,24.62-27.75,34c-8.5,9-13.09,11.89,0.75,3.25c15.62-9.75,43-10.88,43,13.38c0,22.5-40.88,24.5-40.88,12.62c0-11.25,18.12-8.75,24.38-0.38"],"れ":["M34.48,13c1.5,1.38,2.83,3.74,2.5,6.38c-0.5,4-2.75,44.5-2.75,52.88c0,8.38,0.12,16.62,0.12,19.5","M16.98,40.75c2.12,1.38,3.74,1.46,7.5,0c4.5-1.75,6.55-2.66,13-5.5c4.25-1.88,4.4,0.24,2.5,3.5c-5.25,9-10.5,16.75-18.88,27.62c-7.55,9.81-6.93,12.85,3.25,3.12c14-13.38,20.34-19.76,33.88-32.5c6.38-6,19.39-12.09,18.14,0.88c-1.02,10.63-1.89,22.13-2.29,30.75c-1.02,21.71,11.53,18,20.15,8.63"],"ろ":["M36.95,21.88c1.5,2,4.62,3.62,8.5,2.5c3.88-1.12,8.12-2.25,14.12-4.38c6-2.13,6.53-0.1,3.38,4.25c-7.88,10.88-18,22.75-27.5,35.25c-7.49,9.86-10.68,11.32,2.88,2.25c17.38-11.62,46.62-14,46.62,8.12c0,15.62-16,22.5-32.12,25.12"],"わ":["M38.53,14.75c1.5,1.38,2.22,3.73,2,6.38c-1,11.87-2.75,44.49-2.75,52.87c0,8.38-0.62,16.62-0.62,19.5","M17.53,40.75c2.12,1.38,3.68,1.3,7.5,0c5.88-2,9.8-3.16,16.25-6c4.25-1.88,6.12,0,2.75,4c-6.72,7.96-13,16.5-22.12,27.88c-7.75,9.66-7.54,12.21,3,2.88c21.88-19.38,49.75-35.62,63.5-21c14.36,15.27,1.62,36.62-23.38,42.62"],"を":["M28.56,27.87c1.62,1.13,3.17,1.64,6.01,1.12c10.86-1.99,16.74-3.37,24.71-4.72c3.64-0.62,5.65-0.93,8.4-0.75","M49.93,14.38c0.75,1,1.48,3.22,0.38,5.62c-4.62,10.12-10,20.75-17.12,30.25c-9.25,12.33-9.25,11.19,2.12,2.5c9-6.88,23.75-12.12,22.88,19.88","M83.06,39.88c0.62,1.75,0,4-3,5.75c-3,1.75-49.62,24.16-44.75,38.25c3.28,9.48,17.93,9.12,29.98,7.75c4.48-0.51,9.15-1.12,12.4-1.75"],"ん":["M56.35,16.5c0.75,1.75,1.13,5.83-0.38,8.25c-7,11.25-27.22,43.47-33.88,54.37c-9,14.75-7.62,16.25,1.5,1.25c17.86-29.36,32-23.76,32-6.75c0,25,19,26.5,34.25-5"],"が":["M24.62,38.62c1.88,1.62,4.65,2.33,8.62,1c25.5-8.5,29.5-4.13,29.5,7.62c0,9.38-1.24,17.46-4.25,25.25c-7.62,19.76-10.87,17.39-16.12,10.89","M48.5,17.5c1,1.38,1.29,4.7,0.5,7.12c-5,15.25-18.02,40.93-19.62,43.88c-3.12,5.75-6.38,11.88-9.38,16.25","M77.37,31.62c7.5,6.88,13.25,15.75,15,24.88","M80.5,18.25c2.75,1.75,6,5.38,7.75,8.5","M86.87,13.38c3.06,1.57,6.68,4.82,8.62,7.62"],"ぎ":["M30.5,30.5c1.88,0.75,4.64,1.06,5.88,0.88c6.75-1,22.25-4.5,26.5-6c2.17-0.76,3.5-1.25,4.88-2.12","M36.25,48.95c2.01,0.85,4.97,1.2,6.29,0.99c7.23-1.13,23.82-5.09,28.37-6.79c2.32-0.86,3.75-1.41,5.22-2.4","M42,14.38c1.5,0.88,3.13,2.94,4,5.12c5.5,13.75,16,29.25,26.38,40.75c7.64,8.47,9.12,9.38-6,3.88","M33.75,83.5c10.62,9.75,27.25,8.62,38.12,5","M77.37,19c2.75,1.75,6,5.38,7.75,8.5","M83.75,14.12c3.06,1.57,6.68,4.82,8.62,7.62"],"ぐ":["M60.66,15c0.5,2.12,0.75,5-1,7.38c-6.97,9.46-14.29,19.09-18.62,24.5c-4,5-3.79,7.03-0.88,11c5.5,7.5,12.75,18.75,17.62,27.25c1.48,2.59,2.75,4.75,4.5,8.62","M73.54,30c2.75,1.75,6,5.38,7.75,8.5","M79.91,25.12c3.06,1.57,6.68,4.82,8.62,7.62"],"げ":["M24.91,20.25c1.25,1.5,2.37,3.75,1.88,6.38c-3,15.88-6.5,29.5-4.88,44.62c2.02,18.84,2.25,4.75,6.75-3.5","M53.67,39.12c2.12,1.38,4.28,1.89,6.88,1.5c8.25-1.25,15.39-2.57,20.62-4c2.75-0.75,5.25-1.12,6.88-1.12","M71.67,14.62c2.12,1.38,2.87,3.61,2.87,5.38c0,11.62,0.12,20.38,0.12,30.12c0,20.75-0.62,30.88-12.5,42.25","M86.17,13c2.75,1.75,6,5.38,7.75,8.5","M92.54,8.12c3.06,1.57,6.68,4.82,8.62,7.62"],"ご":["M34.75,27c1.12,0.88,2.91,2.01,6,1.5c7.62-1.25,14.11-2.56,22.38-2.62c15.5-0.12,5.88,5-5.75,9","M30,68.38c2.25,14.5,15.26,17.96,31,16.75c6.5-0.5,11.88-1.25,17.62-2.88","M80.37,16.25c2.75,1.75,6,5.38,7.75,8.5","M86.75,11.38c3.06,1.57,6.68,4.82,8.62,7.62"],"ざ":["M27,39.15c2.42,1.33,5.38,1.47,8.32,1.06c8.79-1.24,28.67-8.01,34.15-10.68c2.79-1.36,3.78-1.91,6.28-3.53","M41.5,14.12c1.5,0.88,3.63,2.95,4.5,5.13c5.5,13.75,15.25,27.63,26.88,39.5c7.98,8.15,6.38,10-6,3.12","M35.25,80.75c4.5,11.75,20.88,12.5,38.38,7.5","M79.88,14.25c2.75,1.75,6,5.38,7.75,8.5","M86.25,9.38c3.06,1.57,6.68,4.82,8.62,7.62"],"じ":["M39.12,17.25c1.25,3.12,0.93,6.74,0.38,10.25c-2.12,13.5-3,26.5-3,39.12c0,27.38,19.88,30.12,45.5,17.25","M64.24,27c2.75,1.75,6,5.38,7.75,8.5","M70.62,22.12c3.06,1.57,6.68,4.82,8.62,7.62"],"ず":["M15.5,37.12c2.88,2.12,6.94,1.51,12.75,0.25c16.12-3.5,36.14-5.38,46.62-6.5c7-0.75,11.88-0.62,17.75,0.12","M57.62,13.38c2,1.5,2.75,3.25,2.75,5.88c0,10.38,0,35.12,0,40.75c0,14.62-15.62,16.38-15.62,1.75c0-14.25,18-14.12,18,6.38c0,13.25-7.75,21.5-16,28.38","M77,13c2.75,1.75,6,5.38,7.75,8.5","M83.37,8.12c3.06,1.57,6.68,4.82,8.62,7.62"],"ぜ":["M16.5,49.93c2.88,2.42,6.86,1.57,12.75,0.53c19-3.34,32.5-5.34,47.12-7.64c6.97-1.1,11.88-1.21,17.75-0.36","M69.74,17.75c2,1.5,2.75,3.25,2.75,5.88c0,10.38,0,17.88,0,23.5c0,25.62-5.75,23.25-11.88,19","M35.62,26.25c2,1.5,2.75,3.25,2.75,5.88c0,10.38,0,28.38,0,34c0,14.5,6.38,19.55,20.14,19.55c10.24,0,13.74,0.07,22.61-1.68","M84.5,17.25c2.75,1.75,6,5.38,7.75,8.5","M90.87,12.38c3.06,1.57,6.68,4.82,8.62,7.62"],"ぞ":["M38.4,22c1.88,1.25,4.98,1.05,7.5,0.38c6.5-1.75,13.25-3.75,19.38-5.38c4.63-1.23,7.18,2.06,3.62,5.25c-12.12,10.87-31.14,24.4-40,30.25c-6.25,4.12-5.88,5.75,1.38,3.88c17.08-4.42,35.96-8.68,50.12-10.38c9.38-1.12,9.62,0.12,0.5,1.38c-15.82,2.17-34.38,14.25-34.38,26.5c0,12.88,11.62,20.38,31.5,16.62","M81.78,26.75c2.75,1.75,6,5.38,7.75,8.5","M88.15,21.88c3.06,1.57,6.68,4.82,8.62,7.62"],"だ":["M24.38,35.38c1.38,0.62,3.88,1.51,6.38,1.12c6.5-1,16.25-2.88,24.88-4.75c2.64-0.57,5.38-1.5,7.62-2.38","M45,16.88c0.75,1.25,0.87,3.62,0.38,5.25c-6.35,20.94-12.75,36.37-18.88,52.37c-1.36,3.56-4.75,11.75-6,14.62","M56.38,53.25c12.38-2.75,18.25-3.7,23.62-3.12c15.12,1.62-1.12,2.25-4.25,4.88","M54.13,82.25c4.38,7,14.25,8.12,34.5,5.62","M76,22.5c2.75,1.75,6,5.38,7.75,8.5","M82.38,17.62c3.06,1.57,6.68,4.82,8.62,7.62"],"ぢ":["M24.5,32.88c1.38,0.62,3.88,1.51,6.38,1.12c6.5-1,18.25-4.12,26.88-6c2.64-0.57,5.38-1.5,7.62-2.38","M45.63,15.88c0.75,1.25,0.71,3.58,0.38,5.25c-3,15-4.25,22.59-8.38,38.62c-3.26,12.63-5.38,11.13,3.62,4.37c8.29-6.21,19.75-9.5,28.5-9.5c8.62,0,14.58,5.88,14.5,14.5c-0.12,13.5-16.5,20.62-29.88,23.25","M74.63,21.75c2.75,1.75,6,5.38,7.75,8.5","M81,16.88c3.06,1.57,6.68,4.82,8.62,7.62"],"づ":["M14,44.75c1.88,1.62,4.68,2.09,8.12,0.62c17.88-7.62,30-11.12,44.88-10.88c12.56,0.21,22.98,7.17,22.87,19.17c-0.18,18.77-24.75,28.71-45.01,32.08","M81,18c2.75,1.75,6,5.38,7.75,8.5","M87.38,13.12c3.06,1.57,6.68,4.82,8.62,7.62"],"で":["M20.5,26.38c1.87,1.62,4.42,1.97,8.12,1.37c21.75-3.5,33-5.12,50.12-8.38c12.34-2.34,13-0.88,0.38,1.38c-17.89,3.19-33.78,19.12-33.78,37.62c0,20.5,17.91,30.25,35.16,30.25","M75,41.75c2.75,1.75,6,5.38,7.75,8.5","M81.37,36.88c3.06,1.57,6.68,4.82,8.62,7.62"],"ど":["M35.5,18.38c1.74,0.74,3.62,2.62,4.12,5.37c0.5,2.75,4.75,25,5.38,28.12","M78.12,25.5c0.25,1.88,0.04,4.09-2.25,5.75c-6.37,4.63-13.21,8.49-22.75,15.25c-12.88,9.12-21.62,18.38-21.62,27.5c0,10.12,8.5,13.88,26.88,13.88c6.25,0,14.75-0.12,21.62-1.25","M84.24,14.5c2.75,1.75,6,5.38,7.75,8.5","M90.62,9.62c3.06,1.57,6.68,4.82,8.62,7.62"],"ば":["M24.75,17.75c1.25,1.5,1.9,4.25,1.38,6.88c-3.5,17.62-6.98,36.4-4,54.88c2.5,15.5,1.12,2,5.62-6.25","M49.88,37.89c2.41,1.57,4.85,2.41,7.8,1.96c9.36-1.43,17.21-3.19,23.15-4.82c3.12-0.86,5.96-1.29,7.8-1.29","M69.75,16.5c2.26,2.12,2.88,4.12,2.88,6.5c0,2.38,1.5,38.62,1.5,48c0,22.5-30.62,19.62-30.62,10.5c0-9.75,23.88-5.62,29.5-2.88c5.62,2.74,12,8.25,13.38,9.38","M84.75,15.25c2.75,1.75,6,5.38,7.75,8.5","M91.13,10.38c3.06,1.57,6.68,4.82,8.62,7.62"],"び":["M20,25.12c1.25,0.88,3.75,2.25,6.5,1.38c2.75-0.87,7.31-2.38,11.38-4.5c6-3.12,8.42-1.01,4.25,4c-27.13,32.62-23.76,58.5-1.52,62.88c18.07,3.56,37.63-16.38,35.63-56.51c-0.72-14.5-0.17-14.78,4.12-1.75c3.76,11.38,10.26,20.76,16.14,26.5","M86.5,13.5c2.75,1.75,6,5.38,7.75,8.5","M92.87,8.62c3.06,1.57,6.68,4.82,8.62,7.62"],"ぶ":["M42.12,15.62c3.62,3.38,7.5,5.38,12.75,6.12c9.59,1.37,3.5,3.38-1.88,6.12","M43.12,46.88c1.88,4.62,7.5,9.41,14.25,17.5c10.62,12.75,0.5,30-19.12,21.62","M16.5,73.88c0.75,4,1.88,8.12,5,10.12c1.16,0.74,0.12-3.38,13.25-9.12","M79.62,61.88c5.5,3.38,10.28,7.49,11.38,8.88c6.75,8.5-0.25,4.62-4.62,7.12","M73.62,16.25c2.75,1.75,6,5.38,7.75,8.5","M80,11.38c3.06,1.57,6.68,4.82,8.62,7.62"],"べ":["M15,48.75c2.25,1.62,5,1.38,7.62-1c3.89-3.52,6.12-5.75,10.62-9.88c5.88-5.37,8.49-4.75,13.14-0.87c12.12,10.12,30.38,25.12,33.38,27.38c3,2.26,12.37,10.37,13.87,11.62","M66.76,26.75c2.75,1.75,6,5.38,7.75,8.5","M73.13,21.88c3.06,1.57,6.68,4.82,8.62,7.62"],"ぼ":["M24.51,18.75c1.25,1.5,2.15,4,1.62,6.62c-3.5,17.63-6.98,37.4-4,55.88c2.5,15.5,1.12,2,5.62-6.25","M53.08,21.13c1.9,1.28,3.82,1.76,6.14,1.4c7.36-1.17,13.73-2.4,18.41-3.73c2.46-0.7,4.69-1.05,6.13-1.05","M53.83,44.3c2.21,1.44,4.46,1.98,7.16,1.57c8.59-1.31,15.78-2.44,21.23-3.94c2.87-0.79,5.72-1.18,7.41-1.18","M72.51,23c1.38,1.62,1.62,4.12,1.62,6.5c0,2.38,2,35.12,2,44.5c0,17.5-29.88,17.12-29.88,8c0-9.75,21.38-7.88,29.5-2.88c5.33,3.28,12,8.25,13.38,9.38","M87.51,26c2.75,1.75,6,5.38,7.75,8.5","M93.88,21.12c3.06,1.57,6.68,4.82,8.62,7.62"],"ぱ":["M24.51,18c1.25,1.5,2.15,4,1.62,6.62c-3.5,17.62-6.98,36.4-4,54.88c2.5,15.5,1.12,2,5.62-6.25","M49.64,37.89c2.41,1.57,4.85,2.16,7.8,1.71c9.36-1.43,17.46-2.94,23.4-4.57c3.12-0.86,5.96-1.29,7.8-1.29","M69.77,16.5c2.25,2.12,2.88,4.12,2.88,6.5c0,2.38,1.5,38.62,1.5,48c0,22.5-30.62,19.62-30.62,10.5c0-9.75,23.88-5.62,29.5-2.88c5.62,2.74,11.98,8.26,13.36,9.38","M91.01,24.38c-9.62,0-9.25-14.25,0-14.25c9.76-0.01,9.5,14.25,0,14.25"],"ぴ":["M20,25.12c1.25,0.88,3.75,2.25,6.5,1.38c2.75-0.87,7.31-2.38,11.38-4.5c6-3.12,8.42-1.01,4.25,4c-27.13,32.62-23.76,58.5-1.52,62.88c18.07,3.56,37.63-16.38,35.63-56.51c-0.72-14.5-0.17-14.78,4.12-1.75c3.76,11.38,10.26,20.76,16.14,26.5","M93.87,22.12c-9.62,0-9.25-14.25,0-14.25c9.75,0.01,9.5,14.25,0,14.25"],"ぷ":["M42.13,15.62c3.62,3.38,7.5,5.38,12.74,6.13c9.59,1.37,3.5,3.38-1.88,6.12","M43.13,46.88c1.88,4.62,7.5,9.41,14.25,17.5c10.62,12.74,0.49,30-19.13,21.62","M16.5,73.88c0.75,4,1.88,8.12,5,10.12c1.16,0.74,0.12-3.38,13.25-9.12","M79.63,61.88c5.5,3.38,10.28,7.49,11.38,8.88c6.75,8.5-0.25,4.62-4.62,7.12","M80.87,26.62c-9.62,0-9.25-14.25,0-14.25c9.76,0.01,9.5,14.25,0,14.25"],"ぺ":["M15,48.75c2.25,1.62,4.67,1.96,7-0.38c3.62-3.62,7.46-6.54,11.25-10.5c5.5-5.75,8.48-4.75,13.12-0.88c12.12,10.12,30.38,25.12,33.38,27.38c3,2.26,12.38,10.38,13.88,11.63","M73.63,36.75c-9.62,0-9.25-14.25,0-14.25c9.75,0,9.5,14.25,0,14.25"],"ぽ":["M24.51,19c1.25,1.5,2.15,4,1.62,6.62c-3.5,17.62-6.98,37.4-4,55.88c2.5,15.5,1.12,2,5.62-6.25","M53.08,21.38c1.9,1.28,3.82,1.76,6.14,1.4c7.36-1.17,13.73-2.4,18.41-3.73c2.46-0.7,4.69-1.05,6.13-1.05","M53.83,44.55c2.21,1.44,4.46,1.98,7.16,1.57c8.59-1.31,15.78-2.44,21.23-3.94c2.87-0.79,5.72-1.18,7.41-1.18","M72.51,23.25c1.38,1.62,1.62,4.12,1.62,6.5c0,2.38,2,35.12,2,44.5c0,17.5-29.88,17.12-29.88,8c0-9.75,21.38-7.88,29.5-2.88c5.33,3.28,12,8.25,13.38,9.38","M95.13,34.5c-9.62,0-9.25-14.25,0-14.25c9.75,0,9.5,14.25,0,14.25"],"ゃ":["M26,61.07c1.49,1.29,4.16,1.98,6.84,0.69c14.68-7.03,28.36-15.36,40.32-15.26c7.16,0.11,12.7,3.28,12.63,9.75c0,6.61-8.63,13.15-19.43,14.14","M49.1,34.5c4.07,0.69,8.25,3.21,9.12,5.25c1.69,3.97-0.79,1.88-2.28,2.08","M35.77,40.99c1.88,1.49,2.35,2.77,2.82,4.67c2.08,8.33,8.82,32.37,11.7,41.39c0.51,1.62,1.49,4.96,2.28,7.44"],"ゅ":["M27.74,40.79c1.1,1.2,1.61,3.3,1.2,5c-2.3,9.4-3.2,17.79-1.7,27.99c2.22,15.08,0.9,3.1,2.6-1.2c7.19-18.19,21.79-27.59,35.49-27.59c13.5,0,17.49,9.1,17.49,16.2c0,21.89-24.69,23.69-34.39,13.4","M57.63,33.89c2.1,1.4,2.53,2.5,2.8,5.7c0.7,8.4,1.12,14.97,1.3,23.49c0.4,19.19-5,25.59-9.9,31.39"],"ょ":["M57.8,50.06c5.98-1.02,10.95-2.09,14.74-3.25c1.99-0.61,3.8-0.91,4.98-0.91","M54.91,33c1.79,1.69,2.38,3.28,2.29,5.16c-0.6,13.49-0.1,27.68,1.11,42.47c1.5,18.31-27.81,16.56-27.81,9.12c0-9.53,20.92-6.35,28.68-3.27c6.46,2.56,9.18,3.87,14.76,8.23"],"っ":["M23,61.15c1.49,1.29,3.72,1.67,6.46,0.5c14.21-6.07,23.85-8.85,35.68-8.65c9.99,0.17,18.28,5.7,18.18,15.24c-0.15,14.93-18.46,23.39-35.79,25.51"]};
+Object.assign(SD,{"ア":["M23.5,26.25c2.41,1.56,3.98,1.44,8.51,0.75c11.4-1.75,37.77-5.5,48.28-6.78c5.23-0.64,7.99,2.06,2.62,6.04c-6.75,5-13.12,9.5-23.25,16","M53.12,41.12c0.79,1.5,1.02,3.24,0.58,5.28c-4.04,18.48-9.92,31.85-19.92,45.48"],"イ":["M69.75,16.75c0.12,1.75-0.34,3.86-1.62,5.5c-10.13,12.87-23.75,29.63-45.63,42.87","M56.38,43.88c1,1.12,1.25,3,1.25,4.62c0,1.62,0,32.75,0,34.62c0,1.87-0.13,9.13-0.13,11.76"],"ウ":["M53.25,14.62c1,1.12,1.25,3,1.25,4.62c0,1.62,0,10.76,0,12.64","M26.5,31.25c1,1.12,1.22,3,1.25,4.62c0.09,4.45,0.29,10.95,0.45,16.37c0.07,2.5,0.14,4.77,0.18,6.5","M29.12,35.88c19.38-2.25,40.25-4.25,49-5.5c8.75-1.25,8.28,0.84,6.25,6.88c-5,14.88-20.12,43.5-41,56.62"],"エ":["M31.87,35.68c2.32,0.71,5.14,0.66,7.48,0.29c8.57-1.35,22.4-2.85,33.66-3.85c2.26-0.2,4.52-0.19,6.77,0.22","M53.34,38.13c1,1.12,1.31,3,1.25,4.62c-0.18,4.74-0.51,12.89-0.83,22.25c-0.08,2.31-0.16,4.7-0.23,7.12","M19,75.46c3.41,0.94,7.57,0.88,11.01,0.39c17.78-2.48,34.53-3.86,50.55-3.9c3.34-0.01,7.23,0.42,10.46,1.8"],"オ":["M19.5,37.85c3.91,1.78,7.55,1.55,11.01,1.02c18.03-2.75,34.4-4.5,50.55-5.41c3.34-0.19,6.35,0.17,10.46,1.38","M60.38,16.38c1.32,1.49,1.65,3.97,1.65,6.12c0,8-0.25,46.23-0.25,58.63c0,20.38-5.88,7.5-9.25,5.5","M60.29,36.38c0,1.62-1.64,3.61-3.62,6c-7.88,9.5-21.12,22.75-34.62,33"],"カ":["M25.5,40.62c1.88,1.25,4.51,1.87,7.12,1.5c17.88-2.5,32.78-4.51,42.5-5.88c7.12-1,10.59,0.24,8.62,7.88c-2.12,8.25-4.47,17.81-9.25,29.12c-10.49,24.88-14.11,14.51-19.24,11.88","M55.88,17.12c0.88,1.62,1.29,3.83,0.75,6.75c-4.25,22.88-15.88,45.25-30.25,58.88"],"キ":["M27,40.5c1.75,0.62,4.77,1.09,7.25,0.38c11.75-3.38,30.62-8.13,37.5-9.88c2.62-0.67,6.75-1.12,9-1","M19.5,65.8c2.28,0.84,6.24,1.18,9.46,0.17c17.79-5.59,32.67-9.09,49.17-12.99c3.43-0.81,8.81-1.52,11.74-1.35","M48.87,16.75c2.5,1.75,3.43,3.24,3.88,6.12c2.12,13.62,6.38,45.38,8.25,59.25c0.4,3,1,8.38,1.38,11.12"],"ク":["M50,19.62c0.38,1.5,0.34,3.48-0.5,5.12c-4.12,8.12-7.88,15.5-16.12,24.12","M51.25,28.62c2.62,0.25,5.67-0.39,7.62-0.88c6-1.5,9.75-2.38,15.12-3.88c5.79-1.62,7.53-0.42,5.12,4.88c-10.36,22.88-26.24,44.14-48.61,60.51"],"ケ":["M40.96,17.88c0.44,1.9,0.39,4.42-0.59,6.5c-4.82,10.31-9.21,19.67-18.87,30.62","M37.88,37.62c2.12,0.88,4.15,1.04,6.62,0.5c12.62-2.75,25.5-4.88,35.75-6.5c3.61-0.57,6.25-0.75,9.25-0.5","M64.46,38.88c0.44,1.9,0.5,4.27-0.08,6.5c-3.63,13.75-9.25,31.25-24.63,43.87"],"コ":["M30.13,35c1.75,1,3.01,2.18,6.5,1.62c14.25-2.25,29.62-4.25,37.38-5.5c9.37-1.51,9.88,0.25,8,7.5c-2.77,10.71-5.25,22.12-7,34.88","M27.5,77.38c2.62,1.12,4.38,1.51,8.25,1c11.38-1.5,22.62-3,33.75-3.38c4-0.13,5.88,0,9.62,0.5"],"サ":["M16.5,44.34c2.84,1.27,4.77,1.91,8.93,1.13c17.2-3.22,40.45-5.35,58.53-5.34c4.33,0,6.92,0.37,10.42,0.82","M36.63,23.38c1.12,1.38,1.19,2.5,1.25,4.75c0.25,9,0.38,20.25,0.75,28.88c0.14,3.25,0.38,7.12,0.38,9.25","M69.63,16.62c1.5,2,1.62,2.87,1.62,6.25c0,8.25-0.16,9-0.16,15.88c0,23.25-9.34,42.5-23.21,53"],"シ":["M39.87,19.75c5.14,1.57,9.79,6.01,11.5,8.62","M26,42.62c3.25,0.88,10.25,5.5,12.25,8.13","M33,85c3.75,0.88,7.12,0.49,10.38-1.38c17.87-10.24,32.37-23.87,46.12-42.87"],"ス":["M30.13,29.38c1.75,1.5,4.15,1.98,6.62,1.38c13.25-3.25,24.25-5.62,31.25-7.38c7-1.76,8.64,1.16,6.5,5.75c-11.24,24.12-28.37,45.87-53.5,57.25","M61,57.25c11,7.38,21,17,28,28.62"],"セ":["M17,49.38c3.12,1.5,5.04,2.18,8.62,1.38c23.5-5.25,31.24-7.43,50.62-11.62c23.12-5,6.5,7.75-3.25,18.12","M42.38,19.5c2,2.25,2.15,3.5,2.12,6.62c-0.12,17.5-0.88,31.75-0.88,41.12c0,14,3.13,16.99,12.38,17.12c8.38,0.12,14.12,0.12,18,0.12c3.88,0,7.5-0.5,10.5-1.12"],"ソ":["M23.5,25.5c3.92,4.1,7.71,9.93,10.75,17.88","M83.5,21c1.25,2.5,1.3,4.44,0.12,8.5c-5.87,20.38-26.24,49.5-45.62,61.25"],"タ":["M48.83,19.75c0.43,1.72,0.39,4-0.58,5.89c-4.77,9.34-9.1,17.82-18.63,27.73","M49.75,30.38c2.75,0.5,5,0,7.62-0.62c6.02-1.43,10.5-2.62,15.88-4.12c5.79-1.62,8.22,0.31,5.88,5.62c-10.88,24.62-22.13,43.99-50.13,59.99","M43.38,45.62c6.75,3.5,10.62,7.88,14.75,15.25"],"チ":["M69.76,15.25c-0.38,2.62-2.01,4.37-3.88,5.38c-7.88,4.25-18.62,9.75-35.5,13.25","M18.5,51.5c2.88,0.88,4.39,1.65,7.88,1.25c22-2.5,36.38-4.25,56.12-4.88c4.88-0.15,7.88,0.51,10.88,1.51","M54.88,30.75c0.88,0.75,1.75,2.49,1.75,4.75c0,6.03,0.03,11.25,0.03,18.27c0,14.98-5.03,29.48-16.53,39.23"],"ツ":["M21.5,31.38c2.38,3,4.5,9.38,4.88,13.88","M45.62,23.75c3.38,3.5,6.62,9.5,7,14.88","M84.62,27.88c0.75,2.25,0.39,5.26-0.75,8c-7.63,18.37-21.25,41.12-46,52.5"],"テ":["M36.5,21.5c2.12,1.25,4.38,1.59,7.25,1.25c10.62-1.25,16.88-2.25,24.62-3.25c3.73-0.48,5.63-0.5,8.13-0.25","M20,44.12c2.88,1,5.26,1.05,7.5,0.75c22.38-3,37-5.62,54.13-6.12c5.62-0.16,7.75,0,10.38,0.62","M58,43.25c0.88,1,1.32,2.63,1.12,4.38c-1.74,15.37-11.62,34.99-24.62,41.87"],"ト":["M44,16.38c1.25,1.12,2.12,3.25,2.12,5.5c0,26.12,0,53.5,0,57.62c0,4.12,0,10.5,0,13.38","M49.24,43.12c11.75,4.12,18.25,10.62,24.5,18.75"],"ナ":["M18.5,44.12c2.62,1,4.77,1.17,9.12,0.5c19.38-3,37.75-4.75,52.38-5.62c3.75-0.22,8.88-0.25,11.88,0.12","M53.26,14.5c1.75,1.25,2.75,3,2.75,6c0,3,0.12,21.5,0.12,24.25c0,20-6,37.62-18.38,49.12"],"ニ":["M32.63,34.69c2.5,1.19,4.33,1.6,7.45,1.35c11.55-0.91,18.3-2.41,27.04-3.18c2.64-0.23,6.27-0.16,8.39,0.08","M20,74.88c2.62,1,4.78,1.45,9.12,0.75c20.25-3.25,36.5-3.88,52.38-3.88c3.75,0,8,1,11.12,2.38"],"ヌ":["M33.38,27.62c2.75,1.25,5.38,1.16,8.5,0.62c10.12-1.75,19-3.12,28.62-5c6.67-1.3,7.75-0.12,5.38,5.62c-6.7,16.22-20.63,40.52-48.88,57.89","M44.88,46.38c12,6.75,22.38,15.38,30.62,28.12"],"ネ":["M51.38,12.38c3.38,2.12,8,5.88,11,10.88","M26.88,36.16c2.62,1.46,5.45,1.93,8.5,1.19c10.75-2.6,20.75-4.98,30.88-7.5c6.53-1.62,7.81,1.27,4.62,4.68c-11.63,12.47-22.76,23.35-48.88,37.97","M54.38,54.12c1.38,1.75,1.62,3.5,1.62,6c0,2.5,0,27.5,0,29.38c0,1.88,0,4,0,6.88","M65.38,53.62c12.5,6,19.88,11.75,24.88,18.88"],"ノ":["M72.37,25.25c0.75,2,0.92,4.89,0.25,7.25c-7.12,25-25.38,44.75-43.62,56.88"],"ハ":["M39.33,36.88c0.38,1.14,0.46,2.88-0.12,4.14c-6.33,13.73-13.33,23.86-22.21,32.23","M65.5,36.38c13,9.12,23.12,22.62,28,33.38"],"ヒ":["M35.38,44.5c1.75,1.38,4.51,2.19,6.88,1.88c10.24-1.38,17.24-2.88,24.24-4.26c3.01-0.59,7.12-1,9.38-0.88","M31,17.62c1.38,1.26,1.88,3.38,1.88,6.13c0,2.75-0.88,44-0.88,47.25c0,9.75,4,14.62,13.75,14.62c6,0,16.38,0.12,21.38,0c5-0.12,9.5-0.62,13.5-1.5"],"フ":["M24.5,30c1.88,1.88,3.5,2.04,6.5,1.62c14.5-2,29-4.38,43.75-6.88c6.82-1.16,10.58,2.29,6.88,9.12c-10.38,19.14-21.25,39.52-50.01,53.64"],"ヘ":["M15.5,49.02c2.78,1.55,5.39,0.64,6.95-0.9c4.05-4.01,9.47-8.3,12-10.88c3.16-3.23,7.32-5.26,12.01-1.16c11.25,9.82,25.03,21.45,35.78,30.36c4.28,3.55,7.71,6.85,11.25,9.56"],"ホ":["M22.63,40.38c2.62,1,4.75,1.71,9.12,1.25c17.75-1.88,29.25-2.75,45.38-3.88c3.74-0.26,7.38-0.12,11.12,0.62","M53.75,17.12c1.38,1.88,1.38,4.5,1.38,7.38c0,2.88-0.12,46.62-0.12,51.88c0,23.12-6.25,11.25-9.75,9.62","M27.38,59.38c0.5,9.25-1.38,16.62-6.38,21.88","M73.25,52.75c10.88,9.63,15.5,17.63,16.63,24.87"],"マ":["M21.5,33.75c1.88,1.88,3.5,1.99,6.5,1.62c19.62-2.38,33.5-4,51.25-6.38c6.85-0.92,9.37,1.67,4.38,7.62c-7.12,8.5-17.88,20-28.75,31.62","M43.38,58.88c8.43,6.5,16.6,15.93,20.25,26.25"],"ミ":["M41.87,20c10.4,2.57,20.5,6.3,25,10.38","M42,46.88c10.72,2.69,21.11,6.6,25.75,10.88","M36.5,75c15.71,4.49,30.95,11,37.75,18.12"],"ム":["M53.84,22.5c0.88,1.75,0.78,4.57-0.38,6.88c-9.25,18.38-16.19,30.96-25.25,45.75c-3.75,6.12-3,8.38,4.38,7.12c7.38-1.26,46.62-8.12,49.62-8.88","M72.21,60.12c6.88,6.38,13.62,14.88,16,25.38"],"メ":["M73.38,19.12c0.88,1.75,0.48,4.44-0.38,6.88c-7.75,22.12-21.75,47.62-45,62.88","M39.51,39.5c16.54,7.76,32.12,18,38.5,30.88"],"モ":["M27.88,26.19c2.5,1.19,4.33,1.6,7.45,1.35c11.55-0.91,21.93-2.16,32.79-3.93c2.62-0.42,6.27-0.41,8.39-0.17","M17.5,54.38c2.62,1,4.78,1.45,9.12,0.75c20.26-3.25,33.88-5.38,51.64-6.13c3.75-0.16,7.38,0.25,11.12,0.88","M48.76,29.88c1.12,1.62,1.42,3.62,1.42,6.12c0,6.53-0.65,33.56-0.65,35.88c0,7.67,3.09,11.08,10.53,11.76c5.33,0.49,12.31,0.24,16.37,0c4.46-0.26,6.52-0.74,9.59-1.43"],"ヤ":["M18,45.75c2.12,1.62,6.15,2.35,10.12,1.38c18.88-4.62,33.39-7.83,48.88-11.88c22-5.75,1.5,14.25-2.75,20","M38.47,19.38c1.65,1.4,2.54,2.67,3.18,5.21c0.64,2.54,11.95,52.9,12.59,55.57c0.64,2.67,2.16,9.16,3.05,12.46"],"ユ":["M29.5,35.38c2.38,1.5,5.14,2.08,9.25,1.5c13.25-1.88,18.02-2.4,27.62-4c6.75-1.12,7.78,0.16,6.5,6.38c-2.38,11.5-4.88,24.5-6.5,34.5","M17,76.88c2.75,1.5,4.76,2.05,9.12,1.5c22.62-2.88,36-3.88,54.12-3.88c3.75,0,7.38,0.5,11.12,1.12"],"ヨ":["M29.13,30.12c2.38,1.5,5.12,1.98,9.25,1.5c14-1.62,26.71-3.04,36.38-4.25c6-0.75,6.88,0.5,6.5,6.38c-1,15.51-1.89,30.63-3.01,42.25","M29.25,52.88c2.38,1.5,5.12,1.98,9.25,1.5c10.5-1.22,22.81-2.29,31.11-3.04c2.77-0.25,5.27,0.04,7.77,0.54","M23.5,78.84c2.75,1.3,4.74,1.68,9.12,1.3c12.5-1.08,29.37-2.9,41.38-2.9c3.38,0,5.62,0,9.38,0.54"],"ラ":["M38.63,21.06c2.07,1.86,4.43,2.53,8.05,2.15c9.2-0.96,14.34-2.01,21.57-2.95c2.41-0.31,4.13-0.53,6.51-0.19","M26,41.89c2.38,1.7,5.12,2.24,9.25,1.7c14-1.84,31.21-4.95,40.88-6.32c6-0.85,8.14,0.62,6.25,5.72c-6.88,18.62-22,38.25-45.25,48.62"],"リ":["M35,18.38c1.12,1.5,1.62,3,1.62,4.88c0,1.88,0,25,0,27c0,2,0,6.12,0,7.75","M71,15.38c1.5,1.25,2.38,3.12,2.38,5.38c0,2.26-0.12,28.88-0.12,32.88c0,19.62-9.5,32.25-21.75,40.38"],"ル":["M34.38,31.88c1.12,1.5,1.72,3,1.62,4.88c-1.12,22.88-8.88,40.62-17.5,49.5","M56.51,19.62c1.5,1.25,2.38,3.12,2.38,5.38c0,2.26-0.12,47.62-0.12,51.62c0,10.5,0.52,10.21,9.38,2.75c9.5-8,16.5-14.62,26.38-25.62"],"レ":["M34.5,19.75c1.5,1.25,2.38,3.12,2.38,5.38c0,2.26-0.12,50.12-0.12,54.12c-0.02,8.75-0.14,8.63,9.36,3.75c13.23-6.79,33.38-22.5,43.25-33.5"],"ロ":["M25,33.25c1.5,1.25,2.16,3.14,2.38,5.38c0.96,10.07,2.14,23.67,3.14,34.88c0.31,3.4,0.59,6.58,0.86,9.38","M28.13,36.12c9.25-1,37.62-3.12,45.62-4.25c8-1.13,9.57,0.53,8.38,6.62c-2.13,10.89-4.13,21.89-6.75,34.89","M32,78.12c5.38-0.5,33.62-3,36.5-3c2.88,0,7.88-0.25,11.5,0.25"],"ワ":["M25,23.62c1.5,1.25,2.16,3.14,2.38,5.38c0.96,10.07,0.89,8.17,1.89,19.38c0.31,3.4,0.59,6.58,0.86,9.38","M27.75,26.38c3.12,0.38,5.16,0.22,8.23-0.06c13.77-1.29,27.15-2.32,41.65-3.7c8.04-0.76,9.44,0.51,8.38,6.62c-4.76,27.26-20.64,47.64-43.88,61.51"],"ヲ":["M30.24,25.14c2.38,1.7,5.11,2.13,9.25,1.7c12.32-1.29,21.94-2.6,30.48-3.64c2.81-0.34,5.51-0.65,8.14-0.93","M29,46.69c2.25,1.44,4.44,1.9,8.05,1.4c8.19-1.15,19.93-2.64,28.56-3.79c2.38-0.31,4.65-0.62,6.75-0.92","M78,22.88c0.88,2,0.62,4.64,0.12,7c-4.88,22.5-23.5,47.12-44.12,60.74"],"ン":["M26.5,24.88c5.76,2.15,12.68,8.47,15.75,14.25","M28.62,83.75c2.5,1.62,5.12,0.96,7.75-0.62c20.13-12.13,35-24.63,49.63-41.13"],"ガ":["M25.5,40.62c1.88,1.25,4.51,1.87,7.12,1.5c17.88-2.5,32.78-4.51,42.5-5.88c7.12-1,10.59,0.24,8.62,7.88c-2.12,8.25-4.47,17.81-9.25,29.12c-10.49,24.88-14.11,14.51-19.24,11.88","M55.88,17.12c0.88,1.62,1.29,3.83,0.75,6.75c-4.25,22.88-15.88,45.25-30.25,58.88","M83,19.75c2.75,1.75,6,5.38,7.75,8.5","M89.38,14.88c3.06,1.57,6.68,4.82,8.62,7.62"],"ギ":["M27,40.5c1.75,0.62,4.77,1.09,7.25,0.38c11.75-3.38,30.62-8.13,37.5-9.88c2.62-0.67,6.75-1.12,9-1","M19.5,65.8c2.28,0.84,6.24,1.18,9.46,0.17c17.79-5.59,32.67-9.09,49.17-12.99c3.43-0.81,8.81-1.52,11.74-1.35","M48.87,16.75c2.5,1.75,3.43,3.24,3.88,6.12c2.12,13.62,6.38,45.38,8.25,59.25c0.4,3,1,8.38,1.38,11.12","M81.87,15.13c2.75,1.93,6,5.93,7.75,9.37","M88.25,10c2.71,1.73,5.9,5.32,7.62,8.41"],"グ":["M50,19.62c0.38,1.5,0.34,3.48-0.5,5.12c-4.12,8.12-7.88,15.5-16.12,24.12","M51.25,28.62c2.62,0.25,5.67-0.39,7.62-0.88c6-1.5,9.75-2.38,15.12-3.88c5.79-1.62,7.53-0.42,5.12,4.88c-10.36,22.88-26.24,44.14-48.61,60.51","M83.75,13.5c2.75,1.75,6,5.38,7.75,8.5","M90.13,8.62c3.06,1.57,6.68,4.82,8.62,7.62"],"ゲ":["M40.96,17.88c0.44,1.9,0.39,4.42-0.59,6.5c-4.82,10.31-9.21,19.67-18.87,30.62","M37.88,37.62c2.12,0.88,4.15,1.04,6.62,0.5c12.62-2.75,25.5-4.88,35.75-6.5c3.61-0.57,6.25-0.75,9.25-0.5","M64.46,38.88c0.44,1.9,0.5,4.27-0.08,6.5c-3.63,13.75-9.25,31.25-24.63,43.87","M83.62,13.94c2.95,1.81,6.43,5.57,8.3,8.81","M90.12,9.12c3.02,1.63,6.58,5,8.5,7.9"],"ゴ":["M30.13,35c1.75,1,3.01,2.18,6.5,1.62c14.25-2.25,29.62-4.25,37.38-5.5c9.37-1.51,9.88,0.25,8,7.5c-2.77,10.71-5.25,22.12-7,34.88","M27.5,77.38c2.62,1.12,4.38,1.51,8.25,1c11.38-1.5,22.62-3,33.75-3.38c4-0.13,5.88,0,9.62,0.5","M84.75,15.5c2.75,1.75,6,5.38,7.75,8.5","M90.87,10.38c3.06,1.57,6.68,4.82,8.62,7.62"],"ザ":["M16.5,44.34c2.84,1.27,4.77,1.91,8.93,1.13c17.2-3.22,40.45-5.35,58.53-5.34c4.33,0,6.92,0.37,10.42,0.82","M36.63,23.38c1.12,1.38,1.19,2.5,1.25,4.75c0.25,9,0.38,20.25,0.75,28.88c0.14,3.25,0.38,7.12,0.38,9.25","M69.63,16.62c1.5,2,1.62,2.87,1.62,6.25c0,8.25-0.16,9-0.16,15.88c0,23.25-9.34,42.5-23.21,53","M82.75,18.73c2.85,1.78,6.21,5.47,8.03,8.65","M89.5,14.12c2.93,1.57,6.39,4.83,8.25,7.63"],"ジ":["M39.87,19.75c5.14,1.57,9.79,6.01,11.5,8.62","M26,42.62c3.25,0.88,10.25,5.5,12.25,8.13","M33,85c3.62,1.62,6.5,0.88,10.38-1.38c17.81-10.34,32.37-23.87,46.12-42.87","M78.5,18.98c2.85,1.78,6.21,5.47,8.03,8.65","M85.25,14.38c2.93,1.57,6.39,4.83,8.25,7.63"],"ズ":["M30.13,29.38c1.75,1.5,4.15,1.98,6.62,1.38c13.25-3.25,24.25-5.62,31.25-7.38c7-1.76,8.64,1.16,6.5,5.75c-11.24,24.12-28.37,45.87-53.5,57.25","M61,57.25c11,7.38,21,17,28,28.62","M85.38,16.5c2.75,1.75,6,5.38,7.75,8.5","M91.76,11.62c3.06,1.57,6.68,4.82,8.62,7.62"],"ゼ":["M17,49.38c3.12,1.5,5.04,2.18,8.62,1.38c23.5-5.25,31.24-7.43,50.62-11.62c23.12-5,6.5,7.75-3.25,18.12","M42.38,19.5c2,2.25,2.15,3.5,2.12,6.62c-0.12,17.5-0.88,31.75-0.88,41.12c0,14,3.13,16.99,12.38,17.12c8.38,0.12,14.12,0.12,18,0.12c3.88,0,7.5-0.5,10.5-1.12","M83.38,20.25c2.75,1.75,6,5.38,7.75,8.5","M89.76,15.38c3.06,1.57,6.68,4.82,8.62,7.62"],"ゾ":["M23.5,26.65c3.83,4.02,7.54,9.72,10.5,17.5","M83,21.9c1.25,2.5,1.3,4.44,0.12,8.5c-5.87,20.37-26.24,49-45.62,60.75","M86.25,10.65c2.75,1.75,6,5.38,7.75,8.5","M92.62,5.77c3.06,1.57,6.68,4.82,8.62,7.62"],"ダ":["M48.83,19.75c0.43,1.72,0.39,4-0.58,5.89c-4.77,9.34-9.1,17.82-18.63,27.73","M49.75,30.38c2.5,0.62,5.67-0.14,7.62-0.62c6-1.5,10.5-2.62,15.88-4.12c5.79-1.62,8.22,0.31,5.88,5.62c-10.88,24.62-22.13,43.99-50.13,59.99","M43.38,45.62c6.75,3.5,10.62,7.88,14.75,15.25","M83.62,14.19c2.95,1.81,6.43,5.57,8.3,8.81","M90.12,9.38c3.02,1.63,6.58,5,8.5,7.9"],"ヂ":["M70,15.25c-0.38,2.62-2.26,4.37-4.12,5.38c-7.88,4.25-18.62,9.75-35.5,13.25","M18.5,51.5c2.88,0.88,4.39,1.65,7.88,1.25c22-2.5,36.38-4.25,56.12-4.88c4.88-0.15,7.88,0.51,10.88,1.51","M54.88,30.75c0.88,0.75,1.75,2.49,1.75,4.75c0,6.03,0.03,11.25,0.03,18.27c0,14.98-5.03,29.48-16.53,39.23","M79.88,25.73c2.85,1.78,6.21,5.47,8.03,8.65","M86.63,21.12c2.93,1.57,6.39,4.83,8.25,7.63"],"ヅ":["M21.5,30.62c2.38,3,5,9.38,5.38,13.88","M45.87,23c3.38,3.5,6.62,9.5,7,14.88","M84.62,27.62c0.75,2.25,0.39,5.26-0.75,8c-7.63,18.38-21.25,41.38-46,52.76","M86.5,14.58c2.61,1.91,5.7,5.88,7.36,9.3","M92.68,9.62c2.73,1.8,5.95,5.53,7.69,8.75"],"デ":["M36.5,21.5c2.12,1.25,4.38,1.59,7.25,1.25c10.62-1.25,16.88-2.25,24.62-3.25c3.73-0.48,5.63-0.5,8.13-0.25","M20,44.12c2.88,1,5.26,1.05,7.5,0.75c22.38-3,37-5.62,54.13-6.12c5.62-0.16,7.75,0,10.38,0.62","M58,43.25c0.88,1,1.32,2.63,1.12,4.38c-1.74,15.37-11.62,34.99-24.62,41.87","M84.25,16.98c2.85,1.78,6.21,5.47,8.03,8.65","M91,12.38c2.93,1.57,6.39,4.83,8.25,7.63"],"ド":["M44,16.38c1.25,1.12,2.12,3.25,2.12,5.5c0,26.12,0,53.5,0,57.62c0,4.12,0,10.5,0,13.38","M49.24,43.12c11.75,4.12,18.25,10.62,24.5,18.75","M66.87,26.75c2.75,1.75,6,5.38,7.75,8.5","M73.24,21.88c3.06,1.57,6.68,4.82,8.62,7.62"],"バ":["M39.08,36.62c0.38,1.14,0.38,2.84-0.12,4.14c-5.46,13.99-13.08,24.12-21.96,32.49","M65.5,36.38c13,9.12,23.12,22.62,28,33.38","M81.13,21c2.75,1.75,6,5.38,7.75,8.5","M87.5,16.12c3.06,1.57,6.68,4.82,8.62,7.62"],"ビ":["M35.38,44.5c1.75,1.38,4.51,2.19,6.88,1.88c10.24-1.38,17.24-2.88,24.24-4.26c3.01-0.59,7.12-1,9.38-0.88","M31,17.62c1.38,1.26,1.88,3.38,1.88,6.13c0,2.75-0.88,44-0.88,47.25c0,9.75,4,14.62,13.75,14.62c6,0,16.38,0.12,21.38,0c5-0.12,9.5-0.62,13.5-1.5","M78.13,26.25c2.75,1.75,6,5.38,7.75,8.5","M84.5,21.38c3.06,1.57,6.68,4.82,8.62,7.62"],"ブ":["M24.5,30c1.88,1.88,3.5,2.04,6.5,1.62c14.5-2,29-4.38,43.75-6.88c6.82-1.16,10.58,2.29,6.88,9.12c-10.38,19.14-21.25,39.52-50.01,53.64","M86,15.63c2.61,1.93,5.7,5.93,7.36,9.37","M92.06,10.5c2.82,1.78,6.15,5.48,7.94,8.66"],"ベ":["M15.5,49c2.75,1.5,5.33,0.62,6.88-0.88c4-3.88,9.38-8.5,11.88-11c3.12-3.12,7.23-5.08,11.87-1.12c11.13,9.5,26.25,22.5,36.87,31.12c4.23,3.43,7.62,6.62,11.12,9.25","M66.88,27c2.75,1.75,6,5.38,7.75,8.5","M73.26,22.12c3.06,1.57,6.68,4.82,8.62,7.62"],"ボ":["M22.63,40.38c2.62,1,4.75,1.71,9.12,1.25c17.75-1.88,29.25-2.75,45.38-3.88c3.74-0.26,7.38-0.12,11.12,0.62","M53.75,17.12c1.38,1.88,1.38,4.5,1.38,7.38c0,2.88-0.12,46.62-0.12,51.88c0,23.12-6.25,11.25-9.75,9.62","M27.38,59.38c0.5,9.25-1.38,16.62-6.38,21.88","M73.51,53c10.87,9.62,15.5,17.62,16.62,24.88","M72.63,17.5c2.75,1.75,6,5.38,7.75,8.5","M79.01,12.62c3.06,1.57,6.68,4.82,8.62,7.62"],"パ":["M39.08,36.62c0.38,1.14,0.38,2.84-0.12,4.14c-5.46,13.99-13.08,24.12-21.96,32.49","M65.5,36.38c13,9.12,23.12,22.62,28,33.38","M86,30.12c-9.62,0-9.25-14.25,0-14.25c9.76,0.01,9.5,14.25,0,14.25"],"ピ":["M35.38,44.5c1.75,1.38,4.51,2.19,6.88,1.88c10.24-1.38,17.24-2.88,24.24-4.26c3.01-0.59,7.12-1,9.38-0.88","M31,17.62c1.38,1.26,1.88,3.38,1.88,6.13c0,2.75-0.88,44-0.88,47.25c0,9.75,4,14.62,13.75,14.62c6,0,16.38,0.12,21.38,0c5-0.12,9.5-0.62,13.5-1.5","M83,32.88c-9.62,0-9.25-14.25,0-14.25c9.76-0.01,9.5,14.25,0,14.25"],"プ":["M24.5,30c1.88,1.88,3.5,2.04,6.5,1.62c14.5-2,29-4.38,43.75-6.88c6.82-1.16,10.58,2.29,6.88,9.12c-10.38,19.14-21.25,39.52-50.01,53.64","M92.62,23.88c-9.62,0-9.25-14.25,0-14.25c9.76-0.01,9.5,14.25,0,14.25"],"ペ":["M15.5,49.25c2.75,1.5,5.33,0.62,6.88-0.88c4-3.88,9.12-8.75,11.62-11.25c3.12-3.12,7.23-5.08,11.87-1.12c11.13,9.5,26.25,22,36.87,30.62c4.23,3.43,7.62,6.62,11.12,9.25","M72.74,36.12c-9.62,0-9.25-14.25,0-14.25c9.76,0.01,9.5,14.25,0,14.25"],"ポ":["M22.63,40.38c2.62,1,4.75,1.71,9.12,1.25c17.75-1.88,29.25-2.75,45.38-3.88c3.74-0.26,7.38-0.12,11.12,0.62","M53.75,17.12c1.38,1.88,1.38,4.5,1.38,7.38c0,2.88-0.12,46.62-0.12,51.88c0,23.12-6.25,11.25-9.75,9.62","M27.38,59.38c0.5,9.25-1.38,16.62-6.38,21.88","M73.51,53c10.87,9.62,15.5,17.62,16.62,24.88","M79.75,25.62c-9.62,0-9.25-14.25,0-14.25c9.76,0.01,9.5,14.25,0,14.25"],"ッ":["M29,51.88c1.89,2.42,3.59,7.57,3.89,11.2","M48.24,45.73c2.69,2.83,5.28,7.67,5.58,12.01","M79.34,49.8c0.6,1.82,0.31,4.24-0.6,6.46c-6.08,14.83-16.95,32.44-36.68,41.62"],"ャ":["M25,56.25c1.67,1.28,4.84,1.85,7.96,1.08c14.85-3.64,26.27-6.16,38.45-9.34c17.31-4.52,1.18,11.21-2.16,15.73","M41.1,35.5c1.3,1.1,2,2.1,2.5,4.1c0.5,2,9.4,41.62,9.9,43.72c0.5,2.1,1.7,7.2,2.4,9.8"],"ュ":["M34.8,52.84c1.91,1.21,4.13,1.67,7.44,1.21c10.65-1.51,13.99-1.68,21.71-2.97c5.43-0.9,6.26,0.13,5.23,5.12c-1.91,9.25-3.92,19.45-5.23,27.49","M24.5,86.21c2.21,1.21,3.84,1.73,7.34,1.21c18.54-2.79,28.95-3.12,43.52-3.12c3.02,0,5.93,0.4,8.95,0.9"],"ョ":["M33.5,50.62c1.9,1.21,4.09,1.6,7.39,1.21c11.19-1.32,21.35-2.46,29.07-3.44c4.79-0.61,5.49,0.4,5.2,5.16c-0.79,12.56-1.5,24.79-2.4,34.21","M33.6,69.04c1.9,1.21,4.09,1.6,7.39,1.21c8.39-0.99,18.23-1.85,24.86-2.47c2.21-0.2,4.21,0.04,6.21,0.44","M29,90.06c2.2,1.05,3.79,1.36,7.29,1.05c9.99-0.88,23.47-2.35,33.07-2.35c2.7,0,4.49,0,7.49,0.44"],"ァ":["M28,42.54c1.91,1.22,3.16,1.13,6.74,0.59c9.03-1.37,29.93-5.05,38.25-6.06c4.14-0.5,6.33,2.36,2.08,5.47c-5.35,3.91-10.4,7.43-18.42,12.52","M51.55,54.18c0.62,1.17,0.8,2.53,0.45,4.13c-3.16,14.45-7.75,24.91-15.58,35.57"],"ィ":["M67.75,32.78c0.1,1.39-0.27,3.07-1.28,4.37c-7.98,10.24-18.72,23.55-35.97,34.08","M57.19,54.22c0.81,0.92,1.02,2.46,1.02,3.79c0,1.33,0,26.33,0,27.87c0,1.54-0.1,7.48-0.1,9.63"],"ゥ":["M54.11,32.25c0.8,0.87,0.99,2.32,0.99,3.58c0,1.26,0,8.33,0,9.78","M32.5,45.62c0.94,0.89,1.15,2.38,1.18,3.67c0.08,3.53,0.27,8.68,0.42,12.98c0.07,1.98,0.13,3.78,0.17,5.15","M34.92,48.96c15.42-1.74,32.02-3.54,38.98-4.51c6.96-0.97,6.59,0.65,4.97,5.32c-3.97,11.52-15.04,33.98-32.11,44.85"],"ェ":["M36.22,52.7c1.84,0.56,4.08,0.53,5.93,0.24c6.8-1.08,17.77-2.28,26.71-3.07c1.8-0.16,3.59-0.15,5.37,0.18","M53.25,54.65c0.79,0.9,1.04,2.4,0.99,3.7c-0.14,3.79-0.4,10.3-0.65,17.78c-0.06,1.85-0.12,3.25-0.18,5.19","M26,84.03c2.71,0.7,6.01,0.65,8.73,0.29c14.11-1.84,27.4-2.86,40.12-2.89c2.65-0.01,5.73,0.31,8.3,1.33"],"ォ":["M26,50.69c3.11,1.49,6,1.3,8.75,0.86c14.32-2.3,27.34-3.76,40.17-4.53c2.65-0.16,5.05,0.14,8.31,1.15","M58.49,33.57c1.05,1.18,1.31,3.16,1.31,4.86c0,6.36-0.2,36.73-0.2,46.58c0,16.19-4.67,5.96-7.35,4.37","M58.41,49.45c0,1.29-1.31,2.87-2.88,4.77c-6.26,7.55-16.79,18.08-27.51,26.22"],"ー":["M14.5,53c5.75-0.75,11.62-0.95,14.5-1c21.62-0.38,40.75-1.62,45.38-1.62c4.63,0,16.75-0.62,20.12-0.62"]});
+const SNS="http://www.w3.org/2000/svg",RM=window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches;
+const sv=(n,a)=>{const e=document.createElementNS(SNS,n);for(const k in a)e.setAttribute(k,a[k]);return e};
+function strokeEl(j,sz,mini){
+ const yo=j.length===2&&"ゃゅょャュョァィゥェォ".includes(j[1]),parts=yo?[[j[0],0],[j[1],85]]:[[j,0]];
+ if(!parts.every(x=>SD[x[0]]))return "";
+ const W=yo?185:109,H=sz||150,wrap=el("div","stk"),svg=sv("svg",{viewBox:"0 0 "+W+" 109",width:Math.round(H*W/109),height:H,role:"img","aria-label":"Ordine dei tratti di "+j});
+ svg.append(sv("path",{d:"M"+W/2+" 6V103M6 54.5H"+(W-6),stroke:"var(--pline)","stroke-dasharray":"3 4",fill:"none"}));
+ const it=[];let n=0;
+ parts.forEach(([c,dx])=>{const g=sv("g",{transform:"translate("+dx+",0)"});
+  SD[c].forEach(d=>{n++;const p=sv("path",{d,class:"sg",pathLength:"1"}),m=d.match(/^M\s*(-?[\d.]+)[ ,]+(-?[\d.]+)/),t=sv("text",{x:+m[1]-7,y:+m[2]-2,class:"sn"});t.textContent=n;g.append(p,t);it.push([p,t])});
+  svg.append(g)});
+ wrap.append(svg);
+ const stop=()=>it.forEach(([p,t])=>{[p,t].forEach(e=>e.getAnimations&&e.getAnimations().forEach(a=>a.cancel()))});
+ const show=()=>{stop();it.forEach(([p,t])=>{p.style.strokeDasharray="none";t.style.opacity=1})};
+ const run=()=>{stop();if(RM||!svg.animate&&!it[0][0].animate){show();return}
+  it.forEach(([p,t],i)=>{p.style.strokeDasharray="1 1.5";t.style.opacity=0;
+   p.animate([{strokeDashoffset:1.02},{strokeDashoffset:0}],{duration:650,delay:i*850,fill:"both",easing:"ease-in-out"});
+   t.animate([{opacity:0},{opacity:1}],{duration:150,delay:i*850,fill:"both"})})};
+ if(!mini){const r=el("div","row"),a=el("button","chip","↻ Rivedi i tratti"),b=el("button","chip","1 · 2 · 3 Mostra tutti");a.onclick=run;b.onclick=show;r.append(a,b);wrap.append(r)}
+ if(!mini&&"きさふらそ".includes(j[0].normalize("NFD")[0]))wrap.append(el("p","note","Nei caratteri stampati i tratti possono apparire uniti: scritto a mano è così."));
+ run();return wrap}
+/* ripasso a intervalli */
+WV.push(..."コーヒー:caffè;ケーキ:torta;ホテル:albergo;テレビ:televisione;パン:pane;ビール:birra;タクシー:taxi;カメラ:macchina fotografica;ピザ:pizza;バス:autobus;ペン:penna;ラジオ:radio;ナイフ:coltello;スプーン:cucchiaio;ノート:quaderno;ドア:porta;テニス:tennis;サッカー:calcio;ギター:chitarra;アイス:gelato;ジュース:succo di frutta;ミルク:latte;チーズ:formaggio;カレー:curry;ラーメン:ramen;サラダ:insalata;スープ:zuppa;トマト:pomodoro;バナナ:banana;レモン:limone;チョコレート:cioccolato;コンピューター:computer;アメリカ:America;イタリア:Italia;フランス:Francia;ドイツ:Germania;スペイン:Spagna;ブラジル:Brasile".split(";").map(x=>{const [k,m]=x.split(":");return [k,toRo(k),m]}));
+const isKa=u=>/[ァ-ヺー]/.test(u[0]);
+const WM={};WV.forEach(w=>WM[w[0]]=w);V.forEach(w=>WM[sp(w.k)]=[sp(w.k),toRo(w.k),w.m]);
+function dueRow(){
+ const n=dueList().length,c=el("div","topic"+(n?"":" d")),th=el("div","th"),st=el("div","steps");
+ th.append(el("b",0,n?"Da ripassare oggi: "+n:"Nessun ripasso in sospeso"),el("span",0,n?"Gli errori tornano dopo 1, 3 e 7 giorni.":"Gli errori che farai torneranno dopo 1, 3 e 7 giorni."));
+ if(n){const b=el("button","btn","Ripassa ora");b.onclick=startSRS;st.append(b)}
+ c.append(th,st);c.style.marginBottom="14px";return c}
+function startSRS(){
+ const kq=[],wl=[];dueList().slice(0,10).forEach(([j,q])=>{if(KG[j])kq.push([j,q.r]);else if(WM[j])wl.push(WM[j])});
+ if(!kq.length&&!wl.length)return;
+ S={i:L.length-1,kind:"v",mix:1,srs:1,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:[...(kq.length?["listen","read"]:[]),...(wl.length?["wlisten","wmean"]:[])],kq,wl,ws:[],vp:V.map(w=>[sp(w.k),toRo(w.k),w.m])};
+ goLessons();startPh()}
+/* salvataggio e trasferimento dei progressi */
+const enc=o=>"HIRA1:"+btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+const dec=t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/\s+/g,"").replace(/^HIRA1:/,"")))));
+const bkMsg=m=>{$("bkMsg").textContent=m};
+function bkCode(){const c=enc({app:"hiragana",v:1,t:new Date().toISOString(),stats:ST,done,voice:{name:VS.name,rate}});$("bkTxt").value=c;try{localStorage.setItem("hira-lastexp",String(Date.now()))}catch(e){}cnt("ex");renderL();return c}
+$("bkExp").onclick=()=>{const c=bkCode();$("bkTxt").select();bkMsg("Codice creato ("+(c.length/1024).toFixed(1)+" KB). Copialo o condividilo e conservalo in un posto sicuro, per esempio nelle Note.")};
+$("bkCopy").onclick=async()=>{const c=$("bkTxt").value.startsWith("HIRA1:")?$("bkTxt").value:bkCode();$("bkTxt").value=c;
+ try{await navigator.clipboard.writeText(c);bkMsg("Codice copiato negli appunti.")}catch(e){$("bkTxt").select();try{document.execCommand("copy");bkMsg("Codice copiato.")}catch(e2){bkMsg("Non riesco a copiare da qui: tieni premuto sul testo e scegli Copia.")}}};
+$("bkShare").onclick=async()=>{const c=bkCode();
+ if(navigator.share){try{await navigator.share({title:"Progressi hiragana",text:c});bkMsg("Codice condiviso.")}catch(e){bkMsg("Condivisione annullata. Il codice è nella casella: puoi copiarlo.")}}
+ else bkMsg("La condivisione non è disponibile qui: usa Copia.")};
+$("bkImp").onclick=()=>{try{
+ const d=dec($("bkTxt").value.trim()),a=d.stats;if(d.app!=="hiragana"||!a)throw 0;
+ ST.xp=Math.max(ST.xp,+a.xp||0);_lx=ST.xp;ST.m=ST.m||{};ST.s=ST.s||{};
+ Object.entries(a.m||{}).forEach(([j,m])=>{const o=ST.m[j];ST.m[j]=o?{w:Math.max(o.w,m.w),c:Math.max(o.c,m.c),k:Math.max(o.k,m.k),r:o.r||m.r}:m});
+ Object.entries(a.s||{}).forEach(([j,q])=>{if(!ST.s[j])ST.s[j]=q});
+ ["dl","dm"].forEach(k=>{if(!ST[k])ST[k]=+a[k]||0});
+ const k=a.sk;if(k){if(k.last>ST.sk.last||k.last===ST.sk.last&&k.n>ST.sk.n){ST.sk.n=k.n;ST.sk.last=k.last}ST.sk.best=Math.max(ST.sk.best,k.best||0)}
+ Object.entries(a.ct||{}).forEach(([n,v])=>{ST.ct[n]=Math.max(ST.ct[n]||0,v)});Object.entries(a.bd||{}).forEach(([n,v])=>{if(!ST.bd[n])ST.bd[n]=v});
+ (d.done||[]).forEach(x=>{if(!done.includes(x))done.push(x)});
+ svST();try{localStorage.setItem("hira-done",JSON.stringify(done))}catch(e){}
+ checkBadges(true);xpUI();renderL();$("vdl").value=ST.dm||0;
+ bkMsg("Importato! Ora hai "+ST.xp+" XP e "+done.filter(x=>typeof x==="number").length+" argomenti con i caratteri completati.")}
+ catch(e){bkMsg("Codice non valido: controlla di averlo copiato per intero, dall’inizio (HIRA1:).")}};
+function backupRow(){
+ let last=0;try{last=+localStorage.getItem("hira-lastexp")||0}catch(e){}
+ if(ST.xp<100||Date.now()-last<12096e5)return "";
+ const c=el("div","warn bkw"),b=el("button","btn","Salva ora");
+ c.append(el("span",0,last?"Sono passate più di due settimane dall’ultimo salvataggio dei progressi.":"Non hai ancora salvato i tuoi progressi: se il browser li cancella, li perdi."),b);
+ b.onclick=()=>{const d=$("bk");d.open=true;d.scrollIntoView({behavior:RM?"auto":"smooth",block:"center"})};return c}
+/* audio su iPhone: sblocco al primo tocco; richiesta di archiviazione persistente */
+let _un=0;const unlockA=()=>{if(_un||!window.speechSynthesis)return;_un=1;try{const u=new SpeechSynthesisUtterance(" ");u.volume=0;speechSynthesis.speak(u)}catch(e){}};
+["pointerdown","touchend","click"].forEach(t=>document.addEventListener(t,unlockA,{once:true,passive:true}));
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+/* medaglie */
+const nTop=()=>done.filter(x=>typeof x==="number").length,nSfx=t=>done.filter(x=>typeof x==="string"&&x.endsWith(":"+t)).length,cn=k=>(ST.ct&&ST.ct[k])||0,totC=()=>Object.values(ST.m).reduce((a,m)=>a+m.c,0);
+var BD=[
+ {id:"first",k:"初",n:"Primo passo",d:"Completa i caratteri del primo argomento",f:()=>[nTop(),1]},
+ {id:"five",k:"五",n:"Cinque argomenti",d:"Completa 5 argomenti con i caratteri",f:()=>[nTop(),5]},
+ {id:"base",k:"全",n:"Tutte le basi",d:"Completa i 10 argomenti di base",f:()=>[done.filter(x=>typeof x==="number"&&x<10).length,10]},
+ {id:"words",k:"語",n:"Primo vocabolario",d:"Completa una lezione di parole",f:()=>[nSfx("w"),1]},
+ {id:"voice",k:"話",n:"Buona pronuncia",d:"Pronuncia bene 5 volte al microfono",f:()=>[cn("pr"),5]},
+ {id:"s3",k:"三",n:"Tre giorni",d:"Raggiungi una serie di 3 giorni",f:()=>[ST.sk.best,3]},
+ {id:"s7",k:"火",n:"Una settimana",d:"Raggiungi una serie di 7 giorni",f:()=>[ST.sk.best,7]},
+ {id:"s30",k:"月",n:"Un mese",d:"Raggiungi una serie di 30 giorni",f:()=>[ST.sk.best,30]},
+ {id:"perf",k:"完",n:"Lezione perfetta",d:"Finisci una lezione senza errori",f:()=>[cn("pf"),1]},
+ {id:"build",k:"建",n:"Costruttore",d:"Costruisci 10 parole",f:()=>[cn("wb"),10]},
+ {id:"sent",k:"文",n:"Frasi in ordine",d:"Metti in ordine 10 frasi",f:()=>[cn("so"),10]},
+ {id:"dict",k:"耳",n:"Orecchio fine",d:"Trascrivi bene 20 dettati",f:()=>[cn("di"),20]},
+ {id:"odd",k:"探",n:"Cacciatore",d:"Trova 20 intrusi",f:()=>[cn("od"),20]},
+ {id:"c100",k:"星",n:"Cento risposte",d:"Dai 100 risposte giuste",f:()=>[totC(),100]},
+ {id:"c1000",k:"千",n:"Mille risposte",d:"Dai 1000 risposte giuste",f:()=>[totC(),1000]},
+ {id:"mem",k:"憶",n:"Memoria salda",d:"Ripassa 10 elementi fino a impararli",f:()=>[cn("sr"),10]},
+ {id:"save",k:"保",n:"Al sicuro",d:"Salva i progressi con un codice",f:()=>[cn("ex"),1]},
+ {id:"lv5",k:"級",n:"Livello 5",d:"Raggiungi il livello 5",f:()=>[Math.floor(ST.xp/100)+1,5]},
+ {id:"kata",k:"片",n:"Katakana",d:"Completa i 10 argomenti di base dei katakana",f:()=>[done.filter(x=>typeof x==="number"&&x>=21&&x<31).length,10]}];
+function cnt(k,n){ST.ct=ST.ct||{};ST.ct[k]=(ST.ct[k]||0)+(n||1);checkBadges()}
+function checkBadges(silent){
+ if(!window.BD)return;
+ const nw=BD.filter(b=>!ST.bd[b.id]&&b.f()[0]>=b.f()[1]),first=!ST.bi;ST.bi=1;
+ nw.forEach(b=>{ST.bd[b.id]=Date.now()});
+ if(nw.length){svST();if(!silent&&!first)toast("🏅 "+(nw.length>1?"Nuove medaglie: ":"Nuova medaglia: ")+nw.map(b=>b.n).join(", "));if(!$("errs").hidden)renderB()}}
+function renderB(){
+ const b=$("medBody");b.replaceChildren();
+ b.append(el("p","note",BD.filter(x=>ST.bd[x.id]).length+" medaglie su "+BD.length+". Tocca un sigillo per vedere come ottenerlo."));
+ const g=el("div","medals");
+ BD.forEach(x=>{const [c,t]=x.f(),u=!!ST.bd[x.id],m=el("button","medal"+(u?" u":""));
+  m.append(el("div","mseal",x.k),el("b",0,x.n),el("span",0,u?new Date(ST.bd[x.id]).toLocaleDateString("it-IT"):Math.min(c,t)+"/"+t));
+  m.onclick=()=>toast(x.n+": "+x.d+(u?" ✓":" ("+Math.min(c,t)+"/"+t+")"));g.append(m)});
+ b.append(g)}
+checkBadges(true);
+/* accessibilità: schede, lingua, annunci */
+const tb=[...document.querySelectorAll("nav button")],navEl=document.querySelector("nav");
+navEl.setAttribute("aria-label","Sezioni");
+tb.forEach(b=>{const id="tab-"+b.dataset.t;b.id=id;b.setAttribute("aria-controls",b.dataset.t);b.tabIndex=b.getAttribute("aria-selected")==="true"?0:-1;
+ const sec=$(b.dataset.t);if(sec){sec.setAttribute("role","tabpanel");sec.setAttribute("aria-labelledby",id)}
+ b.addEventListener("click",()=>tb.forEach(x=>x.tabIndex=x===b?0:-1))});
+navEl.addEventListener("keydown",e=>{const i=tb.indexOf(document.activeElement);if(i<0)return;let n=-1;
+ if(e.key==="ArrowRight")n=(i+1)%tb.length;else if(e.key==="ArrowLeft")n=(i-1+tb.length)%tb.length;else if(e.key==="Home")n=0;else if(e.key==="End")n=tb.length-1;
+ if(n>=0){e.preventDefault();tb[n].focus();tb[n].click()}});
+const JSEL=".q,.k b,.th b,.vk b,.vj,.opt>span,.stile>span,.slot,.tile,.w .j,.tm b,.mseal,.hd h1,.win-b span:last-child,.tipbox b,.hl,.opt .pm",JRX=/[\u3040-\u30ff\u4e00-\u9fff]/;
+function a11y(r){
+ if(r.matches&&r.matches(JSEL)&&!r.lang&&JRX.test(r.textContent))r.lang="ja";
+ if(!r.querySelectorAll)return;
+ r.querySelectorAll(JSEL).forEach(e=>{if(!e.lang&&JRX.test(e.textContent))e.lang="ja"});
+ r.querySelectorAll(".hint,#bkMsg,#gtx").forEach(e=>{if(!e.hasAttribute("aria-live"))e.setAttribute("aria-live","polite")});
+ r.querySelectorAll(".say:not([aria-label])").forEach(e=>e.setAttribute("aria-label","Ascolta"))}
+new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)a11y(n)}))).observe(document.body,{childList:true,subtree:true});
+a11y(document.body);
+renderL();renderV();
+</script>
+<script>
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js").catch(() => {}));
+}
+</script>
+</body>
+</html>

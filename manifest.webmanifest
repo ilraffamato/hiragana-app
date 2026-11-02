@@ -1,0 +1,13 @@
+{
+  "id": ".",
+  "name": "Hiragana · allenamento",
+  "short_name": "Hiragana",
+  "description": "Allenamento di hiragana e katakana",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#26282b",
+  "theme_color": "#26282b"
+}
