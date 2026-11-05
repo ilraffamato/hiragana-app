@@ -4,8 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hiragana"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#26282b">
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <title>Hiragana · allenamento</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
 <style>
@@ -154,11 +152,24 @@ textarea.ta{width:100%;border-radius:16px;padding:10px 14px;font:16px/1.3 ui-mon
 .opt.ok::after{content:"✓";color:var(--ok)}.opt.ko::after{content:"✗";color:var(--ko)}
 .vm,.note,.hint{overflow-wrap:anywhere}
 @media (prefers-contrast:more){:root{--mute:#d0cfc4;--pmute:#3f3e36;--line:#8a8e96;--pline:#7d7358}}
+.wi{font-size:1.5rem;width:100%;margin:10px 0}textarea.wi{font:1.3rem/1.4 var(--mi);border-radius:16px;padding:10px 14px;border:1px solid var(--lineu);background:var(--bgs);color:var(--ink);resize:vertical;min-height:90px}
+.wd{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:8px 0}.wd span{font:500 1.6rem var(--mi);padding:2px 8px;border-radius:10px;border:1.5px solid var(--pline)}
+.wd .ok{background:var(--okbg);border-color:var(--ok)}.wd .ko{background:var(--kobg);border-color:var(--ko)}
+.wres{margin-top:12px;color:var(--ink)}.wres p{margin:6px 0}.wres .hd2{font-weight:700;font-size:1.05rem}
+.tks{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.tk{background:var(--paper);color:var(--pen);border-radius:14px;padding:6px 12px;text-align:center;display:flex;flex-direction:column;line-height:1.3}
+.tk b{font:500 1.3rem var(--mi)}.tk i{font:500 .8rem var(--ui);font-style:normal;color:var(--pmute)}.tk.u{background:var(--kobg);box-shadow:inset 0 0 0 1.5px var(--ko)}
+.ruby{display:block;background:var(--paper);color:var(--pen);border-radius:18px;padding:12px;margin:10px 0;min-height:70px}
+.rbt{display:inline-block;margin:2px 8px 6px 0;white-space:nowrap}.rb{display:inline-flex;flex-direction:column;align-items:center;min-width:1.2em;margin:0 1px}
+.rb b{font:500 1.8rem/1.2 var(--mi)}.rb i{font:500 .85rem var(--ui);font-style:normal;color:var(--pmute)}.rb.kj i{color:var(--shut)}.rbs{display:inline-block;width:.8em}
+.wout{background:var(--paper);color:var(--pen);border-radius:18px;padding:14px;margin:10px 0;font:500 1.7rem/1.5 var(--mi);min-height:70px;overflow-wrap:anywhere}.wout .bad{color:var(--shut);text-decoration:underline wavy}
 @media (prefers-reduced-motion:no-preference){.k,.opt,.les{transition:transform .08s,background .15s,border-color .15s}#xpf{transition:width .4s}}
 </style>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
 </head>
 <body>
 <main>
+<noscript><div class="warn">Questa app ha bisogno di JavaScript per funzionare. Se la vedi in Anteprima (Quick Look), aprila invece dall’app Claude o da un browser come Safari.</div></noscript>
 <header class="hd"><div><h1>ひらがな</h1><p class="sub">Allenamento di lettura e suono</p></div><div class="seal" role="img" aria-label="Livello"><small>級</small><b id="lvl">1</b></div></header>
 <div class="xp"><div class="xpt"><span>Esperienza</span><span id="xpn">0 XP</span></div><div class="xpb"><div id="xpf"></div></div></div>
 <div class="goal"><div class="gt"><span id="gtx"></span><select class="sel" id="goalSel" aria-label="Obiettivo giornaliero"><option value="20">Obiettivo 20 XP</option><option value="30">Obiettivo 30 XP</option><option value="50">Obiettivo 50 XP</option><option value="100">Obiettivo 100 XP</option></select></div><div class="xpb"><div id="gf"></div></div></div>
@@ -168,13 +179,16 @@ textarea.ta{width:100%;border-radius:16px;padding:10px 14px;font:16px/1.3 ui-mon
 <p class="note" style="margin-top:10px">Le voci con “Natural”, “Neural” o “Premium” suonano molto meno robotiche. Su Edge e Windows 11 ci sono le voci Microsoft Natural; su iPhone e Mac scarica una voce giapponese “Migliorata” o “Premium” dalle impostazioni di accessibilità; su Android scegli la voce Google di qualità alta.</p></details>
 <details class="vp" id="bk"><summary>Salva e trasferisci i progressi</summary>
 <p class="note" style="margin-top:10px">I progressi sono salvati nel browser di questo dispositivo. Per sicurezza, o per passare a un altro dispositivo (anche iPhone), crea un codice, conservalo e incollalo dove vuoi riprendere.</p>
-<div class="row"><button class="btn" id="bkExp" type="button">Crea codice</button><button class="btn g" id="bkShare" type="button">Condividi</button><button class="btn g" id="bkCopy" type="button">Copia</button></div>
+<div class="row"><button class="btn" id="bkFile" type="button">Salva file</button><button class="btn g" id="bkLoad" type="button">Carica file</button><input type="file" id="bkIn" accept=".txt,text/plain,application/json" hidden></div>
+<p class="note">Consigliato su iPhone: tocca “Salva file”, scegli “Salva su File” e poi iCloud Drive. Salvando di nuovo con lo stesso nome, iPhone ti chiede se sostituire il file. Per ripristinare, tocca “Carica file”.</p>
+<div class="row"><button class="btn g" id="bkExp" type="button">Crea codice</button><button class="btn g" id="bkShare" type="button">Condividi</button><button class="btn g" id="bkCopy" type="button">Copia</button></div>
 <textarea class="ta" id="bkTxt" aria-label="Codice dei progressi" rows="3" placeholder="Il codice appare qui. Per importare, incollalo qui e tocca Importa." spellcheck="false" autocapitalize="off" autocorrect="off"></textarea>
 <div class="row"><button class="btn g" id="bkImp" type="button">Importa (unisce ai dati attuali)</button></div>
 <p class="note" id="bkMsg"></p></details>
 <nav role="tablist">
 <button role="tab" aria-selected="true" data-t="lessons">Lezioni</button>
 <button role="tab" aria-selected="false" data-t="vocab">Vocabolario</button>
+<button role="tab" aria-selected="false" data-t="write">Scrivi</button>
 <button role="tab" aria-selected="false" data-t="chart">Tabella</button>
 <button role="tab" aria-selected="false" data-t="quiz">Quiz</button>
 <button role="tab" aria-selected="false" data-t="errs">Progressi</button>
@@ -185,6 +199,10 @@ textarea.ta{width:100%;border-radius:16px;padding:10px 14px;font:16px/1.3 ui-mon
 <section id="lessons">
 <div id="lessonList"></div>
 <div id="lessonRun" hidden></div>
+</section>
+
+<section id="write" hidden>
+<div id="wRoot"></div>
 </section>
 
 <section id="chart" hidden>
@@ -220,7 +238,7 @@ textarea.ta{width:100%;border-radius:16px;padding:10px 14px;font:16px/1.3 ui-mon
 </div>
 <div id="vread"></div>
 <div class="row" id="vcats"></div>
-<div class="row"><button class="btn" id="vtrain" type="button">Allenati con queste parole</button><button class="btn g" id="vsent" type="button">Ordina le frasi</button><button class="btn g" id="vdict" type="button">Dettato</button><select class="sel" id="vdl" aria-label="Difficoltà del dettato"><option value="0">Dettato: automatico</option><option value="1">Dettato: facile</option><option value="2">Dettato: medio</option><option value="3">Dettato: difficile</option></select></div>
+<div class="row"><button class="btn" id="vtrain" type="button">Allenati con queste parole</button><button class="btn g" id="vsent" type="button">Ordina le frasi</button><button class="btn g" id="vdict" type="button">Dettato</button><button class="btn g" id="vaud" type="button">Ascolto</button><button class="btn g" id="vnum" type="button">Numeri e orari</button><select class="sel" id="vdl" aria-label="Difficoltà del dettato"><option value="0">Dettato: automatico</option><option value="1">Dettato: facile</option><option value="2">Dettato: medio</option><option value="3">Dettato: difficile</option></select></div>
 <div id="vList"></div>
 </section>
 
@@ -287,8 +305,9 @@ const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=nu
 /* tabs */
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
  document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x===b));
- ["lessons","vocab","chart","quiz","errs","rules"].forEach(s=>$(s).hidden=s!==b.dataset.t);
+ ["lessons","vocab","write","chart","quiz","errs","rules"].forEach(s=>$(s).hidden=s!==b.dataset.t);
  if(b.dataset.t==="errs"){renderS();renderE();renderB();renderR()}
+ if(b.dataset.t==="write")renderW();
  if(b.dataset.t==="quiz"&&!cur)nextQ()});
 
 /* chart */
@@ -349,21 +368,91 @@ G.filter(g=>g.k).forEach(g=>{let i=0;SZ[g.id].forEach((n,x)=>{L.push({t:LN[g.id]
 let done=[];try{done=JSON.parse(localStorage.getItem("hira-done")||"[]")}catch(e){}
 if(!Array.isArray(done))done=[];
 const lr=$("lessonRun"),ll=$("lessonList");let S=null;
+const CHE=L.length===44?[2,5,9,14,20,23,26,30,35,41,43]:[L.length-1];
+const chOf=i=>CHE.findIndex(e=>i<=e),chRange=c=>[c?CHE[c-1]+1:0,CHE[c]];
+const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
+const chLocked=c=>{const [a,b]=chRange(c);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
+function lockedL(i){if(i===0||isD(i,"c"))return false;const a=L[i-1],b=L[i];if((a.g[0]==="k")!==(b.g[0]==="k"))return false;if(!passL(i-1))return true;return CHE.includes(i-1)&&!isD(i-1,"t")}
+function startCh(c){const [a,b]=chRange(c);const ks=shuffle(L.slice(a,b+1).flatMap(x=>x.k));S={i:b,kind:"t",ch:c,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["listen","read"],kq:ks.slice(0,15)};lr.hidden=false;ll.hidden=true;startPh()}
 function isD(i,t){return done.includes(t==="c"?i:i+":"+t)}
+const ROADCSS=`.road{position:relative;margin:14px 0;border-radius:26px;overflow:hidden;background-color:#a9d58f;background-image:radial-gradient(circle,#fff 0 2px,transparent 2.6px),radial-gradient(circle,#ffe48a 0 2px,transparent 2.6px),radial-gradient(ellipse at 30% 20%,#bde5a4 0,transparent 62%),radial-gradient(ellipse at 80% 70%,#93c47e 0,transparent 56%);background-size:97px 113px,131px 89px,100% 700px,100% 900px;background-position:12px 20px,60px 50px,0 0,0 300px}
+.rhd{position:absolute;left:0;top:0;width:100%;height:170px}
+.road svg{position:absolute;left:0;top:0;width:100%}
+.road path{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.r0{stroke:#b99763;stroke-width:36}.r1{stroke:#ecd9ae;stroke-width:28}.r3{stroke:#fbf3dc;stroke-width:3;stroke-dasharray:.5 12;opacity:.9}.r2{stroke:#e0533f;stroke-width:6}
+.pn{position:absolute;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;border:3px solid #c9a96b;background:var(--paper);color:var(--pen);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font:700 1.7rem var(--mi);box-shadow:0 5px 0 #0006;padding:0}
+.pn .g{line-height:1}.pn small{font:600 .62rem var(--ui);line-height:1;margin-top:2px}
+.pn.d{background:var(--shu);border-color:#fff6ee;color:#fff6ee}
+.pn.l{background:#b9c7b1;border-color:#8fa089;color:#5d6b58;font-size:1.3rem}
+.pn.v{width:76px;height:76px;border-radius:24px}
+.pn.pp{width:54px;height:54px;font-size:1.6rem;border-style:dashed}.pn.pp.d{background:var(--paper);color:var(--pen);border-color:var(--pline)}.pn.pp.cur{width:62px;height:62px}
+.pn.cur{width:78px;height:78px;animation:pulse 1.6s ease-in-out infinite}.pn.v.cur{width:84px;height:84px}
+@keyframes pulse{0%,100%{box-shadow:0 5px 0 #0006,0 0 0 0 #cf3f2f99}50%{box-shadow:0 5px 0 #0006,0 0 0 13px #cf3f2f00}}
+@media (prefers-reduced-motion:reduce){.pn.cur{animation:none}}
+.pb{position:absolute;left:50%;transform:translate(-50%,-50%);background:var(--paper);color:var(--pen);font:700 .85rem var(--ui);padding:7px 16px;border-radius:99px;white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis;box-shadow:0 3px 0 #0005}
+.dc{position:absolute;font-size:1.8rem;opacity:.9;pointer-events:none}
+.sh{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;z-index:60}`;
+const HEAD='<svg class="rhd" viewBox="0 0 360 170" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ec8e8"/><stop offset="1" stop-color="#eaf7ee"/></linearGradient></defs><rect width="360" height="170" fill="url(#sk)"/><circle cx="305" cy="38" r="17" fill="#fff6c9"/><path d="M50 170 L150 56 Q180 28 210 56 L310 170Z" fill="#8196bd"/><path d="M150 56 Q180 28 210 56 L198 64 L188 54 L178 66 L168 53 L158 64Z" fill="#fff"/><g fill="#fff" opacity=".92"><ellipse cx="70" cy="40" rx="30" ry="9"/><ellipse cx="92" cy="33" rx="20" ry="9"/><ellipse cx="250" cy="62" rx="26" ry="8"/><ellipse cx="270" cy="56" rx="16" ry="7"/></g><path d="M0 170 L0 138 Q70 108 140 138 T290 132 T360 138 L360 170Z" fill="#8fc98a"/><path d="M0 170 L0 152 Q100 128 200 152 T360 148 L360 170Z" fill="#a9d58f"/></svg>';
+const DEC={tree:'<svg viewBox="0 0 60 70" width="54"><ellipse cx="30" cy="65" rx="17" ry="5" fill="#0002"/><rect x="27" y="40" width="6" height="25" rx="2" fill="#8a5b3a"/><circle cx="30" cy="27" r="20" fill="#5fa65a"/><circle cx="19" cy="37" r="13" fill="#74b868"/><circle cx="42" cy="36" r="14" fill="#6bb062"/><circle cx="25" cy="20" r="8" fill="#9bd68a" opacity=".7"/></svg>',
+sakura:'<svg viewBox="0 0 60 70" width="54"><ellipse cx="30" cy="65" rx="17" ry="5" fill="#0002"/><rect x="27" y="40" width="6" height="25" rx="2" fill="#7a5238"/><circle cx="30" cy="27" r="20" fill="#f4b6c8"/><circle cx="19" cy="37" r="13" fill="#f9cfdb"/><circle cx="42" cy="36" r="14" fill="#f09bb6"/><circle cx="25" cy="20" r="8" fill="#fde6ee" opacity=".8"/></svg>',
+house:'<svg viewBox="0 0 80 64" width="62"><ellipse cx="40" cy="58" rx="32" ry="5" fill="#0002"/><rect x="14" y="28" width="52" height="28" fill="#f6efdc"/><rect x="14" y="28" width="52" height="4" fill="#d9ccaa"/><path d="M4 30 L40 6 L76 30Z" fill="#5b6b86"/><path d="M4 30 L40 6 L76 30 L70 30 L40 12 L10 30Z" fill="#46556e"/><rect x="34" y="38" width="12" height="18" fill="#8a5b3a"/><rect x="20" y="36" width="9" height="9" fill="#9fcfe0"/><rect x="51" y="36" width="9" height="9" fill="#9fcfe0"/></svg>',
+torii:'<svg viewBox="0 0 70 64" width="54"><ellipse cx="35" cy="60" rx="24" ry="4" fill="#0002"/><rect x="14" y="20" width="7" height="40" fill="#d6402d"/><rect x="49" y="20" width="7" height="40" fill="#d6402d"/><path d="M4 12 Q35 22 66 12 L66 20 Q35 30 4 20Z" fill="#c2331f"/><rect x="12" y="28" width="46" height="5" fill="#d6402d"/></svg>'};
+const pc=()=>{try{return JSON.parse(localStorage.getItem("hira-pct")||"{}")}catch(e){return{}}};
+const POI=[
+{e:"🍣",t:"Il sushi nasce per strada",w:"Tokyo, un tempo Edo",x:"Il sushi di oggi è nato a Edo, l’antica Tokyo, all’inizio dell’Ottocento, come cibo veloce da mangiare in piedi alle bancarelle. Prima, il pesce si conservava fermentato sotto il riso. Il pesce, さかな, era il protagonista del banco."},
+{e:"🌸",t:"Hanami: guardare i fiori",w:"Tutto il Giappone, in primavera",x:"Ogni primavera i giapponesi si siedono sotto i ciliegi in fiore per fare picnic: si chiama はなみ, “guardare i fiori”. L’usanza ha più di mille anni e le previsioni della fioritura si seguono come il meteo."},
+{e:"🗻",t:"Il monte Fuji",w:"Tra Shizuoka e Yamanashi",x:"Con 3.776 metri è la montagna più alta del Giappone e da secoli si sale in pellegrinaggio. La parola やま significa “montagna”, e questa è la più famosa di tutte. Dal 2013 è Patrimonio UNESCO."},
+{e:"🍞",t:"Il pan arriva dal Portogallo",w:"I porti del Kyūshū",x:"La parola ぱん non è giapponese: arrivò con i mercanti e i missionari portoghesi nel Cinquecento, da “pão”. Per questo oggi il pane si scrive spesso in katakana, come le altre parole straniere."},
+{e:"🍵",t:"La via del tè",w:"Kyoto e Uji",x:"Il tè, おちゃ, arrivò dalla Cina e intorno al 1200 il monaco Eisai ne scrisse i benefici. Col tempo nacque la cerimonia del tè, un rito silenzioso in cui ogni gesto ha un senso. Il più celebre è il matcha, in polvere."},
+{e:"✍️",t:"Il katakana nasce dai kanji",w:"I monasteri buddhisti",x:"I katakana sono frammenti di kanji: i monaci buddhisti li usavano per annotare in fretta i testi. Per esempio ア viene da 阿 e カ da 加. Per questo hanno linee semplici e spigolose."},
+{e:"🐕",t:"Hachikō aspetta in stazione",w:"Stazione di Shibuya, Tokyo",x:"Hachikō (ハチ公) era un cane akita che aspettava ogni giorno il padrone alla stazione di Shibuya. Anche dopo la morte del professore, nel 1925, tornò per quasi dieci anni. Oggi la sua statua è un punto d’incontro famosissimo."},
+{e:"🍜",t:"Il ramen istantaneo",w:"Osaka, 1958",x:"Il ラーメン arrivò dalla Cina, ma quello istantaneo è un’invenzione giapponese: nel 1958 Momofuku Ando lanciò a Osaka il primo, il Chicken Ramen. Oggi si mangia in tutto il mondo."},
+{e:"🎴",t:"Nintendo prima dei videogiochi",w:"Kyoto, 1889",x:"Prima dei ゲーム, Nintendo faceva carte da gioco: fu fondata a Kyoto nel 1889 da Fusajirō Yamauchi per produrre le hanafuda, le carte con i fiori dei dodici mesi. Si usano ancora oggi."},
+{e:"🥤",t:"Distributori ovunque",w:"Tutto il Giappone",x:"In Giappone ci sono più di due milioni di distributori automatici, anche in posti isolati. Vendono ジュース, tè, caffè in lattina e perfino zuppa, e la stessa macchina offre bevande calde e fredde."},
+{e:"🏪",t:"Il konbini sempre aperto",w:"Ovunque, a ogni ora",x:"Il Giappone ha più di 50.000 コンビニ, aperti quasi sempre: pagano bollette, spediscono pacchi e vendono pasti caldi davvero buoni. I katakana estesi come ファ servono a scrivere nomi stranieri come ファミマ, cioè FamilyMart."}];
+const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
+function openPoi(c){const p=POI[c];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
+ const lk=!isD(chRange(c)[1],"t");
+ if(lk)k.append(el("div","q sm","🔒"),el("h2",0,"Punto di interesse"),el("p","hint","Supera la verifica del capitolo "+(c+1)+" per scoprire questa tappa."));
+ else{try{const s=JSON.parse(localStorage.getItem("hira-seen")||"[]");if(!s.includes(c)){s.push(c);localStorage.setItem("hira-seen",JSON.stringify(s))}}catch(e){}
+  k.append(el("div","q sm",p.e),el("h2",0,p.t),el("p","note","📍 "+p.w),el("p","hint",p.x))}
+ const cl=el("button","btn",lk?"Chiudi":"Continua");cl.style.marginTop="12px";cl.onclick=()=>{o.remove();renderL()};o.onclick=e=>{if(e.target===o)cl.click()};k.append(cl);o.append(k);document.body.append(o)}
+function openNode(n){if(n.p!==undefined)return openPoi(n.p);const o=el("div","sh"),c=el("div","card");c.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");o.onclick=e=>{if(e.target===o)o.remove()};
+ const P=pc(),act=(txt,key,dn,f)=>{const b=el("button","step"+(dn?" d":""),txt+(dn?" 済":"")+(P[key]?" · "+P[key]+"%":""));b.style.cssText="width:100%;margin:6px 0";b.onclick=()=>{o.remove();f()};return b};
+ const cl=el("button","btn g","Chiudi");cl.style.marginTop="10px";cl.onclick=()=>o.remove();
+ if(n.i!==undefined){const i=n.i,l=L[i];c.append(el("div","q sm",l.k.map(x=>x[0]).join(" ")),el("h2",0,l.t));
+  if(lockedL(i))c.append(el("p","hint","Completa prima la tappa precedente con almeno il 90% di risposte corrette."));
+  else{c.append(act("Caratteri",i,isD(i,"c"),()=>startL(i)));if(topicWords(i).length>=2)c.append(act("Parole",i+":w",isD(i,"w"),()=>startW(i)));c.append(act("Pronuncia (facoltativa)",i+":p",isD(i,"p"),()=>startP(i)))}}
+ else{const b=chRange(n.t)[1];c.append(el("div","q sm","🏁"),el("h2",0,"Verifica del capitolo "+(n.t+1)));
+  if(chLocked(n.t))c.append(el("p","hint","Supera tutte le lezioni del capitolo, con almeno il 90%, per sbloccare la verifica."));
+  else c.append(el("p","hint","30 domande miste su tutto il capitolo. Serve almeno il 90%."),act("Inizia la verifica",b+":t",isD(b,"t"),()=>startCh(n.t)))}
+ c.append(cl);o.append(c);document.body.append(o)}
+function renderRoad(){
+ if(!document.getElementById("roadcss")){const s=el("style");s.id="roadcss";s.textContent=ROADCSS;document.head.append(s)}
+ const N=[];CHE.forEach((e,c)=>{const [a,b]=chRange(c);N.push({b:c});for(let i=a;i<=b;i++)N.push({i});N.push({t:c});N.push({p:c})});
+ const stt=n=>n.p!==undefined?(!isD(chRange(n.p)[1],"t")?"l":seenP(n.p)?"d":"o"):n.i!==undefined?(passL(n.i)?"d":lockedL(n.i)?"l":"o"):(isD(chRange(n.t)[1],"t")?"d":chLocked(n.t)?"l":"o");
+ let y=190,k=0,cur=-1;const pts=[];
+ N.forEach((n,ix)=>{if(n.b!==undefined){n.y=y+22;y+=64}else{n.s=stt(n);if(cur<0&&n.s==="o")cur=ix;n.k=k++;n.x=50+22*Math.sin(n.k*.95);n.y=y+40;y+=92;pts.push(n)}});
+ const H=y+30,road=el("div","road");road.style.height=H+"px";
+ const ci=cur<0?pts.length-1:pts.indexOf(N[cur]);let d="",dp="";
+ pts.forEach((p,j)=>{if(!j){d="M"+p.x+" "+p.y;dp=d}else{const q=pts[j-1],m=(q.y+p.y)/2,seg=" C"+q.x+" "+m+","+p.x+" "+m+","+p.x+" "+p.y;d+=seg;if(j<=ci)dp+=seg}});
+ const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");svg.setAttribute("viewBox","0 0 100 "+H);svg.setAttribute("preserveAspectRatio","none");svg.setAttribute("aria-hidden","true");svg.style.height=H+"px";
+ svg.innerHTML='<path d="'+d+'" class="r0"/><path d="'+d+'" class="r1"/><path d="'+d+'" class="r3"/><path d="'+dp+'" class="r2"/>';road.append(svg);road.insertAdjacentHTML("afterbegin",HEAD);
+ const P=pc();let curEl=null;
+ N.forEach((n,ix)=>{
+  if(n.b!==undefined){const [a,b]=chRange(n.b),nm=L.slice(a,b+1).map(l=>l.k[0][0]).join("・"),pre=CHE.length===11?(n.b===0?"Hiragana · ":n.b===5?"Katakana · ":""):"";const bn=el("div","pb",pre+"Capitolo "+(n.b+1)+" · "+nm);bn.style.top=n.y+"px";road.append(bn);return}
+  const v=n.t!==undefined,pp=n.p!==undefined,b=el("button","pn "+n.s+(v?" v":"")+(pp?" pp":"")+(ix===cur?" cur":""));b.style.left=n.x+"%";b.style.top=n.y+"px";
+  b.setAttribute("aria-label",(pp?"Punto di interesse":v?"Verifica capitolo "+(n.t+1):L[n.i].t)+(n.s==="l"?", bloccata":n.s==="d"?", completata":""));
+  b.append(el("span","g",n.s==="l"?"🔒":pp?POI[n.p].e:v?"🏁":L[n.i].k[0][0]));
+  const pv=pp?0:v?P[chRange(n.t)[1]+":t"]:P[n.i];if(n.s==="d"&&pv)b.append(el("small",0,pv+"%"));
+  b.onclick=()=>openNode(n);if(ix===cur)curEl=b;road.append(b)});
+ pts.forEach((p,j)=>{if(j%2===1){const e=el("div","dc");e.innerHTML=DEC[["tree","sakura","house","tree","torii","sakura","tree"][j%7]];e.style.top=(p.y-24)+"px";e.style[p.x>50?"left":"right"]="1%";road.append(e)}});
+ ll.append(road);if(curEl)setTimeout(()=>curEl.scrollIntoView({block:"center"}),80)}
 function renderL(){
- ll.replaceChildren(el("p","note",done.filter(d=>typeof d==="number").length+" argomenti su "+L.length+" con i caratteri completati. Ogni argomento ha tre lezioni: Caratteri, Parole e Pronuncia. Ti consiglio di farle in quest’ordine."));
+ ll.replaceChildren(el("p","note","Segui la strada: tocca una tappa per iniziare. Per proseguire serve almeno il 90% di risposte corrette."));
  ll.append(backupRow(),dueRow(),oddRow());
  const dn=done.filter(d=>typeof d==="number");if(dn.length){const rr=el("div","row"),bm=el("button","btn","Ripasso generale");bm.onclick=startMix;rr.append(bm);ll.append(rr)}
- let lg="",g;
- L.forEach((l,i)=>{if(l.g!==lg){lg=l.g;ll.append(el("h2",0,LN[l.g]));g=el("div","lessons");ll.append(g)}
-  const hw=topicWords(i).length>=2,all=isD(i,"c")&&isD(i,"p")&&(!hw||isD(i,"w"));
-  const c=el("div","topic"+(all?" d":"")),th=el("div","th"),st=el("div","steps");
-  th.append(el("b",0,l.k.map(x=>x[0]).join(" ")),el("span",0,l.t));
-  [["c","Caratteri"],["w","Parole"],["p","Pronuncia"]].forEach(([t,n])=>{
-   if(t==="w"&&!hw)return;
-   const d=isD(i,t),b=el("button","step"+(d?" d":""),n+(d?" 済":""));
-   b.onclick=()=>t==="c"?startL(i):t==="w"?startW(i):startP(i);st.append(b)});
-  c.append(th,st);g.append(c)})}
+ renderRoad()}
 function startL(i){S={i,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["listen","read","pairs"],ws:wordsFor(i)};if(S.ws.length)S.phs.push("word");lr.hidden=false;ll.hidden=true;teach()}
 function exitL(){if(window.speechSynthesis)speechSynthesis.cancel();lr.hidden=true;ll.hidden=false;renderL()}
 function lhead(p){const r=el("div","row"),x=el("button","chip","✕ Esci");x.onclick=exitL;r.append(x);
@@ -392,13 +481,13 @@ const WV=("あい:ai:amore;いえ:ie:casa;うえ:ue:sopra;あお:ao:blu;いい:i
 "わたし:watashi:io;かわ:kawa:fiume;わに:wani:coccodrillo;にほん:nihon:Giappone;ほん:hon:libro;みかん:mikan:mandarino;てんき:tenki:tempo meteo;みんな:minna:tutti;"+
 "かがみ:kagami:specchio;ごご:gogo:pomeriggio;かぜ:kaze:vento;ともだち:tomodachi:amico;でんわ:denwa:telefono;ばなな:banana:banana;うさぎ:usagi:coniglio;かばん:kaban:borsa;まど:mado:finestra;くだもの:kudamono:frutta;たまご:tamago:uovo;ひらがな:hiragana:hiragana;りんご:ringo:mela;かんじ:kanji:kanji;にんじん:ninjin:carota;だれ:dare:chi;どこ:doko:dove;かぞく:kazoku:famiglia;はがき:hagaki:cartolina;ぶた:buta:maiale;くび:kubi:collo;へび:hebi:serpente;ぼく:boku:io (maschile);"+
 "ぱん:pan:pane;ぺん:pen:penna;さんぽ:sanpo:passeggiata;てんぷら:tenpura:tempura;えんぴつ:enpitsu:matita;"+
-"おちゃ:ocha:tè;ひゃく:hyaku:cento;しゃしん:shashin:fotografia;じてんしゃ:jitensha:bicicletta;りょこう:ryokou:viaggio;しゅみ:shumi:hobby;きゃく:kyaku:ospite;ちゃいろ:chairo:marrone;いしゃ:isha:medico;かいしゃ:kaisha:azienda;りゅう:ryuu:drago;ぎゅうにゅう:gyuunyuu:latte;びょういん:byouin:ospedale;にんぎょう:ningyou:bambola;きょう:kyou:oggi;しょうゆ:shouyu:salsa di soia").split(";").map(x=>x.split(":"));
+"おちゃ:ocha:tè;ひゃく:hyaku:cento;しゃしん:shashin:fotografia;じてんしゃ:jitensha:bicicletta;りょこう:ryokou:viaggio;しゅみ:shumi:hobby;きゃく:kyaku:ospite;ちゃいろ:chairo:marrone;いしゃ:isha:medico;かいしゃ:kaisha:azienda;りゅう:ryuu:drago;ぎゅうにゅう:gyuunyuu:latte;びょういん:byouin:ospedale;にんぎょう:ningyou:bambola;きょう:kyou:oggi;しょうゆ:shouyu:salsa di soia;でぐち:deguchi:uscita;いりぐち:iriguchi:entrata;みぎ:migi:destra;ひだり:hidari:sinistra;ここ:koko:qui;あそこ:asoko:laggiù;ちかい:chikai:vicino;つぎ:tsugi:prossimo;かぎ:kagi:chiave;へや:heya:camera;ください:kudasai:per favore;すごい:sugoi:incredibile;きれい:kirei:bello, pulito;かわいい:kawaii:carino;あぶない:abunai:pericoloso;いたい:itai:fa male;うそ:uso:bugia;だめ:dame:vietato, no;なかま:nakama:compagno;ほんとう:hontou:davvero").split(";").map(x=>x.split(":"));
 const units=w=>{const a=[];for(const ch of w){if("ゃゅょャュョァィゥェォ".includes(ch)&&a.length)a[a.length-1]+=ch;else a.push(ch)}return a};
 const KR={};L.forEach(x=>x.k.forEach(y=>KR[y[0]]=y[1]));KR["っ"]="っ (tsu piccolo)";KR["ッ"]="ッ (tsu piccolo)";KR["ー"]="ー (vocale lunga)";
 function wordsFor(i){const set=new Set(L.slice(0,i+1).flatMap(x=>x.k.map(y=>y[0]))),nw=new Set(L[i].k.map(y=>y[0]));
  const ok=WV.filter(w=>units(w[0]).every(u=>set.has(u)||u==="ー"||u==="ッ")),nu=ok.filter(w=>units(w[0]).some(u=>nw.has(u)));
  return shuffle((nu.length?nu:ok).slice()).slice(0,3)}
-const PH={listen:"Ascolta e scegli il carattere",read:"Leggi e scegli la pronuncia",pairs:"Abbina carattere e suono",word:"Costruisci la parola",wlisten:"Ascolta e scegli la parola",wmean:"Cosa significa?",wbuild:"Costruisci la parola",wpairs:"Abbina parola e significato",sent:"Metti in ordine la frase",dict:"Dettato",odd:"Caccia all’intruso"};
+const PH={listen:"Ascolta e scegli il carattere",read:"Leggi e scegli la pronuncia",pairs:"Abbina carattere e suono",word:"Costruisci la parola",wlisten:"Ascolta e scegli la parola",wmean:"Cosa significa?",wbuild:"Costruisci la parola",wpairs:"Abbina parola e significato",sent:"Metti in ordine la frase",dict:"Dettato",odd:"Caccia all’intruso",aud:"Ascolta e capisci",num:"Numeri, prezzi e orari"};
 function stepHead(){return el("p","note",S.rev?"Ripasso dei tuoi errori":"Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+PH[S.phs[S.ph]])}
 function startPh(){
  if(S.ph>=S.phs.length)return fin();
@@ -407,10 +496,12 @@ function startPh(){
  else if(t==="wlisten"||t==="wmean"){S.q=shuffle(S.wl.slice());S.tot=S.q.length;wprac()}
  else if(t==="pairs")pairs(L[S.i].k.map(x=>[x[0],x[1],x[1]]),"Tocca un carattere, poi il suo suono.");
  else if(t==="wpairs")pairs(S.wl.map(w=>[w[0],w[2],w[1]]),"Tocca una parola, poi il suo significato.",true);
+ else if(t==="aud"){S.q=shuffle(S.aq.slice());S.tot=S.q.length;aud()}
+ else if(t==="num"){S.q=numQs();S.tot=S.q.length;num()}
  else if(t==="odd"){S.q=S.oq.slice();S.tot=S.q.length;odd()}
  else if(t==="dict"){S.q=shuffle(S.dq.slice());S.tot=S.q.length;dict()}
  else if(t==="sent")sentEx();else wordEx()}
-function nextPh(){S.ph++;startPh()}
+function nextPh(){S.T=(S.T||0)+(S.tot||0);S.ph++;startPh()}
 function dist(q){
  const l=S.rev||S.mix?{g:KG[q[0]]}:L[S.i],lg=S.rev||S.mix?L:L.slice(0,S.i+1),ds=[];
  const fill=a=>shuffle(a.slice()).forEach(y=>{if(ds.length<3&&y[1]!==q[1]&&!ds.some(z=>z[1]===y[1]))ds.push(y)});
@@ -672,23 +763,31 @@ function pron(){
  lr.replaceChildren(...h,c);setTimeout(()=>say(it.j),200)}
 function fin(){
  const k=S.kind||"c",key=k==="c"?S.i:S.i+":"+k;
- const first=!S.rev&&k!=="v"&&!done.includes(key);
+ const gate=!S.rev&&!S.mix&&!S.srs&&S.i>=0&&(k==="c"||k==="w"||k==="t"),T=S.T||0,pct=T?Math.floor(T/(T+S.err)*100):100;
+  if(gate&&pct<90){const c=el("div","card"),r=el("div","row");r.style.justifyContent="center";
+   const b1=el("button","btn","Riprova");b1.onclick=()=>k==="w"?startW(S.i):k==="t"?startCh(S.ch):startL(S.i);
+   const b2=el("button","btn g","Torna alle lezioni");b2.onclick=exitL;r.append(b1,b2);
+   c.append(el("div","q sm","💪"),el("h2",0,"Quasi, ma serve il 90%"),el("p","hint","Risposte corrette: "+pct+"%. Per andare avanti ne servono almeno il 90%. Riprova: le domande cambiano."),r);
+   lr.replaceChildren(...lhead(1),c);return}
+  if(gate){try{const pp=JSON.parse(localStorage.getItem("hira-pct")||"{}");pp[key]=Math.max(pp[key]||0,pct);localStorage.setItem("hira-pct",JSON.stringify(pp))}catch(e){}}
+  const first=!S.rev&&k!=="v"&&!done.includes(key);
  if(first){done.push(key);try{localStorage.setItem("hira-done",JSON.stringify(done))}catch(e){}}
  if(first&&!S.err&&k!=="p")cnt("pf");
  const bonus=S.rev?10:k==="v"?15:first?(k==="p"?20:(S.err?20:30)):0;if(bonus){ST.xp+=bonus;svST();xpUI()}
  const c=el("div","card"),r=el("div","row");r.style.justifyContent="center";
  const go=(t,f)=>{const b=el("button","btn",t);b.onclick=f;r.append(b)},i=S.i;
  if(!S.rev){
+  if(S.srs&&dueList().length)go("Altri "+dueList().length+" da ripassare",startSRS);
   if(k==="c"&&topicWords(i).length>=2)go("Continua: parole",()=>startW(i));
   else if(k==="w")go("Continua: pronuncia",()=>startP(i));
   else if(k!=="v"&&i<L.length-1)go("Prossimo argomento",()=>startL(i+1))}
  const bk=el("button","btn g",S.vocab?"Torna al vocabolario":"Torna alle lezioni");bk.onclick=S.vocab?()=>{exitL();document.querySelector('nav button[data-t="vocab"]').click()}:exitL;r.append(bk);
- const ttl=S.rev?"Ripasso completato":k==="c"?"Lezione completata":k==="w"?"Parole completate":k==="v"?"Ripasso completato":"Pronuncia completata";
- c.append(el("div","q sm hl","おめでとう"),el("h2",0,ttl),el("p","hint",(S.err?"Errori: "+S.err+". Rifai per fissarli meglio.":"Nessun errore, ottimo lavoro.")+(bonus?" +"+bonus+" XP":"")),r);
+ const ttl=S.rev?"Ripasso completato":k==="t"?"Verifica superata":k==="c"?"Lezione completata":k==="w"?"Parole completate":k==="v"?"Ripasso completato":"Pronuncia completata";
+ c.append(el("div","q sm hl","おめでとう"),el("h2",0,ttl),el("p","hint",(gate?"Risposte corrette: "+pct+"%. ":"")+(S.err?"Errori: "+S.err+". Rifai per fissarli meglio.":"Nessun errore, ottimo lavoro.")+(bonus?" +"+bonus+" XP":"")),r);
  lr.replaceChildren(...lhead(1),c);burst(c)}
 
 /* punteggio e memoria errori */
-const ST0=()=>({xp:0,m:{},s:{},dl:0,dm:0,ds:0,df:0,goal:30,dx:{d:0,x:0},sk:{n:0,last:0,best:0},bd:{},ct:{},bi:0});let ST=ST0();
+const ST0=()=>({xp:0,m:{},s:{},dl:0,dm:0,ds:0,df:0,goal:30,dx:{d:0,x:0},sk:{n:0,last:0,best:0},bd:{},ct:{},bi:0,mst:{},sd:0});let ST=ST0();
 try{const x=JSON.parse(localStorage.getItem("hira-stats")||"{}");if(x&&typeof x==="object")ST=Object.assign(ST0(),x)}catch(e){}
 const svST=()=>{try{localStorage.setItem("hira-stats",JSON.stringify(ST))}catch(e){}};
 let _lx=ST.xp;
@@ -703,13 +802,15 @@ function xpUI(){
  const d=ST.xp-_lx;_lx=ST.xp;
  if(d>0){const t=DAY();if(ST.dx.d!==t)ST.dx={d:t,x:0};const b=ST.dx.x;ST.dx.x+=d;if(b<ST.goal&&ST.dx.x>=ST.goal)goalHit(t);svST()}
  goalUI();checkBadges()}
-const DAY=()=>Math.floor((Date.now()-new Date().getTimezoneOffset()*6e4)/864e5),IV=[1,3,7];
+const DAY=()=>Math.floor((Date.now()-new Date().getTimezoneOffset()*6e4)/864e5),IV=[1,3,7,16,35,90];
 function rec(j,r,ok){
- const m=ST.m[j]||(ST.m[j]={w:0,c:0,k:0,r}),t=DAY();ST.s=ST.s||{};
- if(ok){m.c++;m.k=Math.max(0,m.k-.5);ST.xp+=10;const q=ST.s[j];if(q&&q.d<=t){q.b++;if(q.b>=IV.length){delete ST.s[j];cnt("sr")}else q.d=t+IV[q.b]}}
- else{m.w++;m.k++;ST.s[j]={b:0,d:t+IV[0],r}}
+ const m=ST.m[j]||(ST.m[j]={w:0,c:0,k:0,r}),t=DAY();ST.s=ST.s||{};ST.mst=ST.mst||{};
+ if(ok){m.c++;m.k=Math.max(0,m.k-.5);ST.xp+=10;const q=ST.s[j];
+  if(q&&q.d<=t){q.b++;if(q.b>=IV.length){delete ST.s[j];ST.mst[j]=1}else{q.d=t+IV[q.b];if(q.b===3)cnt("sr")}}
+  else if(!q&&!ST.mst[j])ST.s[j]={b:0,d:t+IV[0],r}}
+ else{m.w++;m.k++;ST.s[j]={b:0,d:t+IV[0],r};delete ST.mst[j]}
  svST();xpUI()}
-const dueList=()=>Object.entries(ST.s||{}).filter(([,q])=>q.d<=DAY()).sort((a,b)=>a[1].d-b[1].d);
+const dueList=()=>Object.entries(ST.s||{}).filter(([j,q])=>q.d<=DAY()&&(KG[j]||WM[j])).sort((a,b)=>a[1].d-b[1].d);
 const KG={};L.forEach(x=>x.k.forEach(y=>KG[y[0]]=x.g));
 function startR(){
  const a=Object.entries(ST.m).filter(([j,m])=>KG[j]&&m.w>0).sort((x,y)=>(y[1].k-x[1].k)||(y[1].w-x[1].w)).slice(0,8).map(([j,m])=>[j,m.r]);
@@ -939,7 +1040,61 @@ const VD=`#Saluti e frasi utili
 いもうと|Sorella minore|Anche «sorellina».|いもうと は ピアノ を ひきます。|Mia sorella minore suona il pianoforte.
 おとこのこ|Bambino (maschio)|Letteralmente «bambino maschio».|おとこのこ が はしって います。|Un bambino sta correndo.
 おんなのこ|Bambina|Letteralmente «bambina».|おんなのこ は うた が じょうず です。|La bambina canta bene.
-かのじょ|Lei / Fidanzata|Il senso dipende dal contesto.|かのじょ は にほんじん です。|Lei è giapponese.`;
+かのじょ|Lei / Fidanzata|Il senso dipende dal contesto.|かのじょ は にほんじん です。|Lei è giapponese.
+#Stazione e per strada
+でぐち|Uscita|Si legge sui cartelli di stazioni e negozi.|でぐち は どこ です か。|Dov’è l’uscita?
+いりぐち|Entrata|Il contrario di でぐち.|いりぐち は あそこ です。|L’entrata è laggiù.
+ホーム|Binario / Banchina|Abbreviazione dell’inglese “platform”.|ホーム は どこ です か。|Dov’è il binario?
+のりかえ|Cambio (di treno)|Si legge sui cartelli nelle grandi stazioni.|のりかえ は どこ です か。|Dov’è il cambio?
+つぎ|Prossimo|Per esempio “prossima fermata”.|つぎ の えき は どこ です か。|Qual è la prossima stazione?
+ここ|Qui|Poi そこ (lì, vicino a te) e あそこ (laggiù).|ここ は えき です か。|Questa è la stazione?
+あそこ|Laggiù|Per indicare qualcosa lontano da entrambi.|あそこ に コンビニ が あります。|Laggiù c’è un konbini.
+ちかい|Vicino|Il contrario è とおい.|えき は ちかい です か。|La stazione è vicina?
+とおい|Lontano|La vocale lunga “oo” si scrive con おお.|ここ から とおい です。|È lontano da qui.
+まがります|Girare|Si usa per le indicazioni stradali.|ここ で みぎ に まがります。|Qui giro a destra.
+#In albergo e al negozio
+へや|Camera / Stanza|Anche la camera d’albergo.|へや は ここ です。|La camera è qui.
+かぎ|Chiave|Anche della camera d’albergo.|かぎ を ください。|La chiave, per favore.
+ください|Per favore (dammi)|Si mette dopo ciò che chiedi, con を.|みず を ください。|Dell’acqua, per favore.
+おねがいします|Per favore (richiesta)|Più cortese di ください, si usa per chiedere un favore.|これ を おねがい します。|Questo, per favore.
+トイレ|Bagno|Dall’inglese “toilet”, usatissima.|トイレ は どこ です か。|Dov’è il bagno?
+エレベーター|Ascensore|La ー allunga la vocale.|エレベーター は あそこ です。|L’ascensore è laggiù.
+チェックイン|Check-in|Si usa in albergo.|チェックイン を おねがい します。|Check-in, per favore.
+カード|Carta|Anche carta di credito.|カード で いい です か。|Posso pagare con la carta?
+げんきん|Contanti|Per chiedere se si paga in contanti.|げんきん だけ です か。|Solo contanti?
+レシート|Scontrino|Dall’inglese “receipt”.|レシート を ください。|Lo scontrino, per favore.
+おみやげ|Souvenir|Si compra per amici e famiglia.|おみやげ を かい ます。|Compro dei souvenir.
+コンビニ|Konbini (minimarket)|Aperto quasi sempre, con pasti e servizi.|コンビニ に いき ます。|Vado al konbini.
+#Aiuto e comunicazione
+たすけて|Aiuto!|Si grida in caso di pericolo.|たすけて ください。|Aiutatemi, per favore.
+だいじょうぶ|Va bene / Sto bene|Si usa anche per dire “non serve, grazie”.|だいじょうぶ です か。|Tutto bene?
+わかりません|Non capisco|Il contrario è わかります.|すみません、 わかりません。|Scusi, non capisco.
+もういちど|Ancora una volta|Per chiedere di ripetere.|もういちど おねがい します。|Ancora una volta, per favore.
+ゆっくり|Lentamente|Per chiedere di parlare più piano.|ゆっくり おねがい します。|Più lentamente, per favore.
+えいご|Inglese|Per chiedere se qualcuno lo capisce.|えいご は わかり ます か。|Capisce l’inglese?
+いたい|Fa male|Per dire dove senti dolore.|あたま が いたい です。|Ho mal di testa.
+けいさつ|Polizia|Per chiedere aiuto o informazioni.|けいさつ は どこ です か。|Dov’è la polizia?
+あぶない|Pericoloso / Attento!|Si grida anche per avvertire.|あぶない です よ。|È pericoloso!
+#Anime e film
+すごい|Incredibile / Fantastico|Una delle parole più sentite.|これ は すごい です ね。|Questo è incredibile, vero?
+やった|Evviva! / Ce l’ho fatta!|Esultanza informale.|やった。 ありがとう。|Evviva! Grazie.
+がんばれ|Forza! / Dai!|Per incoraggiare qualcuno.|がんばれ、 ともだち。|Forza, amico!
+だめ|Non va bene / Vietato|Molto usata nei dialoghi.|それ は だめ です。|Quello non va bene.
+ほんとう|Davvero / Vero|Si usa anche come domanda.|ほんとう です か。|Davvero?
+うそ|Bugia / Non ci credo!|Anche come esclamazione di sorpresa.|うそ です よ。|È una bugia!
+まじ|Sul serio (colloquiale)|Tra giovani, non con persone da rispettare.|まじ です か。|Sul serio?
+やばい|Pazzesco / Che guaio|Slang: può essere bello o brutto.|それ は やばい ね。|Quello è pazzesco, eh.
+いこう|Andiamo!|Forma di invito di いきます.|いこう、 みんな。|Andiamo, ragazzi!
+まって|Aspetta!|Da non usare con persone di riguardo.|まって、 ともだち。|Aspetta, amico!
+ちがう|Sbagliato / Diverso|Per negare o correggere.|ちがう、 これ じゃ ない。|No, non è questo.
+なかま|Compagno / Amico di squadra|Molto usato nelle storie di gruppo.|わたし の なかま です。|È un mio compagno.
+かわいい|Carino|Anche per animali e oggetti.|ねこ は かわいい です。|Il gatto è carino.
+きれい|Bello / Pulito|Anche per un paesaggio.|やま は きれい です。|La montagna è bella.
+アニメ|Anime|Dall’inglese “animation”.|アニメ が すき です。|Mi piacciono gli anime.
+マンガ|Manga|Fumetti giapponesi.|マンガ を よみ ます。|Leggo manga.
+ゲーム|Videogioco|Dall’inglese “game”.|ゲーム を します。|Gioco ai videogiochi.
+ラーメン|Ramen|Noodles in brodo.|ラーメン を たべ ます。|Mangio ramen.
+ジュース|Succo / Bibita|Dall’inglese “juice”.|ジュース を ください。|Un succo, per favore.`;
 const IRR={"こんにちは":"konnichiwa","こんばんは":"konbanwa"},PN={"は":"wa","を":"o","へ":"e"};
 function toRo(t){return t.split(" ").map(tok=>{
  const m=tok.match(/^(.*?)([。、！？]*)$/),core=m[1],pu=m[2].replace("。",".").replace("、",",").replace("！","!").replace("？","?");
@@ -997,20 +1152,25 @@ rb.onblur=()=>{rb.value=rb.value.replace(/n$/,"ん")};rb.oninput=()=>{clr(rb);co
 function goLessons(){document.querySelector('nav button[data-t="lessons"]').click();lr.hidden=false;ll.hidden=true}
 const LV=["Facile","Medio","Difficile"],lvl=()=>ST.dm?ST.dm-1:ST.dl||0;
 const kn=t=>[...t.replace(/[ 。、！？]/g,"")].length,lvOK=(it,l)=>it.w?kn(it.t)<=[3,5,99][l]:kn(it.t)<=[8,14,99][l];
-function startV(only){
- const src=shuffle(V.filter(w=>!vcat||w.c===vcat)),ss=src.filter(w=>w.e.split(" ").length>=3),d=only==="dict",lv=lvl();
- const pick=src.slice(0,6).map(w=>[sp(w.k),toRo(w.k),w.m]),sn=ss.slice(0,d?2:only?5:3).map(w=>[w.e,w.tr]);
- const dq=src.map(w=>({t:sp(w.k),m:w.m,w:1})).filter(x=>lvOK(x,lv)).slice(0,d?4:3).concat(ss.map(w=>({t:w.e,m:w.tr,w:0})).filter(x=>lvOK(x,lv)).slice(0,2));
- if(only?(d?!dq.length:!sn.length):pick.length<3)return;
- S={i:L.length-1,kind:"v",vocab:1,ix:0,q:[],tot:0,ok:0,err:0,ph:0,lv,phs:d?["dict"]:only?["sent"]:["wlisten","wmean","wpairs"],wl:pick,ws:[],sn,dq,vp:V.map(w=>[sp(w.k),toRo(w.k),w.m])};
- if(!only){const bw=pick.filter(w=>units(w[0]).length<=6).slice(0,3);if(bw.length){S.ws=bw;S.phs.splice(2,0,"wbuild")}if(dq.length)S.phs.push("dict");if(sn.length)S.phs.push("sent")}
+function startV(m){
+ const src=shuffle(V.filter(w=>!vcat||w.c===vcat)),ss=src.filter(w=>w.e.split(" ").length>=3),lv=lvl(),ok=x=>lvOK(x,lv);
+ const W=x=>({t:sp(x.k),m:x.m,w:1,r:toRo(x.k)}),Sn=x=>({t:x.e,m:x.tr,w:0});
+ const pick=src.slice(0,6).map(w=>[sp(w.k),toRo(w.k),w.m]),vp=V.map(w=>[sp(w.k),toRo(w.k),w.m]);
+ const base={i:L.length-1,kind:"v",vocab:1,ix:0,q:[],tot:0,ok:0,err:0,ph:0,lv,wl:pick,ws:[],vp};
+ if(m==="num"){S=Object.assign(base,{phs:["num"]});goLessons();return startPh()}
+ const sn=ss.slice(0,m==="sent"?5:3).map(w=>[w.e,w.tr]);
+ const dq=src.map(W).filter(ok).slice(0,m==="dict"?4:3).concat(ss.map(Sn).filter(ok).slice(0,2));
+ const aq=src.map(W).filter(ok).slice(0,m==="aud"?6:3).concat(ss.map(Sn).filter(ok).slice(0,m==="aud"?3:1));
+ if(m==="sent"?!sn.length:m==="dict"?!dq.length:m==="aud"?!aq.length:pick.length<3)return;
+ S=Object.assign(base,{sn,dq,aq,phs:m==="sent"?["sent"]:m==="dict"?["dict"]:m==="aud"?["aud"]:["aud","wlisten","wmean","wpairs"]});
+ if(!m){if(!aq.length)S.phs.shift();const bw=pick.filter(w=>units(w[0]).length<=6).slice(0,3);if(bw.length){S.ws=bw;S.phs.splice(S.phs.indexOf("wmean")+1,0,"wbuild")}if(dq.length)S.phs.push("dict");if(sn.length)S.phs.push("sent")}
  goLessons();startPh()}
 function startMix(){
  const dn=done.filter(d=>typeof d==="number");if(!dn.length)return;
  const mx=Math.max(...dn),wl=shuffle(learned(mx).slice()).slice(0,6);
  S={i:mx,kind:"v",mix:1,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["listen","read",...(wl.length>2?["wlisten","wmean"]:[])],kq:shuffle(dn.flatMap(i=>L[i].k)).slice(0,8),wl,ws:[],vp:[]};
  goLessons();startPh()}
-$("vtrain").onclick=()=>startV();$("vsent").onclick=()=>startV(1);$("vdl").value=ST.dm||0;$("vdl").onchange=()=>{ST.dm=+$("vdl").value;svST()};$("vdict").onclick=()=>startV("dict");
+$("vtrain").onclick=()=>startV();$("vsent").onclick=()=>startV("sent");$("vaud").onclick=()=>startV("aud");$("vnum").onclick=()=>startV("num");$("vdl").value=ST.dm||0;$("vdl").onchange=()=>{ST.dm=+$("vdl").value;svST()};$("vdict").onclick=()=>startV("dict");
 /* trucchi per ricordare */
 const MN={"ア":"Una scure piantata nel ceppo: «a» come «axe».","イ":"Una spada appoggiata a una colonna: «i».","ウ":"Una piccola «u» con una corona sopra: «u».","エ":"Una trave a «I» maiuscola, come un binario: «e».","オ":"Un orso con le braccia aperte, come お senza puntino: «o».","カ":"Il coltello di un cutter: «ka».","キ":"Una chiave con due traverse: «ki» come «key».","ク":"Il becco di un cuculo: «ku-ku».","ケ":"Una «K» e una «e» attaccate: «ke».","コ":"Un angolo di cornice, come «corner»: «ko».","サ":"Tre sbarre come una sdraio: «sa» di «sandalo».","シ":"Due occhietti e un sorriso: «shi». I tratti sono quasi orizzontali.","ス":"Una «Z» con la coda, come il «su» di «sushi».","セ":"Il cappello di un sensei messo di traverso: «se».","ソ":"Un fulmine che cade: «so». I tratti sono più verticali di ン.","タ":"Una tazza con il manico: «ta».","チ":"Somiglia a un 5 stilizzato: «chi» di «cinque».","ツ":"Tre gocce che cadono: «tsu-nami». I tratti sono verticali.","テ":"Un’antenna della tele: «te» di «televisione».","ト":"Un totem con un ramo laterale: «to».","ナ":"Una croce piegata come una nave: «na».","ニ":"Due righe parallele: «ni» significa due.","ヌ":"Una «X» annodata come i noodles: «nu».","ネ":"Un albero con i rami e le radici: «ne».","ノ":"Un solo tratto inclinato, come un’ala: «no».","ハ":"Due gambe aperte come un tetto: «ha».","ヒ":"Una persona seduta di lato: «hi».","フ":"Un gancio che pesca fumetti: «fu».","ヘ":"Il tetto di una casa, identico a へ: «he».","ホ":"Un albero con due foglie: «ho ho».","マ":"Una mano con l’artiglio: «ma-no».","ミ":"Tre righe parallele come le note «do-re-mi»: «mi».","ム":"Un triangolo con la coda, come il muso di una mucca: «mu».","メ":"Due strade che si incrociano: «me».","モ":"Una «E» con la testa tonda: «mo».","ヤ":"Una freccia con l’archetto, come un yacht: «ya».","ユ":"Una «U» squadrata con il fondo: «yu» di «yoga».","ヨ":"Una «E» rovesciata: «yo».","ラ":"Due righe e una gamba: «ra» come la nota «re-la».","リ":"Due canne di bambù affiancate: «ri» come «reed».","ル":"Due gambe e un baffo: «ru» di «ruota».","レ":"Una «L» inclinata: «re».","ロ":"Una scatola quadrata: «ro».","ワ":"Un 7 con il cappello, come ウ senza puntino: «wa».","ヲ":"Come ワ con una riga in più: «wo», che si legge «o».","ン":"Una «n» che pencola: «n». I tratti sono più orizzontali di ソ.","は":"Un uomo che ride a crepapelle: «ha ha ha!». Come particella si legge «wa».","ひ":"Un sorriso con le guance sollevate: «hi hi hi!».","ふ":"Il monte Fuji con le nuvole intorno: «fu».","へ":"Una collinetta o un tetto: «he» come in «hey». Come particella si legge «e».","ほ":"Come は con una sbarra in più: «ho ho ho!», la risata di Babbo Natale.","ま":"Una mamma con le braccia aperte: «ma-ma».","み":"Ha dentro un 2 e un 1: pensa alla nota «mi» del do-re-mi.","む":"Una mucca con le corna e la coda: «muuu».","め":"Un occhio con le ciglia: in giapponese «me» significa occhio.","も":"Un amo con due esche: «mo» di «more», ancora pesce!","や":"Un yak con le corna e la coda: «ya».","ゆ":"Una pentola d’acqua calda con un pesce: «yu» significa acqua calda.","よ":"Una persona in posa di yoga: «yo».","ら":"Un coniglio (in inglese «rabbit») con la coda: «ra».","り":"Due canne di bambù affiancate (in inglese «reeds»): «ri».","る":"Un cappio con il giro finale: «ru» di «ruota».","れ":"Una persona in piedi che fa l’inchino al «re».","ろ":"Una strada con una curva (in inglese «road»): «ro»; è る senza il nodo.","わ":"Un’onda con un cappio: «wa!» di stupore, come «wow».","を":"Un acrobata che salta: si scrive «wo» ma si legge «o» e segna il complemento oggetto.","ん":"Una «n» scritta di corsa: l’unica consonante da sola.","あ":"Sembra una A elegante con un nodo: pensa all’«Ah!» di sorpresa.","い":"Due anguille che nuotano affiancate: sono le due «i» di «ii».","う":"Una piccola «u» con un cappello sopra: «uuu» di meraviglia.","え":"Un uccello esotico che spicca il volo: «e» come in «exotic».","お":"Un omino che lancia una palla e fa «Oh!».","か":"Il coltello di una katana con il manico a sinistra: «ka».","き":"Una chiave con due denti: in inglese «key», suono «ki».","く":"Il becco di un cuculo aperto: «ku-ku».","け":"Un barile con un’asta (in inglese «keg»): «ke».","こ":"Due righe come due coccodrilli stesi uno sull’altro: «ko».","さ":"Il manico e la lama di una sega: «sa-ga».","し":"Un amo da pesca: il suono è «shi», un «sci» di sciare.","す":"Un nodo con la coda arricciata, come il riso del «su-shi».","せ":"Il cappello di un sensei con la bacchetta: «se-nsei».","そ":"Un fulmine a zig-zag che colpisce: «soo!».","た":"Una «t» e una «a» attaccate: «ta».","ち":"Somiglia a un 5: «cinque» inizia con «ci», e si dice «chi».","つ":"Un’onda che si ritira: «tsu-nami».","て":"Una mano che saluta: in giapponese «te» significa mano.","と":"Un alluce con una scheggia: in inglese «toe», si dice «to».","な":"Una suora in preghiera: in inglese «nun», si dice «na».","に":"Le due righe a destra ricordano che «ni» significa due.","ぬ":"Noodles annodati con un cappio: «nu-dles».","ね":"Un gatto (neko) con la coda arricciata: «ne».","の":"Un cerchio con la barra, come un divieto: «no!»."};
 function auto(j){const d=j.normalize("NFD");
@@ -1050,19 +1210,19 @@ const isKa=u=>/[ァ-ヺー]/.test(u[0]);
 const WM={};WV.forEach(w=>WM[w[0]]=w);V.forEach(w=>WM[sp(w.k)]=[sp(w.k),toRo(w.k),w.m]);
 function dueRow(){
  const n=dueList().length,c=el("div","topic"+(n?"":" d")),th=el("div","th"),st=el("div","steps");
- th.append(el("b",0,n?"Da ripassare oggi: "+n:"Nessun ripasso in sospeso"),el("span",0,n?"Gli errori tornano dopo 1, 3 e 7 giorni.":"Gli errori che farai torneranno dopo 1, 3 e 7 giorni."));
+ th.append(el("b",0,n?"Da ripassare oggi: "+n:"Nessun ripasso in sospeso"),el("span",0,n?"Ogni cosa che impari torna dopo 1, 3, 7, 16, 35 e 90 giorni.":"Ogni cosa che impari tornerà dopo 1, 3, 7, 16, 35 e 90 giorni."));
  if(n){const b=el("button","btn","Ripassa ora");b.onclick=startSRS;st.append(b)}
  c.append(th,st);c.style.marginBottom="14px";return c}
 function startSRS(){
- const kq=[],wl=[];dueList().slice(0,10).forEach(([j,q])=>{if(KG[j])kq.push([j,q.r]);else if(WM[j])wl.push(WM[j])});
+ const kq=[],wl=[];dueList().forEach(([j,q])=>{if(KG[j]){if(kq.length<7)kq.push([j,q.r])}else if(WM[j]&&wl.length<5)wl.push(WM[j])});
  if(!kq.length&&!wl.length)return;
- S={i:L.length-1,kind:"v",mix:1,srs:1,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:[...(kq.length?["listen","read"]:[]),...(wl.length?["wlisten","wmean"]:[])],kq,wl,ws:[],vp:V.map(w=>[sp(w.k),toRo(w.k),w.m])};
+ S={i:L.length-1,kind:"v",mix:1,srs:1,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:[...(kq.length?["listen","read"]:[]),...(wl.length?["aud","wlisten","wmean"]:[])],kq,wl,aq:wl.map(w=>({t:w[0],m:w[2],w:1,r:w[1]})),ws:[],vp:V.map(w=>[sp(w.k),toRo(w.k),w.m])};
  goLessons();startPh()}
 /* salvataggio e trasferimento dei progressi */
 const enc=o=>"HIRA1:"+btoa(unescape(encodeURIComponent(JSON.stringify(o))));
 const dec=t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/\s+/g,"").replace(/^HIRA1:/,"")))));
 const bkMsg=m=>{$("bkMsg").textContent=m};
-function bkCode(){const c=enc({app:"hiragana",v:1,t:new Date().toISOString(),stats:ST,done,voice:{name:VS.name,rate}});$("bkTxt").value=c;try{localStorage.setItem("hira-lastexp",String(Date.now()))}catch(e){}cnt("ex");renderL();return c}
+function bkCode(){const c=enc({app:"hiragana",v:1,t:new Date().toISOString(),stats:ST,done,voice:{name:VS.name,rate},pct:pc(),seen:(()=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]")}catch(e){return[]}})()});$("bkTxt").value=c;try{localStorage.setItem("hira-lastexp",String(Date.now()))}catch(e){}cnt("ex");renderL();return c}
 $("bkExp").onclick=()=>{const c=bkCode();$("bkTxt").select();bkMsg("Codice creato ("+(c.length/1024).toFixed(1)+" KB). Copialo o condividilo e conservalo in un posto sicuro, per esempio nelle Note.")};
 $("bkCopy").onclick=async()=>{const c=$("bkTxt").value.startsWith("HIRA1:")?$("bkTxt").value:bkCode();$("bkTxt").value=c;
  try{await navigator.clipboard.writeText(c);bkMsg("Codice copiato negli appunti.")}catch(e){$("bkTxt").select();try{document.execCommand("copy");bkMsg("Codice copiato.")}catch(e2){bkMsg("Non riesco a copiare da qui: tieni premuto sul testo e scegli Copia.")}}};
@@ -1076,17 +1236,23 @@ $("bkImp").onclick=()=>{try{
  Object.entries(a.s||{}).forEach(([j,q])=>{if(!ST.s[j])ST.s[j]=q});
  ["dl","dm"].forEach(k=>{if(!ST[k])ST[k]=+a[k]||0});
  const k=a.sk;if(k){if(k.last>ST.sk.last||k.last===ST.sk.last&&k.n>ST.sk.n){ST.sk.n=k.n;ST.sk.last=k.last}ST.sk.best=Math.max(ST.sk.best,k.best||0)}
- Object.entries(a.ct||{}).forEach(([n,v])=>{ST.ct[n]=Math.max(ST.ct[n]||0,v)});Object.entries(a.bd||{}).forEach(([n,v])=>{if(!ST.bd[n])ST.bd[n]=v});
+ Object.entries(a.ct||{}).forEach(([n,v])=>{ST.ct[n]=Math.max(ST.ct[n]||0,v)});Object.entries(a.bd||{}).forEach(([n,v])=>{if(!ST.bd[n])ST.bd[n]=v});Object.keys(a.mst||{}).forEach(n=>{ST.mst[n]=1});
  (d.done||[]).forEach(x=>{if(!done.includes(x))done.push(x)});
  svST();try{localStorage.setItem("hira-done",JSON.stringify(done))}catch(e){}
- checkBadges(true);xpUI();renderL();$("vdl").value=ST.dm||0;
+ try{const o=pc(),n=d.pct||{};Object.keys(n).forEach(k=>{o[k]=Math.max(o[k]||0,+n[k]||0)});localStorage.setItem("hira-pct",JSON.stringify(o));const s=new Set(JSON.parse(localStorage.getItem("hira-seen")||"[]"));(d.seen||[]).forEach(x=>s.add(x));localStorage.setItem("hira-seen",JSON.stringify([...s]))}catch(e){}
+  checkBadges(true);xpUI();renderL();$("vdl").value=ST.dm||0;
  bkMsg("Importato! Ora hai "+ST.xp+" XP e "+done.filter(x=>typeof x==="number").length+" argomenti con i caratteri completati.")}
  catch(e){bkMsg("Codice non valido: controlla di averlo copiato per intero, dall’inizio (HIRA1:).")}};
+$("bkFile").onclick=async()=>{const c=bkCode(),f=new File([c],"hiragana-progressi.txt",{type:"text/plain"});
+ try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:"Progressi hiragana"});bkMsg("File pronto: scegli “Salva su File” e poi iCloud Drive. La prossima volta, con lo stesso nome, ti chiederà di sostituirlo.");return}}catch(e){if(e&&e.name==="AbortError"){bkMsg("Salvataggio annullato.");return}}
+ try{const u=URL.createObjectURL(f),a=document.createElement("a");a.href=u;a.download=f.name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);bkMsg("File scaricato: lo trovi nei download o nell’app File.")}catch(e2){bkMsg("Non riesco a creare il file: usa “Crea codice” e copialo.")}};
+$("bkLoad").onclick=()=>$("bkIn").click();
+$("bkIn").onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{$("bkTxt").value=(await f.text()).trim();$("bkImp").onclick()}catch(x){bkMsg("Non riesco a leggere il file.")}e.target.value=""};
 function backupRow(){
  let last=0;try{last=+localStorage.getItem("hira-lastexp")||0}catch(e){}
- if(ST.xp<100||Date.now()-last<12096e5)return "";
+ if(ST.xp<50||Date.now()-last<6048e5)return "";
  const c=el("div","warn bkw"),b=el("button","btn","Salva ora");
- c.append(el("span",0,last?"Sono passate più di due settimane dall’ultimo salvataggio dei progressi.":"Non hai ancora salvato i tuoi progressi: se il browser li cancella, li perdi."),b);
+ c.append(el("span",0,last?"È passata più di una settimana dall’ultimo salvataggio dei progressi.":"Non hai ancora salvato i tuoi progressi: se il browser li cancella, li perdi."),b);
  b.onclick=()=>{const d=$("bk");d.open=true;d.scrollIntoView({behavior:RM?"auto":"smooth",block:"center"})};return c}
 /* audio su iPhone: sblocco al primo tocco; richiesta di archiviazione persistente */
 let _un=0;const unlockA=()=>{if(_un||!window.speechSynthesis)return;_un=1;try{const u=new SpeechSynthesisUtterance(" ");u.volume=0;speechSynthesis.speak(u)}catch(e){}};
@@ -1110,9 +1276,12 @@ var BD=[
  {id:"odd",k:"探",n:"Cacciatore",d:"Trova 20 intrusi",f:()=>[cn("od"),20]},
  {id:"c100",k:"星",n:"Cento risposte",d:"Dai 100 risposte giuste",f:()=>[totC(),100]},
  {id:"c1000",k:"千",n:"Mille risposte",d:"Dai 1000 risposte giuste",f:()=>[totC(),1000]},
- {id:"mem",k:"憶",n:"Memoria salda",d:"Ripassa 10 elementi fino a impararli",f:()=>[cn("sr"),10]},
+ {id:"mem",k:"憶",n:"Memoria salda",d:"Porta 10 elementi a ripassi di 16 giorni",f:()=>[cn("sr"),10]},
  {id:"save",k:"保",n:"Al sicuro",d:"Salva i progressi con un codice",f:()=>[cn("ex"),1]},
  {id:"lv5",k:"級",n:"Livello 5",d:"Raggiungi il livello 5",f:()=>[Math.floor(ST.xp/100)+1,5]},
+ {id:"typed",k:"筆",n:"Scrittore",d:"Scrivi correttamente 20 parole con la tastiera",f:()=>[cn("ty"),20]},
+ {id:"aud",k:"聴",n:"Buon ascolto",d:"Capisci 30 parole o frasi solo ascoltando",f:()=>[cn("au"),30]},
+ {id:"num",k:"数",n:"Numeri alla mano",d:"Riconosci 15 numeri, prezzi o orari ascoltandoli",f:()=>[cn("nu"),15]},
  {id:"kata",k:"片",n:"Katakana",d:"Completa i 10 argomenti di base dei katakana",f:()=>[done.filter(x=>typeof x==="number"&&x>=21&&x<31).length,10]}];
 function cnt(k,n){ST.ct=ST.ct||{};ST.ct[k]=(ST.ct[k]||0)+(n||1);checkBadges()}
 function checkBadges(silent){
@@ -1147,6 +1316,206 @@ function a11y(r){
  r.querySelectorAll(".say:not([aria-label])").forEach(e=>e.setAttribute("aria-label","Ascolta"))}
 new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)a11y(n)}))).observe(document.body,{childList:true,subtree:true});
 a11y(document.body);
+/* tastiera: scrivere, controllare, convertire */
+const WS={mode:"ex",kata:false,kind:"w",audio:false,it:null,fails:0},PN2={"は":"wa","を":"o","へ":"e"};
+KR["っ"]=KR["っ"]||"っ";
+const nz=t=>t.replace(/[\s、。,.!?！？]/g,""),kh=t=>k2h(t).replace(/[\s、。,.!?！？]/g,"");
+function r2kx(str,kata){const v=r2k(str.toLowerCase().replace(/ā/g,"aa").replace(/ī/g,"ii").replace(/ū/g,"uu").replace(/ē/g,"ee").replace(/ō/g,"ou").replace(/-/g,"ー"));return kata?k2(v):v}
+function kbdEl(tag,kataFn,ph){
+ const i=document.createElement(tag);i.className=tag==="textarea"?"wi":"inp wi";if(tag==="input")i.type="text";
+ i.lang="ja";i.autocomplete="off";i.autocapitalize="off";i.setAttribute("autocorrect","off");i.spellcheck=false;i.placeholder=ph||"Scrivi in romaji…";
+ i.addEventListener("input",()=>{const v=r2kx(i.value,kataFn());if(v!==i.value)i.value=v});
+ i.addEventListener("blur",()=>{i.value=i.value.replace(/n$/,kataFn()?"ン":"ん")});return i}
+async function copyTxt(t,msg){try{await navigator.clipboard.writeText(t);msg.textContent="Copiato."}catch(e){const a=document.createElement("textarea");a.value=t;document.body.append(a);a.select();try{document.execCommand("copy");msg.textContent="Copiato."}catch(e2){msg.textContent="Non riesco a copiare da qui: seleziona il testo e copia."}a.remove()}}
+/* lessico e segmentazione */
+const PART={"は":"particella del tema","を":"particella dell’oggetto","へ":"particella di direzione","が":"particella del soggetto","の":"particella «di»","に":"particella «a, in»","で":"particella «in, con»","と":"particella «con, e»","も":"particella «anche»","や":"particella «e» (elenco)","か":"particella di domanda","ね":"«vero?»","よ":"enfasi","から":"da, perché","まで":"fino a","より":"più di"};
+const LEX=new Map(),SEN=new Map();
+Object.values(WM).forEach(w=>LEX.set(kh(w[0]),{m:w[2],t:"w",d:w[0]}));
+V.forEach(v=>{if(v.e){SEN.set(kh(v.e),v.tr);v.e.split(" ").forEach(t=>{const k=kh(t);if(k&&!LEX.has(k))LEX.set(k,{m:"",t:"f"})})}});
+["です","でした","ます","ました","ません","ください","います","ありません","でしょう","ましょう","ですか","ますか"].forEach(k=>{if(!LEX.has(k))LEX.set(k,{m:"",t:"f"})});
+Object.entries(PART).forEach(([k,m])=>LEX.set(k,{m,t:"p"}));
+function seg(s){
+ const n=s.length,B=Array(n+1).fill(null);B[0]={c:0};
+ for(let i=0;i<n;i++){if(!B[i])continue;
+  if(!B[i+1]||B[i].c+1<B[i+1].c)B[i+1]={c:B[i].c+1,p:i,u:1};
+  for(let j=i+1;j<=Math.min(n,i+12);j++){if(LEX.has(s.slice(i,j))){const c=B[i].c+.01;if(!B[j]||c<B[j].c)B[j]={c,p:i,u:0}}}}
+ const out=[];let j=n;while(j>0){const b=B[j];out.push({t:s.slice(b.p,j),u:b.u});j=b.p}
+ out.reverse();const m=[];out.forEach(x=>{const l=m[m.length-1];if(x.u&&l&&l.u)l.t+=x.t;else m.push(x)});return m}
+/* scheda Scrivi */
+function renderW(){
+ const r=$("wRoot");r.replaceChildren();const ch=el("div","row");
+ [["ex","Esercizio"],["chk","Controlla il tuo testo"],["cv","Convertitore"]].forEach(([m,n])=>{const b=el("button","chip",n);b.setAttribute("aria-pressed",WS.mode===m);b.onclick=()=>{WS.mode=m;renderW()};ch.append(b)});
+ r.append(ch);(WS.mode==="ex"?wEx:WS.mode==="chk"?wChk:wCv)(r)}
+const ALLW=Object.values(WM).map(w=>({t:w[0],m:w[2],r:w[1]})),ALLS=V.filter(v=>v.e&&!/[ァ-ヺー]/.test(v.e)).map(v=>({t:v.e.replace(/ /g,""),sp:v.e,m:v.tr,r:toRo(v.e)}));
+const wPool=()=>WS.kind==="w"?ALLW.filter(w=>WS.kata?/[ァ-ヺ]/.test(w.t):!/[ァ-ヺ]/.test(w.t)):ALLS;
+function wNext(){const p=wPool(),a=p.filter(x=>!WS.it||x.t!==WS.it.t);WS.it=a[Math.floor(Math.random()*a.length)]||p[0];WS.fails=0}
+function wEx(r){
+ const o=el("div","row"),tg=(l,pr,fn)=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",pr);b.onclick=fn;o.append(b)};
+ tg("Parole",WS.kind==="w",()=>{WS.kind="w";WS.it=null;renderW()});tg("Frasi",WS.kind==="s",()=>{WS.kind="s";WS.kata=false;WS.it=null;renderW()});
+ if(WS.kind==="w")tg(WS.kata?"Scrivo in katakana":"Scrivo in hiragana",WS.kata,()=>{WS.kata=!WS.kata;WS.it=null;renderW()});
+ tg("Solo audio",WS.audio,()=>{WS.audio=!WS.audio;renderW()});r.append(o);
+ if(!WS.it||(WS.kind==="w"&&WS.kata!==/[ァ-ヺ]/.test(WS.it.t)))wNext();
+ const it=WS.it,c=el("div","card"),inp=kbdEl("input",()=>WS.kata),fb=el("p","hint",""),dd=el("div","wd"),act=el("div","row");
+ const tgt=it.t.replace(/[、。！？]/g,""),tu=units(tgt);act.style.justifyContent="center";fb.style.margin="8px 0";
+ const mean=el("div","q ro",WS.audio?"？":it.m);mean.style.cssText="font-size:"+(it.t.length>6?"1.5rem":"2rem")+";margin:4px 0 8px";
+ const sp2=el("button","say","🔊");sp2.setAttribute("aria-label","Ascolta");sp2.onclick=()=>say(it.t);
+ const ck=el("button","btn","Controlla"),hi=el("button","btn g","Suggerimento"),sk=el("button","btn g","Salta"),nx=el("button","btn","Prossimo");nx.hidden=true;
+ const sol=el("button","btn g","Mostra soluzione");sol.hidden=true;
+ sk.onclick=()=>{wNext();renderW()};nx.onclick=()=>{wNext();renderW()};
+ hi.onclick=()=>{fb.textContent="Inizia con «"+tu[0]+"» ("+(KR[tu[0]]||"")+"). Ha "+tu.length+" caratteri."};
+ sol.onclick=()=>{fb.textContent="Soluzione: "+(it.sp||it.t)+" ("+(it.r||toRo(it.t))+")"};
+ ck.onclick=()=>{
+  const tp=inp.value.replace(/n$/,WS.kata?"ン":"ん"),typed=nz(tp),ux=units(typed);dd.replaceChildren();
+  if(!typed){fb.textContent="Scrivi qualcosa in romaji, poi tocca Controlla.";return}
+  if(/[a-z]/i.test(typed)){fb.textContent="Ci sono lettere non convertite: completa la sillaba (per esempio ka, shi, tsu).";return}
+  if(typed===tgt){
+   c.classList.add("win");inp.hidden=true;[ck,hi,sk,sol].forEach(b=>b.hidden=true);dd.replaceChildren();
+   const bw=el("div","win-b pop");bw.append(el("span","chk","✓"),el("span",0,"正解！ Perfetto!"));const big=el("div","q hl2 pop",it.sp||it.t);big.style.fontSize=it.t.length>6?"1.6rem":"3rem";
+   dd.style.flexDirection="column";dd.style.alignItems="center";dd.append(bw,big);fb.textContent=(it.r||toRo(it.t))+" = "+it.m;
+   ST.xp+=10;svST();xpUI();cnt("ty");burst(c);say(it.t);nx.hidden=false;nx.focus();return}
+  WS.fails++;
+  tu.length;ux.forEach((x,i)=>{const sp=el("span",x===tu[i]?"ok":"ko",x);dd.append(sp)});
+  let m="Non ancora.";if(ux.length<tu.length)m+=" Mancano "+(tu.length-ux.length)+" caratteri.";else if(ux.length>tu.length)m+=" Ce ne sono "+(ux.length-tu.length)+" in più.";
+  const pt=tu.findIndex((x,i)=>PN2[x]&&ux[i]&&{"わ":"は","お":"を","え":"へ"}[ux[i]]!==undefined&&{"わ":"は","お":"を","え":"へ"}[ux[i]]===x);
+  if(pt>=0)m+=" Attenzione: la particella "+tu[pt]+" si scrive «"+({"は":"ha","を":"wo","へ":"he"})[tu[pt]]+"» anche se si legge «"+PN2[tu[pt]]+"».";
+  fb.textContent=m;if(WS.fails>=2)sol.hidden=false};
+ inp.addEventListener("keydown",e=>{if(e.key==="Enter")ck.click()});
+ act.append(ck,hi,sk,sol,nx);
+ c.append(el("p","note","Scrivi con la tastiera in romaji: si trasforma da sola in "+(WS.kata?"katakana":"hiragana")+(WS.kata?" Per allungare una vocale usa il trattino «-».":"")+"."+(WS.kind==="s"?" Gli spazi non contano. Le particelle si scrivono は (ha), を (wo), へ (he).":"")),mean,sp2,inp,dd,fb,act);
+ r.append(c);if(WS.audio)setTimeout(()=>say(it.t),200);inp.focus({preventScroll:true})}
+function tokEl(t,u){const x=LEX.get(t),d=el("span","tk"+(u?" u":"")),disp=x&&x.d?x.d:t;
+ d.append(el("b",0,disp));if(toRo(disp)!==disp)d.append(el("i",0,toRo(disp)));if(x&&x.m)d.append(el("i",0,x.m));if(x&&x.d&&x.d!==t)d.append(el("i",0,"di solito in katakana"));d.lang="ja";return d}
+function chkRes(raw){
+ const box=el("div","wres");box.setAttribute("aria-live","polite");
+ const rn=raw.replace(/n$/,"ん"),lat=rn.match(/[a-z]+/gi),s=kh(rn),iss=[];
+ if(!s){box.append(el("p",0,"Scrivi qualcosa e poi tocca Controlla."));return box}
+ if(lat)iss.push("Lettere non convertite: «"+lat.join("», «")+"». Completa le sillabe (per esempio ka, shi, tsu).");
+ if(/[\u4e00-\u9fff]/.test(s))iss.push("Contiene kanji: non so verificarli.");
+ [...s].forEach((c,i)=>{const n=s[i+1]||"";
+  if(c==="っ"&&!"かきくけこさしすせそたちつてとぱぴぷぺぽ".includes(n))iss.push("«っ» prima di «"+(n||"fine parola")+"» non è usuale: raddoppia una consonante (k, s, t, p).");
+  if("ゃゅょ".includes(c)&&!"きしちにひみりぎじぢびぴ".includes(s[i-1]||""))iss.push("«"+c+"» piccolo si usa dopo き, し, ち, に, ひ, み, り, ぎ, じ, び, ぴ.");
+  if(c==="ー"&&i===0)iss.push("«ー» non può stare all’inizio.")});
+ const segs=seg(s),unk=segs.filter(x=>x.u).map(x=>x.t),hd=el("p","hd2");
+ hd.textContent=[...new Set(iss)].length?"⚠ Qualcosa non quadra":unk.length?"ℹ Scritto in modo valido, ma ci sono parti che non conosco":"✓ Tutto riconosciuto";box.append(hd);
+ [...new Set(iss)].forEach(m=>box.append(el("p",0,m)));
+ const tr=SEN.get(s);if(tr)box.append(el("p",0,"Frase riconosciuta: «"+tr+"»"));
+ const tks=el("div","tks");segs.forEach(x=>tks.append(tokEl(x.t,x.u)));box.append(tks);
+ if(unk.length)box.append(el("p","note","Non conosco: "+unk.join(", ")+". Può essere un errore di battitura o una parola che l’app non ha."));
+ box.append(el("p","note","Controllo la scrittura e le parole dell’app (circa "+LEX.size+" forme). Non posso valutare la grammatica."));return box}
+function wChk(r){
+ const c=el("div","card"),ta=kbdEl("textarea",()=>false,"Scrivi in romaji: per esempio watashi ha gakusei desu"),out=el("div"),act=el("div","row");act.style.justifyContent="center";
+ ta.style.cssText+="width:100%";const ck=el("button","btn","Controlla"),cl=el("button","btn g","Pulisci");
+ ck.onclick=()=>{out.replaceChildren(chkRes(ta.value.trim()))};cl.onclick=()=>{ta.value="";out.replaceChildren();ta.focus()};act.append(ck,cl);
+ c.append(el("p","note","Scrivi una parola o una frase: la tastiera romaji diventa hiragana. Poi tocca Controlla per vedere se ha senso."),ta,act,out);c.style.textAlign="left";r.append(c)}
+function rubyOf(text){
+ const box=el("div","ruby"),rom=[];box.lang="ja";
+ const PUN=/([、。！？,.!?「」・])/,rb=(x,q,cls)=>{const s=el("span","rb"+(cls||""));s.append(el("b",0,x),el("i",0,q));return s};
+ text.split("\n").forEach((ln,li)=>{if(li){box.append(el("br"));rom.push("\n")}
+  ln.split(/(\s+)/).forEach(chunk=>{if(!chunk)return;
+   if(/^\s+$/.test(chunk)){box.append(el("span","rbs"));return}
+   chunk.split(PUN).forEach(part=>{if(!part)return;
+    if(PUN.test(part)){const t=el("span","rbt");t.append(rb(part,""));box.append(t);rom.push(part);return}
+    let pos=0;seg(k2h(part)).forEach(sg=>{
+     const orig=part.slice(pos,pos+sg.t.length);pos+=sg.t.length;const tk=el("span","rbt");
+     if(!sg.u&&PN2[sg.t]){tk.append(rb(orig,PN2[sg.t]));rom.push(PN2[sg.t]);box.append(tk);return}
+     let last="";const u=units(orig);
+     u.forEach((x,i)=>{let q="";
+      if(x==="っ"||x==="ッ"){const n=KR[u[i+1]]||"";q=n.startsWith("ch")?"t":n.charAt(0)||"·"}
+      else if(x==="ー")q=last.slice(-1)||"ー";
+      else if(KR[x]!==undefined){q=KR[x];last=q}
+      else q=/[\u4e00-\u9fff]/.test(x)?"?":"";
+      tk.append(rb(x,q,q==="?"?" kj":""))});
+     rom.push(toRo(orig));box.append(tk)})})});});
+ return {box,rom:rom.join(" ").replace(/ \n /g,"\n").replace(/ ([。、！？,.!?])/g,"$1")}}
+function r2text(src,kata,part){
+ return src.split(/(\s+)/).map(tk=>{if(!tk||/^\s+$/.test(tk))return tk;const low=tk.toLowerCase().replace(/[.,!?]+$/,""),tail=tk.slice(low.length);
+  if(part&&{"wa":"は","o":"を","e":"へ"}[low])return {"wa":"は","o":"を","e":"へ"}[low]+tail;return r2kx(tk,kata).replace(/n$/,kata?"ン":"ん")}).join("").replace(/\./g,"。").replace(/,/g,"、").replace(/\?/g,"？").replace(/!/g,"！")}
+function wCv(r){
+ const a=el("div","card"),b=el("div","card");[a,b].forEach(x=>{x.style.textAlign="left";x.style.marginBottom="14px"});
+ const ta=document.createElement("textarea");ta.className="wi";ta.lang="ja";ta.setAttribute("aria-label","Testo in hiragana o katakana");ta.placeholder="Incolla qui un testo in hiragana o katakana: ogni carattere avrà il romaji sotto";ta.spellcheck=false;
+ const rubyBox=el("div"),romLine=el("p","note"),ma=el("p","note"),rowA=el("div","row");
+ let curRom="";const upd=()=>{const t=ta.value;rubyBox.replaceChildren();romLine.textContent="";if(!t.trim())return;const o=rubyOf(t);curRom=o.rom;rubyBox.append(o.box);romLine.textContent="Romaji: "+o.rom};
+ ta.oninput=upd;
+ const lb=el("button","btn g","🔊 Leggi"),cp=el("button","btn g","Copia romaji");lb.onclick=()=>say(ta.value.replace(/[\s、。！？]/g,""));cp.onclick=()=>copyTxt(curRom,ma);rowA.append(lb,cp);
+ a.append(el("h2",0,"Hiragana → romaji"),el("p","note","Il romaji appare sotto ogni carattere. Le particelle は, を, へ si riconoscono dal contesto (wa, o, e)."),ta,rubyBox,romLine,rowA,ma);
+ const tb=document.createElement("textarea");tb.className="wi";tb.setAttribute("aria-label","Testo in romaji");tb.placeholder="Scrivi o incolla qui il romaji: watashi wa gakusei desu.";tb.spellcheck=false;tb.autocapitalize="off";tb.setAttribute("autocorrect","off");
+ let kata=false,part=true;const outB=el("div","wout"),mb=el("p","note"),opts=el("div","row"),rowB=el("div","row");outB.lang="ja";outB.setAttribute("aria-live","polite");
+ const upd2=()=>{const v=r2text(tb.value,kata,part);outB.replaceChildren();[...v].forEach(ch=>{if(/[a-z]/i.test(ch))outB.append(Object.assign(el("span","bad",ch)));else outB.append(document.createTextNode(ch))});
+  mb.textContent=/[a-z]/i.test(v)?"Le lettere sottolineate non si convertono: controlla la scrittura (per esempio ka, shi, tsu, nn per ん).":""};
+ tb.oninput=upd2;
+ const c1=el("button","chip",kata?"Katakana":"Hiragana");c1.setAttribute("aria-pressed",false);c1.onclick=()=>{kata=!kata;c1.textContent=kata?"Katakana":"Hiragana";c1.setAttribute("aria-pressed",kata);upd2()};
+ const c2=el("button","chip","Particelle: wa→は, o→を, e→へ");c2.setAttribute("aria-pressed",true);c2.onclick=()=>{part=!part;c2.setAttribute("aria-pressed",part);upd2()};opts.append(c1,c2);
+ const lb2=el("button","btn g","🔊 Leggi"),cp2=el("button","btn g","Copia");lb2.onclick=()=>say(outB.textContent.replace(/[\s、。！？]/g,""));cp2.onclick=()=>copyTxt(outB.textContent,mb);rowB.append(lb2,cp2);
+ b.append(el("h2",0,"Romaji → hiragana"),el("p","note","Traduzione automatica da romaji. Scrivi ō come «ou», e usa «nn» per la ん prima di una vocale (kannai)."),tb,opts,outB,mb,rowB);
+ r.append(a,b)}
+/* ascolto: audio → significato; numeri, prezzi e orari */
+const D9=["","いち","に","さん","よん","ご","ろく","なな","はち","きゅう"];
+function numKana(n){
+ let o="";const man=Math.floor(n/10000),r=n%10000,th=Math.floor(r/1000),h=Math.floor(r%1000/100),te=Math.floor(r%100/10),u=r%10;
+ if(man)o+=D9[man]+"まん";
+ if(th)o+={1:"せん",3:"さんぜん",8:"はっせん"}[th]||D9[th]+"せん";
+ if(h)o+={1:"ひゃく",3:"さんびゃく",6:"ろっぴゃく",8:"はっぴゃく"}[h]||D9[h]+"ひゃく";
+ if(te)o+=te===1?"じゅう":D9[te]+"じゅう";
+ if(u)o+=D9[u];return o}
+const yenKana=n=>{let k=numKana(n);if(n%10===4)k=k.replace(/よん$/,"よ");return k+"えん"};
+const HRK=["","いち","に","さん","よ","ご","ろく","しち","はち","く","じゅう","じゅういち","じゅうに"];
+function minKana(m){
+ if(m===0)return "";if(m===30)return "はん";
+ const te=Math.floor(m/10),u=m%10,tp=te?(te===1?"じゅう":D9[te]+"じゅう"):"";
+ if(!u)return tp.replace(/じゅう$/,"じゅっぷん");
+ return tp+{1:"いっぷん",2:"にふん",3:"さんぷん",4:"よんぷん",5:"ごふん",6:"ろっぷん",7:"ななふん",8:"はっぷん",9:"きゅうふん"}[u]}
+const timeKana=(h,m)=>HRK[h]+"じ"+minKana(m);
+function numQs(){
+ const pr=[4,14,120,300,450,500,600,800,980,1200,1500,2000,3000,3800,5000,8000,10000,12000,15000,24000],qs=[],f=x=>"¥"+x.toLocaleString("en-US");
+ shuffle(pr.slice()).slice(0,4).forEach(n=>qs.push({k:"y",n,a:f(n),ja:yenKana(n)}));
+ for(let i=0;i<2;i++){const h=1+Math.floor(Math.random()*12),m=[0,5,10,15,20,25,30,40,45,50][Math.floor(Math.random()*10)];qs.push({k:"t",h,m,a:h+":"+String(m).padStart(2,"0"),ja:timeKana(h,m)})}
+ return shuffle(qs)}
+function numOpts(q){
+ const out=[q.a],set=new Set(out),add=v=>{if(out.length<4&&v&&!set.has(v)){set.add(v);out.push(v)}};
+ if(q.k==="y"){const n=q.n,f=x=>"¥"+x.toLocaleString("en-US"),d=String(n).split(""),c=[n*10,n%10===0?n/10:0,n>=1000?n+1000:n+100,n>=1000?n-1000:n>10?n-10:0];
+  for(let i=0;i<d.length-1;i++){const e=d.slice();[e[i],e[i+1]]=[e[i+1],e[i]];if(e[0]!=="0")c.push(+e.join(""))}
+  shuffle(c).forEach(v=>{if(v>0&&v<100000&&v!==n)add(f(v))});for(let k=1;out.length<4&&k<9;k++)add(f(n+k*50))}
+ else{const h=q.h,m=q.m,t=(a,b)=>a+":"+String(b).padStart(2,"0");
+  shuffle([[h%12+1,m],[h===1?12:h-1,m],[h,(m+5)%60],[h,(m+55)%60],[h,(m+30)%60],[(h+5)%12+1,m]]).forEach(x=>add(t(x[0],x[1])))}
+ return shuffle(out)}
+function mkAns(c,q,say1,fn,ds){}
+function listenBtns(txt){const hd=el("div","row");hd.style.justifyContent="center";
+ const b1=el("button","say","🔊"),b2=el("button","say","🐢");[b1,b2].forEach(b=>b.style.cssText="width:76px;height:76px;font-size:2rem");
+ b1.setAttribute("aria-label","Ascolta");b2.setAttribute("aria-label","Ascolta lentamente");b1.onclick=()=>say(txt);b2.onclick=()=>say(txt,.55);hd.append(b1,b2);return hd}
+const allM=w=>w?[...new Set(ALLW.map(x=>x.m))]:[...new Set(V.filter(v=>v.e).map(v=>v.tr))];
+function aud(){
+ if(!S.q.length)return nextPh();
+ const q=S.q[0],c=el("div","card"),hn=el("p","hint",""),o=el("div","opts one"),nx=el("button","btn","Continua"),rw=el("div","row");let ans=false;
+ hn.style.margin="12px 0";nx.hidden=true;nx.onclick=aud;rw.style.cssText="justify-content:center;margin:16px 0 0";rw.append(nx);
+ const txt=sp(q.t),ds=shuffle(allM(q.w).filter(m=>m!==q.m)).slice(0,3);
+ shuffle([q.m,...ds]).forEach(m=>{const b=el("button","opt");b.style.fontSize=q.w?"1.25rem":"1.05rem";b.append(el("span",0,m));b.dataset.c=m===q.m?"1":"";
+  b.onclick=()=>{
+   if(ans)return;ans=true;const good=m===q.m;
+   o.querySelectorAll(".opt").forEach(y=>{if(y.dataset.c)y.classList.add("ok")});
+   S.q.shift();if(q.w)rec(txt,q.r||toRo(q.t),good);else if(good){ST.xp+=10;svST();xpUI()}
+   if(good){S.ok++;cnt("au");hn.textContent="Giusto! "+q.t+" ("+toRo(q.t)+") = "+q.m}
+   else{S.err++;b.classList.add("ko");S.q.push(q);hn.textContent="Era: "+q.t+" ("+toRo(q.t)+") = "+q.m+". Lo rivedrai tra poco."}
+   say(txt);nx.hidden=false;nx.focus()};
+  o.append(b)});
+ c.append(stepHead(),el("p","note","Ascolta e scegli che cosa significa. Il testo non si vede."),listenBtns(txt),hn,o,rw);
+ lr.replaceChildren(...lhead(S.ok/S.tot),c);setTimeout(()=>say(txt),200)}
+function num(){
+ if(!S.q.length)return nextPh();
+ const q=S.q[0],c=el("div","card"),hn=el("p","hint",""),o=el("div","opts"),nx=el("button","btn","Continua"),rw=el("div","row");let ans=false;
+ hn.style.margin="12px 0";nx.hidden=true;nx.onclick=num;rw.style.cssText="justify-content:center;margin:16px 0 0";rw.append(nx);
+ numOpts(q).forEach(a=>{const b=el("button","opt");b.style.fontSize="1.6rem";b.append(el("span",0,a));b.dataset.c=a===q.a?"1":"";
+  b.onclick=()=>{
+   if(ans)return;ans=true;const good=a===q.a;
+   o.querySelectorAll(".opt").forEach(y=>{if(y.dataset.c)y.classList.add("ok")});
+   S.q.shift();
+   if(good){S.ok++;ST.xp+=10;svST();xpUI();cnt("nu");hn.textContent="Giusto! "+q.a+" = "+q.ja+" ("+toRo(q.ja)+")"}
+   else{S.err++;b.classList.add("ko");S.q.push(q);hn.textContent="Era "+q.a+": "+q.ja+" ("+toRo(q.ja)+"). Lo rivedrai tra poco."}
+   say(q.ja);nx.hidden=false;nx.focus()};
+  o.append(b)});
+ c.append(stepHead(),el("p","note",q.k==="y"?"Quanto costa? Ascolta il prezzo in yen.":"Che ore sono? Ascolta l’orario."),listenBtns(q.ja),hn,o,rw);
+ lr.replaceChildren(...lhead(S.ok/S.tot),c);setTimeout(()=>say(q.ja),200)}
+/* ripasso: i già imparati entrano in coda una volta sola */
+if(!ST.sd){let i=0;Object.entries(ST.m).forEach(([j,m])=>{if(m.c>0&&!ST.s[j]&&!ST.mst[j]&&(KG[j]||WM[j]))ST.s[j]={b:0,d:DAY()+1+(i++%4),r:m.r}});ST.sd=1;svST()}
 renderL();renderV();
 </script>
 <script>
