@@ -369,12 +369,31 @@ let done=[];try{done=JSON.parse(localStorage.getItem("hira-done")||"[]")}catch(e
 if(!Array.isArray(done))done=[];
 const lr=$("lessonRun"),ll=$("lessonList");let S=null;
 const MINK=100,need=()=>MINK===100?"senza errori":"con almeno il "+MINK+"% di risposte corrette";
-const CHE=L.length===44?[2,5,9,14,20,23,26,30,35,41,43]:[L.length-1];
-const chOf=i=>CHE.findIndex(e=>i<=e),chRange=c=>[c?CHE[c-1]+1:0,CHE[c]];
+/* PATH: modello unico del percorso (WP-01). kind "k" = capitolo di kana (K1..K11), "g" = unità di lingua (G1..G14, dal WP-03).
+   Campi: id, kind, cap (numero mostrato), sec (prefisso del banner), t (titolo), from/to (indici in L, solo kana),
+   poi (indice in POI), test:{n} (domande della verifica), needs (id delle unità richieste dal piano; non ancora applicato: oggi
+   si sblocca solo in sequenza dentro hiragana e dentro katakana, il vincolo tra unità arriva col WP-08).
+   Le chiavi di done restano quelle di sempre: i, "i:w", "i:p", "ultima:t" (ultima = indice dell'ultima lezione dell'unità). */
+const PATH=L.length===44?[
+ {id:"K1",kind:"k",cap:1,sec:"Hiragana · ",t:"Hiragana あ・か・さ",from:0,to:2,poi:0,test:{n:30},needs:[]},
+ {id:"K2",kind:"k",cap:2,sec:"",t:"Hiragana た・な・は",from:3,to:5,poi:1,test:{n:30},needs:["K1"]},
+ {id:"K3",kind:"k",cap:3,sec:"",t:"Hiragana ま・や・ら・わ・ん",from:6,to:9,poi:2,test:{n:30},needs:["K1","K2"]},
+ {id:"K4",kind:"k",cap:4,sec:"",t:"Dakuon e handakuon",from:10,to:14,poi:3,test:{n:30},needs:["K1","K2","K3"]},
+ {id:"K5",kind:"k",cap:5,sec:"",t:"Yōon",from:15,to:20,poi:4,test:{n:30},needs:["K4"]},
+ {id:"K6",kind:"k",cap:6,sec:"Katakana · ",t:"Katakana ア・カ・サ",from:21,to:23,poi:5,test:{n:30},needs:["K1","K2","K3","K4","K5"]},
+ {id:"K7",kind:"k",cap:7,sec:"",t:"Katakana タ・ナ・ハ",from:24,to:26,poi:6,test:{n:30},needs:["K6"]},
+ {id:"K8",kind:"k",cap:8,sec:"",t:"Katakana マ・ヤ・ラ・ワ",from:27,to:30,poi:7,test:{n:30},needs:["K7"]},
+ {id:"K9",kind:"k",cap:9,sec:"",t:"Katakana dakuon e handakuon",from:31,to:35,poi:8,test:{n:30},needs:["K8"]},
+ {id:"K10",kind:"k",cap:10,sec:"",t:"Katakana yōon",from:36,to:41,poi:9,test:{n:30},needs:["K9"]},
+ {id:"K11",kind:"k",cap:11,sec:"",t:"Katakana estesi",from:42,to:43,poi:10,test:{n:30},needs:["K10"]}
+]:[{id:"K1",kind:"k",cap:1,sec:"",t:"Kana",from:0,to:L.length-1,poi:0,test:{n:30},needs:[]}];
+const unitRange=u=>[PATH[u].from,PATH[u].to];
+const unitOf=i=>PATH.findIndex(u=>u.kind==="k"&&i>=u.from&&i<=u.to);
+const unitEnd=i=>PATH.some(u=>u.kind==="k"&&u.to===i);
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
-const chLocked=c=>{const [a,b]=chRange(c);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
-function lockedL(i){if(i===0||isD(i,"c"))return false;const a=L[i-1],b=L[i];if((a.g[0]==="k")!==(b.g[0]==="k"))return false;if(!passL(i-1))return true;return CHE.includes(i-1)&&!isD(i-1,"t")}
-function startCh(c){const [a,b]=chRange(c);const ks=shuffle(L.slice(a,b+1).flatMap(x=>x.k));S={i:b,kind:"t",ch:c,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["listen","read"],kq:ks.slice(0,15)};lr.hidden=false;ll.hidden=true;startPh()}
+const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
+function lockedL(i){if(i===0||isD(i,"c"))return false;const a=L[i-1],b=L[i];if((a.g[0]==="k")!==(b.g[0]==="k"))return false;if(!passL(i-1))return true;return unitEnd(i-1)&&!isD(i-1,"t")}
+function startCh(c){const [a,b]=unitRange(c);const ks=shuffle(L.slice(a,b+1).flatMap(x=>x.k));S={i:b,kind:"t",ch:c,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["listen","read"],kq:ks.slice(0,15)};lr.hidden=false;ll.hidden=true;startPh()}
 function isD(i,t){return done.includes(t==="c"?i:i+":"+t)}
 const ROADCSS=`.road{position:relative;margin:14px 0;border-radius:26px;background:linear-gradient(180deg,#3a3f46,#2f3a35);overflow:hidden}
 .road svg{position:absolute;left:0;top:0;width:100%}
@@ -406,10 +425,10 @@ const POI=[
 {e:"🥤",t:"Distributori ovunque",w:"Tutto il Giappone",x:"In Giappone ci sono più di due milioni di distributori automatici, anche in posti isolati. Vendono ジュース, tè, caffè in lattina e perfino zuppa, e la stessa macchina offre bevande calde e fredde."},
 {e:"🏪",t:"Il konbini sempre aperto",w:"Ovunque, a ogni ora",x:"Il Giappone ha più di 50.000 コンビニ, aperti quasi sempre: pagano bollette, spediscono pacchi e vendono pasti caldi davvero buoni. I katakana estesi come ファ servono a scrivere nomi stranieri come ファミマ, cioè FamilyMart."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
-function openPoi(c){const p=POI[c];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
- const lk=!isD(chRange(c)[1],"t");
- if(lk)k.append(el("div","q sm","🔒"),el("h2",0,"Punto di interesse"),el("p","hint","Supera la verifica del capitolo "+(c+1)+" per scoprire questa tappa."));
- else{try{const s=JSON.parse(localStorage.getItem("hira-seen")||"[]");if(!s.includes(c)){s.push(c);localStorage.setItem("hira-seen",JSON.stringify(s))}}catch(e){}
+function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
+ const lk=!isD(unitRange(c)[1],"t");
+ if(lk)k.append(el("div","q sm","🔒"),el("h2",0,"Punto di interesse"),el("p","hint","Supera la verifica del capitolo "+PATH[c].cap+" per scoprire questa tappa."));
+ else{try{const s=JSON.parse(localStorage.getItem("hira-seen")||"[]");if(!s.includes(PATH[c].poi)){s.push(PATH[c].poi);localStorage.setItem("hira-seen",JSON.stringify(s))}}catch(e){}
   k.append(el("div","q sm",p.e),el("h2",0,p.t),el("p","note","📍 "+p.w),el("p","hint",p.x))}
  const cl=el("button","btn",lk?"Chiudi":"Continua");cl.style.marginTop="12px";cl.onclick=()=>{o.remove();renderL()};o.onclick=e=>{if(e.target===o)cl.click()};k.append(cl);o.append(k);document.body.append(o)}
 function openNode(n){if(n.p!==undefined)return openPoi(n.p);const o=el("div","sh"),c=el("div","card");c.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");o.onclick=e=>{if(e.target===o)o.remove()};
@@ -418,14 +437,14 @@ function openNode(n){if(n.p!==undefined)return openPoi(n.p);const o=el("div","sh
  if(n.i!==undefined){const i=n.i,l=L[i];c.append(el("div","q sm",l.k.map(x=>x[0]).join(" ")),el("h2",0,l.t));
   if(lockedL(i))c.append(el("p","hint","Completa prima la tappa precedente "+need()+"."));
   else{c.append(act("Caratteri",i,isD(i,"c"),()=>startL(i)));if(topicWords(i).length>=2)c.append(act("Parole",i+":w",isD(i,"w"),()=>startW(i)));c.append(act("Pronuncia (facoltativa)",i+":p",isD(i,"p"),()=>startP(i)))}}
- else{const b=chRange(n.t)[1];c.append(el("div","q sm","🏁"),el("h2",0,"Verifica del capitolo "+(n.t+1)));
-  if(chLocked(n.t))c.append(el("p","hint","Supera tutte le lezioni del capitolo, "+need()+", per sbloccare la verifica."));
-  else c.append(el("p","hint","30 domande miste su tutto il capitolo. "+(MINK===100?"Non si può sbagliare nessuna risposta.":"Serve almeno il "+MINK+"%.")),act("Inizia la verifica",b+":t",isD(b,"t"),()=>startCh(n.t)))}
+ else{const b=unitRange(n.t)[1];c.append(el("div","q sm","🏁"),el("h2",0,"Verifica del capitolo "+PATH[n.t].cap));
+  if(unitLocked(n.t))c.append(el("p","hint","Supera tutte le lezioni del capitolo, "+need()+", per sbloccare la verifica."));
+  else c.append(el("p","hint",PATH[n.t].test.n+" domande miste su tutto il capitolo. "+(MINK===100?"Non si può sbagliare nessuna risposta.":"Serve almeno il "+MINK+"%.")),act("Inizia la verifica",b+":t",isD(b,"t"),()=>startCh(n.t)))}
  c.append(cl);o.append(c);document.body.append(o)}
 function renderRoad(){
  if(!document.getElementById("roadcss")){const s=el("style");s.id="roadcss";s.textContent=ROADCSS;document.head.append(s)}
- const N=[];CHE.forEach((e,c)=>{const [a,b]=chRange(c);N.push({b:c});for(let i=a;i<=b;i++)N.push({i});N.push({t:c});N.push({p:c})});
- const stt=n=>n.p!==undefined?(!isD(chRange(n.p)[1],"t")?"l":seenP(n.p)?"d":"o"):n.i!==undefined?(passL(n.i)?"d":lockedL(n.i)?"l":"o"):(isD(chRange(n.t)[1],"t")?"d":chLocked(n.t)?"l":"o");
+ const N=[];PATH.forEach((u,c)=>{if(u.kind!=="k")return;const [a,b]=unitRange(c);N.push({b:c});for(let i=a;i<=b;i++)N.push({i});N.push({t:c});N.push({p:c})});
+ const stt=n=>n.p!==undefined?(!isD(unitRange(n.p)[1],"t")?"l":seenP(PATH[n.p].poi)?"d":"o"):n.i!==undefined?(passL(n.i)?"d":lockedL(n.i)?"l":"o"):(isD(unitRange(n.t)[1],"t")?"d":unitLocked(n.t)?"l":"o");
  let y=30,k=0,cur=-1;const pts=[];
  N.forEach((n,ix)=>{if(n.b!==undefined){n.y=y+22;y+=64}else{n.s=stt(n);if(cur<0&&n.s==="o")cur=ix;n.k=k++;n.x=50+28*Math.sin(n.k*.95);n.y=y+40;y+=92;pts.push(n)}});
  const H=y+30,road=el("div","road");road.style.height=H+"px";
@@ -435,11 +454,11 @@ function renderRoad(){
  svg.innerHTML='<path d="'+d+'" class="r0"/><path d="'+d+'" class="r1"/><path d="'+d+'" class="r3"/><path d="'+dp+'" class="r2"/>';road.append(svg);
  const P=pc();let curEl=null;
  N.forEach((n,ix)=>{
-  if(n.b!==undefined){const [a,b]=chRange(n.b),nm=L.slice(a,b+1).map(l=>l.k[0][0]).join("・"),pre=CHE.length===11?(n.b===0?"Hiragana · ":n.b===5?"Katakana · ":""):"";const bn=el("div","pb",pre+"Capitolo "+(n.b+1)+" · "+nm);bn.style.top=n.y+"px";road.append(bn);return}
+  if(n.b!==undefined){const [a,b]=unitRange(n.b),nm=L.slice(a,b+1).map(l=>l.k[0][0]).join("・"),pre=PATH[n.b].sec;const bn=el("div","pb",pre+"Capitolo "+PATH[n.b].cap+" · "+nm);bn.style.top=n.y+"px";road.append(bn);return}
   const v=n.t!==undefined,pp=n.p!==undefined,b=el("button","pn "+n.s+(v?" v":"")+(pp?" pp":"")+(ix===cur?" cur":""));b.style.left=n.x+"%";b.style.top=n.y+"px";
-  b.setAttribute("aria-label",(pp?"Punto di interesse":v?"Verifica capitolo "+(n.t+1):L[n.i].t)+(n.s==="l"?", bloccata":n.s==="d"?", completata":""));
-  b.append(el("span","g",n.s==="l"?"🔒":pp?POI[n.p].e:v?"🏁":L[n.i].k[0][0]));
-  const pv=pp?0:v?P[chRange(n.t)[1]+":t"]:P[n.i];if(n.s==="d"&&pv)b.append(el("small",0,pv+"%"));
+  b.setAttribute("aria-label",(pp?"Punto di interesse":v?"Verifica capitolo "+PATH[n.t].cap:L[n.i].t)+(n.s==="l"?", bloccata":n.s==="d"?", completata":""));
+  b.append(el("span","g",n.s==="l"?"🔒":pp?POI[PATH[n.p].poi].e:v?"🏁":L[n.i].k[0][0]));
+  const pv=pp?0:v?P[unitRange(n.t)[1]+":t"]:P[n.i];if(n.s==="d"&&pv)b.append(el("small",0,pv+"%"));
   b.onclick=()=>openNode(n);if(ix===cur)curEl=b;road.append(b)});
  ll.append(road);if(curEl)setTimeout(()=>curEl.scrollIntoView({block:"center"}),80)}
 function renderL(){
