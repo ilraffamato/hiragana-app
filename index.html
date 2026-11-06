@@ -368,6 +368,7 @@ G.filter(g=>g.k).forEach(g=>{let i=0;SZ[g.id].forEach((n,x)=>{L.push({t:LN[g.id]
 let done=[];try{done=JSON.parse(localStorage.getItem("hira-done")||"[]")}catch(e){}
 if(!Array.isArray(done))done=[];
 const lr=$("lessonRun"),ll=$("lessonList");let S=null;
+const MINK=100,need=()=>MINK===100?"senza errori":"con almeno il "+MINK+"% di risposte corrette";
 const CHE=L.length===44?[2,5,9,14,20,23,26,30,35,41,43]:[L.length-1];
 const chOf=i=>CHE.findIndex(e=>i<=e),chRange=c=>[c?CHE[c-1]+1:0,CHE[c]];
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
@@ -415,11 +416,11 @@ function openNode(n){if(n.p!==undefined)return openPoi(n.p);const o=el("div","sh
  const P=pc(),act=(txt,key,dn,f)=>{const b=el("button","step"+(dn?" d":""),txt+(dn?" 済":"")+(P[key]?" · "+P[key]+"%":""));b.style.cssText="width:100%;margin:6px 0";b.onclick=()=>{o.remove();f()};return b};
  const cl=el("button","btn g","Chiudi");cl.style.marginTop="10px";cl.onclick=()=>o.remove();
  if(n.i!==undefined){const i=n.i,l=L[i];c.append(el("div","q sm",l.k.map(x=>x[0]).join(" ")),el("h2",0,l.t));
-  if(lockedL(i))c.append(el("p","hint","Completa prima la tappa precedente con almeno il 90% di risposte corrette."));
+  if(lockedL(i))c.append(el("p","hint","Completa prima la tappa precedente "+need()+"."));
   else{c.append(act("Caratteri",i,isD(i,"c"),()=>startL(i)));if(topicWords(i).length>=2)c.append(act("Parole",i+":w",isD(i,"w"),()=>startW(i)));c.append(act("Pronuncia (facoltativa)",i+":p",isD(i,"p"),()=>startP(i)))}}
  else{const b=chRange(n.t)[1];c.append(el("div","q sm","🏁"),el("h2",0,"Verifica del capitolo "+(n.t+1)));
-  if(chLocked(n.t))c.append(el("p","hint","Supera tutte le lezioni del capitolo, con almeno il 90%, per sbloccare la verifica."));
-  else c.append(el("p","hint","30 domande miste su tutto il capitolo. Serve almeno il 90%."),act("Inizia la verifica",b+":t",isD(b,"t"),()=>startCh(n.t)))}
+  if(chLocked(n.t))c.append(el("p","hint","Supera tutte le lezioni del capitolo, "+need()+", per sbloccare la verifica."));
+  else c.append(el("p","hint","30 domande miste su tutto il capitolo. "+(MINK===100?"Non si può sbagliare nessuna risposta.":"Serve almeno il "+MINK+"%.")),act("Inizia la verifica",b+":t",isD(b,"t"),()=>startCh(n.t)))}
  c.append(cl);o.append(c);document.body.append(o)}
 function renderRoad(){
  if(!document.getElementById("roadcss")){const s=el("style");s.id="roadcss";s.textContent=ROADCSS;document.head.append(s)}
@@ -442,7 +443,7 @@ function renderRoad(){
   b.onclick=()=>openNode(n);if(ix===cur)curEl=b;road.append(b)});
  ll.append(road);if(curEl)setTimeout(()=>curEl.scrollIntoView({block:"center"}),80)}
 function renderL(){
- ll.replaceChildren(el("p","note","Segui la strada: tocca una tappa per iniziare. Per proseguire serve almeno il 90% di risposte corrette."));
+ ll.replaceChildren(el("p","note","Segui la strada: tocca una tappa per iniziare. Per proseguire serve "+(MINK===100?"rispondere a tutto correttamente.":"almeno il "+MINK+"% di risposte corrette.")));
  ll.append(backupRow(),dueRow(),oddRow());
  const dn=done.filter(d=>typeof d==="number");if(dn.length){const rr=el("div","row"),bm=el("button","btn","Ripasso generale");bm.onclick=startMix;rr.append(bm);ll.append(rr)}
  renderRoad()}
@@ -757,10 +758,10 @@ function pron(){
 function fin(){
  const k=S.kind||"c",key=k==="c"?S.i:S.i+":"+k;
  const gate=!S.rev&&!S.mix&&!S.srs&&S.i>=0&&(k==="c"||k==="w"||k==="t"),T=S.T||0,pct=T?Math.floor(T/(T+S.err)*100):100;
-  if(gate&&pct<90){const c=el("div","card"),r=el("div","row");r.style.justifyContent="center";
+  if(gate&&pct<MINK){const c=el("div","card"),r=el("div","row");r.style.justifyContent="center";
    const b1=el("button","btn","Riprova");b1.onclick=()=>k==="w"?startW(S.i):k==="t"?startCh(S.ch):startL(S.i);
    const b2=el("button","btn g","Torna alle lezioni");b2.onclick=exitL;r.append(b1,b2);
-   c.append(el("div","q sm","💪"),el("h2",0,"Quasi, ma serve il 90%"),el("p","hint","Risposte corrette: "+pct+"%. Per andare avanti ne servono almeno il 90%. Riprova: le domande cambiano."),r);
+   c.append(el("div","q sm","💪"),el("h2",0,"Quasi, ma serve il "+MINK+"%"),el("p","hint","Risposte corrette: "+pct+"%. Per andare avanti "+(MINK===100?"non devi sbagliare nessuna risposta":"ne servono almeno il "+MINK+"%")+". Riprova: le domande cambiano."),r);
    lr.replaceChildren(...lhead(1),c);return}
   if(gate){try{const pp=JSON.parse(localStorage.getItem("hira-pct")||"{}");pp[key]=Math.max(pp[key]||0,pct);localStorage.setItem("hira-pct",JSON.stringify(pp))}catch(e){}}
   const first=!S.rev&&k!=="v"&&!done.includes(key);
