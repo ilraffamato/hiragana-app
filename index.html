@@ -375,15 +375,14 @@ const chLocked=c=>{const [a,b]=chRange(c);for(let x=a;x<=b;x++)if(!passL(x))retu
 function lockedL(i){if(i===0||isD(i,"c"))return false;const a=L[i-1],b=L[i];if((a.g[0]==="k")!==(b.g[0]==="k"))return false;if(!passL(i-1))return true;return CHE.includes(i-1)&&!isD(i-1,"t")}
 function startCh(c){const [a,b]=chRange(c);const ks=shuffle(L.slice(a,b+1).flatMap(x=>x.k));S={i:b,kind:"t",ch:c,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["listen","read"],kq:ks.slice(0,15)};lr.hidden=false;ll.hidden=true;startPh()}
 function isD(i,t){return done.includes(t==="c"?i:i+":"+t)}
-const ROADCSS=`.road{position:relative;margin:14px 0;border-radius:26px;overflow:hidden;background-color:#a9d58f;background-image:radial-gradient(circle,#fff 0 2px,transparent 2.6px),radial-gradient(circle,#ffe48a 0 2px,transparent 2.6px),radial-gradient(ellipse at 30% 20%,#bde5a4 0,transparent 62%),radial-gradient(ellipse at 80% 70%,#93c47e 0,transparent 56%);background-size:97px 113px,131px 89px,100% 700px,100% 900px;background-position:12px 20px,60px 50px,0 0,0 300px}
-.rhd{position:absolute;left:0;top:0;width:100%;height:170px}
+const ROADCSS=`.road{position:relative;margin:14px 0;border-radius:26px;background:linear-gradient(180deg,#3a3f46,#2f3a35);overflow:hidden}
 .road svg{position:absolute;left:0;top:0;width:100%}
 .road path{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.r0{stroke:#b99763;stroke-width:36}.r1{stroke:#ecd9ae;stroke-width:28}.r3{stroke:#fbf3dc;stroke-width:3;stroke-dasharray:.5 12;opacity:.9}.r2{stroke:#e0533f;stroke-width:6}
-.pn{position:absolute;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;border:3px solid #c9a96b;background:var(--paper);color:var(--pen);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font:700 1.7rem var(--mi);box-shadow:0 5px 0 #0006;padding:0}
+.r0{stroke:#1d1f21;stroke-width:34}.r1{stroke:#5b5e64;stroke-width:26}.r3{stroke:var(--paper);stroke-width:2;stroke-dasharray:8 10;opacity:.45}.r2{stroke:var(--shu);stroke-width:7}
+.pn{position:absolute;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;border:3px solid var(--pline);background:var(--paper);color:var(--pen);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font:700 1.7rem var(--mi);box-shadow:0 5px 0 #0006;padding:0}
 .pn .g{line-height:1}.pn small{font:600 .62rem var(--ui);line-height:1;margin-top:2px}
 .pn.d{background:var(--shu);border-color:#fff6ee;color:#fff6ee}
-.pn.l{background:#b9c7b1;border-color:#8fa089;color:#5d6b58;font-size:1.3rem}
+.pn.l{background:#4a4d52;border-color:#3a3d41;color:var(--mute);font-size:1.3rem}
 .pn.v{width:76px;height:76px;border-radius:24px}
 .pn.pp{width:54px;height:54px;font-size:1.6rem;border-style:dashed}.pn.pp.d{background:var(--paper);color:var(--pen);border-color:var(--pline)}.pn.pp.cur{width:62px;height:62px}
 .pn.cur{width:78px;height:78px;animation:pulse 1.6s ease-in-out infinite}.pn.v.cur{width:84px;height:84px}
@@ -392,11 +391,6 @@ const ROADCSS=`.road{position:relative;margin:14px 0;border-radius:26px;overflow
 .pb{position:absolute;left:50%;transform:translate(-50%,-50%);background:var(--paper);color:var(--pen);font:700 .85rem var(--ui);padding:7px 16px;border-radius:99px;white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis;box-shadow:0 3px 0 #0005}
 .dc{position:absolute;font-size:1.8rem;opacity:.9;pointer-events:none}
 .sh{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;z-index:60}`;
-const HEAD='<svg class="rhd" viewBox="0 0 360 170" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ec8e8"/><stop offset="1" stop-color="#eaf7ee"/></linearGradient></defs><rect width="360" height="170" fill="url(#sk)"/><circle cx="305" cy="38" r="17" fill="#fff6c9"/><path d="M50 170 L150 56 Q180 28 210 56 L310 170Z" fill="#8196bd"/><path d="M150 56 Q180 28 210 56 L198 64 L188 54 L178 66 L168 53 L158 64Z" fill="#fff"/><g fill="#fff" opacity=".92"><ellipse cx="70" cy="40" rx="30" ry="9"/><ellipse cx="92" cy="33" rx="20" ry="9"/><ellipse cx="250" cy="62" rx="26" ry="8"/><ellipse cx="270" cy="56" rx="16" ry="7"/></g><path d="M0 170 L0 138 Q70 108 140 138 T290 132 T360 138 L360 170Z" fill="#8fc98a"/><path d="M0 170 L0 152 Q100 128 200 152 T360 148 L360 170Z" fill="#a9d58f"/></svg>';
-const DEC={tree:'<svg viewBox="0 0 60 70" width="54"><ellipse cx="30" cy="65" rx="17" ry="5" fill="#0002"/><rect x="27" y="40" width="6" height="25" rx="2" fill="#8a5b3a"/><circle cx="30" cy="27" r="20" fill="#5fa65a"/><circle cx="19" cy="37" r="13" fill="#74b868"/><circle cx="42" cy="36" r="14" fill="#6bb062"/><circle cx="25" cy="20" r="8" fill="#9bd68a" opacity=".7"/></svg>',
-sakura:'<svg viewBox="0 0 60 70" width="54"><ellipse cx="30" cy="65" rx="17" ry="5" fill="#0002"/><rect x="27" y="40" width="6" height="25" rx="2" fill="#7a5238"/><circle cx="30" cy="27" r="20" fill="#f4b6c8"/><circle cx="19" cy="37" r="13" fill="#f9cfdb"/><circle cx="42" cy="36" r="14" fill="#f09bb6"/><circle cx="25" cy="20" r="8" fill="#fde6ee" opacity=".8"/></svg>',
-house:'<svg viewBox="0 0 80 64" width="62"><ellipse cx="40" cy="58" rx="32" ry="5" fill="#0002"/><rect x="14" y="28" width="52" height="28" fill="#f6efdc"/><rect x="14" y="28" width="52" height="4" fill="#d9ccaa"/><path d="M4 30 L40 6 L76 30Z" fill="#5b6b86"/><path d="M4 30 L40 6 L76 30 L70 30 L40 12 L10 30Z" fill="#46556e"/><rect x="34" y="38" width="12" height="18" fill="#8a5b3a"/><rect x="20" y="36" width="9" height="9" fill="#9fcfe0"/><rect x="51" y="36" width="9" height="9" fill="#9fcfe0"/></svg>',
-torii:'<svg viewBox="0 0 70 64" width="54"><ellipse cx="35" cy="60" rx="24" ry="4" fill="#0002"/><rect x="14" y="20" width="7" height="40" fill="#d6402d"/><rect x="49" y="20" width="7" height="40" fill="#d6402d"/><path d="M4 12 Q35 22 66 12 L66 20 Q35 30 4 20Z" fill="#c2331f"/><rect x="12" y="28" width="46" height="5" fill="#d6402d"/></svg>'};
 const pc=()=>{try{return JSON.parse(localStorage.getItem("hira-pct")||"{}")}catch(e){return{}}};
 const POI=[
 {e:"🍣",t:"Il sushi nasce per strada",w:"Tokyo, un tempo Edo",x:"Il sushi di oggi è nato a Edo, l’antica Tokyo, all’inizio dell’Ottocento, come cibo veloce da mangiare in piedi alle bancarelle. Prima, il pesce si conservava fermentato sotto il riso. Il pesce, さかな, era il protagonista del banco."},
@@ -431,13 +425,13 @@ function renderRoad(){
  if(!document.getElementById("roadcss")){const s=el("style");s.id="roadcss";s.textContent=ROADCSS;document.head.append(s)}
  const N=[];CHE.forEach((e,c)=>{const [a,b]=chRange(c);N.push({b:c});for(let i=a;i<=b;i++)N.push({i});N.push({t:c});N.push({p:c})});
  const stt=n=>n.p!==undefined?(!isD(chRange(n.p)[1],"t")?"l":seenP(n.p)?"d":"o"):n.i!==undefined?(passL(n.i)?"d":lockedL(n.i)?"l":"o"):(isD(chRange(n.t)[1],"t")?"d":chLocked(n.t)?"l":"o");
- let y=190,k=0,cur=-1;const pts=[];
- N.forEach((n,ix)=>{if(n.b!==undefined){n.y=y+22;y+=64}else{n.s=stt(n);if(cur<0&&n.s==="o")cur=ix;n.k=k++;n.x=50+22*Math.sin(n.k*.95);n.y=y+40;y+=92;pts.push(n)}});
+ let y=30,k=0,cur=-1;const pts=[];
+ N.forEach((n,ix)=>{if(n.b!==undefined){n.y=y+22;y+=64}else{n.s=stt(n);if(cur<0&&n.s==="o")cur=ix;n.k=k++;n.x=50+28*Math.sin(n.k*.95);n.y=y+40;y+=92;pts.push(n)}});
  const H=y+30,road=el("div","road");road.style.height=H+"px";
  const ci=cur<0?pts.length-1:pts.indexOf(N[cur]);let d="",dp="";
  pts.forEach((p,j)=>{if(!j){d="M"+p.x+" "+p.y;dp=d}else{const q=pts[j-1],m=(q.y+p.y)/2,seg=" C"+q.x+" "+m+","+p.x+" "+m+","+p.x+" "+p.y;d+=seg;if(j<=ci)dp+=seg}});
  const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");svg.setAttribute("viewBox","0 0 100 "+H);svg.setAttribute("preserveAspectRatio","none");svg.setAttribute("aria-hidden","true");svg.style.height=H+"px";
- svg.innerHTML='<path d="'+d+'" class="r0"/><path d="'+d+'" class="r1"/><path d="'+d+'" class="r3"/><path d="'+dp+'" class="r2"/>';road.append(svg);road.insertAdjacentHTML("afterbegin",HEAD);
+ svg.innerHTML='<path d="'+d+'" class="r0"/><path d="'+d+'" class="r1"/><path d="'+d+'" class="r3"/><path d="'+dp+'" class="r2"/>';road.append(svg);
  const P=pc();let curEl=null;
  N.forEach((n,ix)=>{
   if(n.b!==undefined){const [a,b]=chRange(n.b),nm=L.slice(a,b+1).map(l=>l.k[0][0]).join("・"),pre=CHE.length===11?(n.b===0?"Hiragana · ":n.b===5?"Katakana · ":""):"";const bn=el("div","pb",pre+"Capitolo "+(n.b+1)+" · "+nm);bn.style.top=n.y+"px";road.append(bn);return}
@@ -446,7 +440,6 @@ function renderRoad(){
   b.append(el("span","g",n.s==="l"?"🔒":pp?POI[n.p].e:v?"🏁":L[n.i].k[0][0]));
   const pv=pp?0:v?P[chRange(n.t)[1]+":t"]:P[n.i];if(n.s==="d"&&pv)b.append(el("small",0,pv+"%"));
   b.onclick=()=>openNode(n);if(ix===cur)curEl=b;road.append(b)});
- pts.forEach((p,j)=>{if(j%2===1){const e=el("div","dc");e.innerHTML=DEC[["tree","sakura","house","tree","torii","sakura","tree"][j%7]];e.style.top=(p.y-24)+"px";e.style[p.x>50?"left":"right"]="1%";road.append(e)}});
  ll.append(road);if(curEl)setTimeout(()=>curEl.scrollIntoView({block:"center"}),80)}
 function renderL(){
  ll.replaceChildren(el("p","note","Segui la strada: tocca una tappa per iniziare. Per proseguire serve almeno il 90% di risposte corrette."));
