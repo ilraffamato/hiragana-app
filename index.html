@@ -54,6 +54,12 @@ select.sel{font:inherit;padding:9px 14px;border-radius:99px;border:1px solid var
 .opt.kn .sub{font:500 1.5rem var(--mi);color:var(--pen)}
 .opt.sel{border-color:var(--shu);box-shadow:inset 0 0 0 2px var(--shu)}
 .opt.ok{background:var(--okbg);border-color:var(--ok)}.opt.ko{background:var(--kobg);border-color:var(--ko)}
+.tiles,.line{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.line{min-height:66px;border:1.5px dashed var(--plineu);border-radius:18px;padding:8px;margin:12px 0}
+.line.ok{background:var(--okbg);border:1.5px solid var(--ok)}.line.ko{background:var(--kobg);border:1.5px solid var(--ko)}
+.tile{font:500 1.3rem var(--mi);padding:10px 14px;border-radius:16px;border:1.5px solid var(--plineu);background:var(--paper2);color:var(--pen);cursor:pointer;min-height:48px}
+.dictin{width:100%;box-sizing:border-box;font:500 1.4rem var(--ui);text-align:center;padding:12px;border-radius:16px;border:1.5px solid var(--plineu);background:var(--paper2);color:var(--pen);margin:12px 0 4px}
+.dictin.ok{background:var(--okbg);border-color:var(--ok)}.dictin.ko{background:var(--kobg);border-color:var(--ko)}
 .stats{display:flex;justify-content:space-between;color:var(--mute);font-size:.92rem;margin-bottom:10px}
 .stats b{color:var(--ink);font:700 1.1rem var(--mi)}
 .btn{font:700 .95rem var(--ui);letter-spacing:.04em;background:var(--shuf);color:#fff6ee;border:0;border-radius:99px;padding:11px 24px;cursor:pointer}
@@ -411,7 +417,18 @@ const GU={
   {id:"G1-2",t:"Prime parole",teach:[
    {jp:"ねこ",ro:"neko",it:"gatto"},{jp:"いぬ",ro:"inu",it:"cane"},{jp:"さかな",ro:"sakana",it:"pesce"},
    {jp:"ほん",ro:"hon",it:"libro"},{jp:"やま",ro:"yama",it:"montagna"},{jp:"かわ",ro:"kawa",it:"fiume"}],ex:[
-    {type:"mcq",q:"Quale parola vuol dire “cane”?",opts:["ねこ","いぬ","さかな","ほん"],a:1}]}]}
+    {type:"mcq",q:"Quale parola vuol dire “cane”?",opts:["ねこ","いぬ","さかな","ほん"],a:1}]}]},
+ G2:{id:"G2",t:"Presentarsi",needs:["K1","K2","K3","K4"],test:{n:25,review:5},lessons:[
+  {id:"G2-1",t:"Io sono...",teach:[
+   {jp:"はじめまして",ro:"hajimemashite",it:"Piacere di conoscerti",note:"Si dice quando ci si presenta per la prima volta."},
+   {jp:"わたし は がくせい です。",ro:"watashi wa gakusei desu",it:"Sono uno studente / una studentessa.",note:"は qui si legge “wa”. です chiude la frase."},
+   {jp:"わたし は せんせい です。",ro:"watashi wa sensei desu",it:"Sono un insegnante."},
+   {jp:"わたし は いたりあじん です。",ro:"watashi wa itariajin desu",it:"Sono italiano / italiana."},
+   {jp:"わたし も がくせい です。",ro:"watashi mo gakusei desu",it:"Anch’io sono studente.",note:"も prende il posto di は e vuol dire “anche”."},
+   {jp:"あなた は にほんじん です か。",ro:"anata wa nihonjin desu ka",it:"Sei giapponese?",note:"か alla fine della frase fa una domanda."},
+   {jp:"どうぞ よろしく。",ro:"douzo yoroshiku",it:"Molto lieto / lieta.",note:"Si dice dopo essersi presentati."}],
+   ex:[{type:"build",it:"Anch’io sono italiano.",tiles:["わたし","も","いたりあじん","です","は","の"],ans:["わたし","も","いたりあじん","です"],p:"。"},
+    {type:"dict",jp:"ありがとう",ans:"arigatou",it:"Grazie"}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -1568,7 +1585,7 @@ function teachImp(){
  c.append(listenBtns(sp1),row);
  lr.replaceChildren(...lhead((S.ix+1)/n),c);if(it.say!==""&&!/\.\.\./.test(sp1))setTimeout(()=>say(sp1),200)}
 /* Esercizi di lingua (WP-04): "scegli il significato" (mean) e "ascolta e scegli" (listen), generati dalle frasi di teach;
-   le domande scritte a mano in ex (type "mcq") formano una terza fase. In tutto al massimo 14 domande per lezione (§7). Gli errori tornano in coda come negli esercizi di kana.
+   le domande scritte a mano in ex (type "mcq") formano una fase finale; "componi la frase" (build) è descritto più sotto. In tutto al massimo 14 domande per lezione (§7). Gli errori tornano in coda come negli esercizi di kana.
    Percentuale = T/(T+errori); soglia di lingua 90% (§7). Alla fine chiama then({pct,pass}) oppure torna alla lista.
    Il salvataggio dell'esito (chiavi di done per le lezioni G) arriva col WP-08. */
 const GMIN=90,gKeys=()=>Object.keys(GU).sort((a,b)=>+a.slice(1)-+b.slice(1)),gRo=x=>x.ro||toRo(x.jp),gSay=x=>(x.say||x.jp).replace(/ /g,""),gCan=x=>!/\.\.\./.test(x.say||x.jp);
@@ -1582,17 +1599,76 @@ function gPhase(types,elig,cap){const a=shuffle(elig.slice()),out=[],t=Math.min(
 function gOpts(q){const f=q.k==="j2i"||q.k==="l2i"?"it":"jp",cor=q.x,seen=new Set([cor[f]]),ds=[];
  shuffle(gPool(S.u,S.li).filter(p=>p.x!==cor)).sort((a,b)=>b.cur-a.cur).forEach(p=>{if(ds.length<3&&!seen.has(p.x[f])){seen.add(p.x[f]);ds.push(p.x)}});
  return shuffle([{x:cor,ok:true},...ds.map(x=>({x,ok:false}))]).map(o=>({label:o.x[f],ro:f==="jp"?gRo(o.x):"",ok:o.ok}))}
+/* Componi la frase (WP-05): tessere da ordinare. Si generano dalle frasi di teach con almeno due parole (senza "...") e dagli ex
+   {type:"build", it, tiles:[parole + qualche tessera in più], ans:[parole in ordine], p:"。" facoltativo, say facoltativo}. */
+const gToks=jp=>jp.replace(/[。？！?!]+$/,"").split(" ").filter(Boolean),gBuildable=x=>gCan(x)&&gToks(x.jp).length>=2;
+function gTiles(ans,uid,li){const nd=ans.length<=2?1:2,seen=new Set(ans),ds=[],c=[];
+ shuffle(gPool(uid,li)).sort((a,b)=>b.cur-a.cur).forEach(p=>gToks(p.x.jp).forEach(t=>{if(!/\.\.\./.test(t))c.push(t)}));
+ c.forEach(t=>{if(ds.length<nd&&!seen.has(t)){seen.add(t);ds.push(t)}});
+ let a,n=0;do{a=shuffle([...ans,...ds].map((t,i)=>({id:i,t})))}while(ans.length>1&&a.map(x=>x.t).join(" ")===ans.join(" ")&&n++<5);return a}
+function gBuildQs(l,uid,li){
+ const ex=(l.ex||[]).filter(e=>e.type==="build").map(e=>({k:"build",ans:e.ans,p:e.p||"",it:e.it,ro:toRo(e.ans.join(" ")),say:e.say||e.ans.join(""),
+   tiles:shuffle(e.tiles.map((t,i)=>({id:i,t})))})),
+  gen=shuffle(l.teach.filter(gBuildable)).map(x=>{const ans=gToks(x.jp);return{k:"build",ans,p:(x.jp.match(/[。？！?!]+$/)||[""])[0],it:x.it,ro:gRo(x),say:gSay(x),tiles:gTiles(ans,uid,li)}});
+ return [...ex,...gen].slice(0,4)}
+function gBuild(q){
+ const c=el("div","card"),hn=el("p","hint",""),line=el("div","line"),bank=el("div","tiles"),ck=el("button","btn","Controlla"),nx=el("button","btn","Continua"),rw=el("div","row"),pr=el("p",0,q.it);
+ let sel=[],done=false;const full=q.ans.join(" ")+q.p;
+ pr.style.cssText="font-size:1.5rem;font-weight:700;margin:8px 0 4px";hn.style.margin="12px 0";nx.hidden=true;nx.onclick=gQ;ck.disabled=true;
+ rw.style.cssText="justify-content:center;margin:16px 0 0";rw.append(ck,nx);
+ const tile=(t,f)=>{const b=el("button","tile",t.t);b.onclick=f;return b};
+ const draw=()=>{
+  line.replaceChildren(...(sel.length?sel.map(t=>tile(t,()=>{if(done)return;sel.splice(sel.indexOf(t),1);draw()})):[el("span","note","Tocca le tessere")]));
+  bank.replaceChildren(...q.tiles.filter(t=>!sel.includes(t)).map(t=>tile(t,()=>{if(done)return;sel.push(t);draw()})));ck.disabled=done||!sel.length};
+ ck.onclick=()=>{if(done||!sel.length)return;done=true;const good=sel.map(t=>t.t).join(" ")===q.ans.join(" ");S.q.shift();line.classList.add(good?"ok":"ko");
+  if(good){S.ok++;if(!q.miss){ST.xp+=10;svST();xpUI()}hn.textContent="Giusto! "+full+" ("+q.ro+")"}
+  else{S.err++;q.miss=1;S.q.push(q);hn.textContent="Era: "+full+" ("+q.ro+"). Lo rivedrai tra poco."}
+  say(q.say);ck.hidden=true;nx.hidden=false;nx.focus();draw()};
+ c.append(el("p","note","Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+S.phs[S.ph].t),el("p","note","Componi la frase in giapponese."),pr,line,bank,hn,rw);
+ draw();lr.replaceChildren(...lhead(S.ok/S.tot),c)}
+/* Dettato (WP-06): la voce legge, si scrive in romaji. Fonti: frasi di teach (fino a 3, scelte tra le più lunghe) e ex
+   {type:"dict", jp, ans (romaji), it facoltativo, say facoltativo}. Il confronto è tollerante: gNormRo piega le varianti d'uso
+   (si/shi, ti/chi, tu/tsu, hu/fu, zi/ji, sya/sha..., wo/o, ou/oo, macron, apostrofo, spazi); si accetta anche hiragana. */
+function gNormRo(s){s=String(s).toLowerCase().replace(/[āīūēō]/g,c=>({"ā":"aa","ī":"ii","ū":"uu","ē":"ee","ō":"oo"}[c]));
+ s=s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[\s'’`´.,、。！？!?\-–·・]/g,"");
+ s=s.replace(/(sy|ty|zy|jy)([auo])/g,(m,a,b)=>({sy:"sh",ty:"ch",zy:"j",jy:"j"}[a])+b);
+ s=s.replace(/si/g,"shi").replace(/ti/g,"chi").replace(/tu/g,"tsu").replace(/(^|[^sc])hu/g,"$1fu").replace(/zi/g,"ji");
+ return s.replace(/wo/g,"o").replace(/ou/g,"oo")}
+const gKana=s=>String(s).replace(/[\s。、？！?!・〜～]/g,"");
+function gDictOk(inp,q){inp=inp.trim();if(!inp)return false;
+ if(/[\u3040-\u309f]/.test(inp))return gKana(inp)===gKana(q.jp);return gNormRo(inp)===gNormRo(q.ans)}
+function gDictQs(l){
+ const ex=(l.ex||[]).filter(e=>e.type==="dict").map(e=>({k:"dict",jp:e.jp,ans:e.ans,it:e.it||"",say:e.say||e.jp.replace(/ /g,"")})),
+  gen=shuffle(l.teach.filter(gCan).sort((a,b)=>b.jp.length-a.jp.length).slice(0,6)).map(x=>({k:"dict",jp:x.jp,ans:gRo(x),it:x.it,say:gSay(x)}));
+ return [...ex,...gen].slice(0,3)}
+function gDict(q){
+ const c=el("div","card"),hn=el("p","hint",""),inp=el("input","dictin"),ck=el("button","btn","Controlla"),nx=el("button","btn","Continua"),rw=el("div","row");let done=false;
+ inp.type="text";inp.placeholder="romaji";inp.setAttribute("autocapitalize","off");inp.setAttribute("autocomplete","off");inp.setAttribute("autocorrect","off");inp.setAttribute("spellcheck","false");inp.setAttribute("aria-label","Scrivi in romaji");
+ hn.style.margin="12px 0";nx.hidden=true;nx.onclick=gQ;ck.disabled=true;rw.style.cssText="justify-content:center;margin:16px 0 0";rw.append(ck,nx);
+ inp.oninput=()=>{ck.disabled=done||!inp.value.trim()};
+ inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();if(done)nx.click();else if(!ck.disabled)ck.click()}};
+ ck.onclick=()=>{if(done||!inp.value.trim())return;done=true;const good=gDictOk(inp.value,q);S.q.shift();inp.readOnly=true;inp.classList.add(good?"ok":"ko");
+  const full=q.ans+" ("+q.jp+")"+(q.it?" = "+q.it:"");
+  if(good){S.ok++;if(!q.miss){ST.xp+=10;svST();xpUI()}hn.textContent="Giusto! "+full}
+  else{S.err++;q.miss=1;S.q.push(q);hn.textContent="Era: "+full+". Lo rivedrai tra poco."}
+  say(q.say);ck.hidden=true;nx.hidden=false;nx.focus()};
+ c.append(el("p","note","Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+S.phs[S.ph].t),el("p","note","Ascolta e scrivi in romaji quello che senti."),listenBtns(q.say),inp,hn,rw);
+ lr.replaceChildren(...lhead(S.ok/S.tot),c);setTimeout(()=>say(q.say),200)}
 function startGLesson(uid,li,onDone){const l=GU[uid]&&GU[uid].lessons[li];if(!l||!l.teach.length)return;
  startImpara(uid,li,()=>gStart(uid,li,onDone),"Iniziamo gli esercizi")}
-function gStart(uid,li,onDone){const l=GU[uid].lessons[li],mcq=(l.ex||[]).filter(e=>e.type==="mcq"),phs=[],qs={},cap=Math.max(3,Math.floor((14-mcq.length)/2));
+function gStart(uid,li,onDone){const l=GU[uid].lessons[li],mcq=(l.ex||[]).filter(e=>e.type==="mcq"),phs=[],qs={},bq=gBuildQs(l,uid,li),dq=gDictQs(l),cap=Math.max(3,Math.floor((14-mcq.length-bq.length-dq.length)/2));
  if(gPool(uid,li).length>=2){qs.mean=gPhase(["j2i","i2j"],l.teach,cap);phs.push({id:"mean",t:"Scegli il significato"});
   const ls=l.teach.filter(gCan);if(ls.length){qs.listen=gPhase(["l2i","l2j"],ls,cap);phs.push({id:"listen",t:"Ascolta e scegli"})}}
+ if(bq.length){qs.build=bq;phs.push({id:"build",t:"Componi la frase"})}
+ if(dq.length){qs.dict=dq;phs.push({id:"dict",t:"Dettato"})}
  if(mcq.length){qs.extra=shuffle(mcq.map(e=>({k:"mcq",e})));phs.push({id:"extra",t:"Domande della lezione"})}
  S={kind:"gx",u:uid,li,onDone,phs,qs,ph:0,q:[],tot:0,ok:0,err:0,T:0,lastErr:0};gPh()}
 function gPh(){if(S.ph>=S.phs.length)return gFin();const id=S.phs[S.ph].id;S.q=S.qs[id].slice();S.tot=S.q.length;S.ok=0;gQ()}
 function gNext(){S.T+=S.tot;S.ph++;gPh()}
 function gQ(){
  if(!S.q.length)return gNext();
+ if(S.q[0].k==="build")return gBuild(S.q[0]);
+ if(S.q[0].k==="dict")return gDict(S.q[0]);
  const q=S.q[0],c=el("div","card"),hn=el("p","hint",""),o=el("div","opts one"),nx=el("button","btn","Continua"),rw=el("div","row");let ans=false;
  hn.style.margin="12px 0";nx.hidden=true;nx.onclick=gQ;rw.style.cssText="justify-content:center;margin:16px 0 0";rw.append(nx);
  const hd=el("p","note","Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+S.phs[S.ph].t),head=[];let say1="",opts,good1="";

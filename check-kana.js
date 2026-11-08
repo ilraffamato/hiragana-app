@@ -54,7 +54,7 @@ function loadApp(indexPath) {
     beforeParse(w) { w.Element.prototype.scrollIntoView = () => {}; } });
   return new Promise(res => setTimeout(() => {
     const w = dom.window;
-    const data = JSON.parse(w.eval('JSON.stringify({L:L,PATH:PATH,WV:WV,GU:(typeof GU!=="undefined"?GU:{}),roGen:Object.fromEntries(Object.values(typeof GU!=="undefined"?GU:{}).flatMap(u=>u.lessons.flatMap(l=>l.teach.map(t=>[t.jp,toRo(t.jp)]))))})'));
+    const data = JSON.parse(w.eval('JSON.stringify({L:L,PATH:PATH,WV:WV,GU:(typeof GU!=="undefined"?GU:{}),roGen:Object.fromEntries(Object.values(typeof GU!=="undefined"?GU:{}).flatMap(u=>u.lessons.flatMap(l=>[...l.teach.map(t=>t.jp),...(l.ex||[]).filter(e=>e.type==="dict").map(e=>e.jp)].map(j=>[j,toRo(j)]))))})'));
     w.close(); res(data);
   }, 300));
 }
@@ -162,6 +162,28 @@ function checkSchema(app, out, gu) {
             if (!Number.isInteger(e.a) || e.a < 0 || e.a >= e.opts.length) err(`${w}.a: indice della risposta giusta non valido`);
           }
         }
+        if (e.type === 'dict') {
+          str(e.jp, w + '.jp');
+          if (typeof e.ans !== 'string' || !/^[a-z][a-z' -]*$/.test(e.ans.trim())) err(`${w}.ans: serve il romaji in lettere minuscole senza accenti (per esempio “arigatou”)`);
+          else {
+            const gen = app.roGen && app.roGen[e.jp];
+            if (gen !== undefined && normRo(gen) !== normRo(e.ans)) warn(`${w}: romaji «${e.ans}» diverso da quello generato da toRo «${gen}»`);
+          }
+          ['it', 'say'].forEach(f => { if (e[f] !== undefined && typeof e[f] !== 'string') err(`${w}.${f}: deve essere testo`); });
+        }
+        if (e.type === 'build') {
+          str(e.it, w + '.it');
+          const okArr = a => Array.isArray(a) && a.length && a.every(t => typeof t === 'string' && t.trim() && !/\s/.test(t));
+          if (!okArr(e.tiles) || e.tiles.length < 2) err(`${w}.tiles: servono almeno 2 tessere di testo, senza spazi`);
+          if (!okArr(e.ans)) err(`${w}.ans: serve l'elenco delle parole in ordine, senza spazi dentro le parole`);
+          if (okArr(e.tiles) && okArr(e.ans)) {
+            const pool = [...e.tiles]; let miss = null;
+            for (const t of e.ans) { const i = pool.indexOf(t); if (i < 0) { miss = t; break; } pool.splice(i, 1); }
+            if (miss) err(`${w}: la parola «${miss}» di ans non è tra le tessere`);
+            if (e.tiles.length === e.ans.length) warn(`${w}: nessuna tessera in più (conviene 1 o 2)`);
+          }
+          if (e.p !== undefined && typeof e.p !== 'string') err(`${w}.p: deve essere testo`);
+        }
       });
       l.teach.forEach((t, ti) => {
         const w = `${at}, frase ${ti + 1}`;
@@ -241,6 +263,12 @@ async function selftest(app, M) {
     bad('lezione senza frasi', g => { g.G1.lessons[0].teach = []; }, 'error');
     bad('mcq con risposta fuori elenco', g => { g.G1.lessons[0].ex[0].a = 9; }, 'error');
     bad('mcq con opzioni uguali', g => { g.G1.lessons[0].ex[0].opts[1] = g.G1.lessons[0].ex[0].opts[0]; }, 'error');
+    bad('dict: romaji con maiuscole', g => { g.G2.lessons[0].ex[1].ans = 'Arigatou'; }, 'error');
+    bad('dict: romaji diverso da toRo', g => { g.G2.lessons[0].ex[1].ans = 'arigato'; }, 'warn');
+    bad('dict: manca jp', g => { delete g.G2.lessons[0].ex[1].jp; }, 'error');
+    bad('build: parola di ans non tra le tessere', g => { g.G2.lessons[0].ex[0].ans[0] = 'ほん'; }, 'error');
+    bad('build: tessere senza spazi', g => { g.G2.lessons[0].ex[0].tiles[0] = 'わたし は'; }, 'error');
+    bad('build: nessuna tessera in più', g => { g.G2.lessons[0].ex[0].tiles = g.G2.lessons[0].ex[0].ans.slice(); }, 'warn');
     bad('tipo di esercizio sconosciuto', g => { g.G1.lessons[0].ex[0].type = 'xyz'; }, 'error');
     bad('romaji diverso da toRo', g => { g.G1.lessons[1].teach[0].ro = 'nyaa'; }, 'warn');
     bad('romaji con macron', g => { g.G1.lessons[0].teach[1].ro = 'ohayō'; }, 'warn'); }
