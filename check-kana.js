@@ -151,6 +151,18 @@ function checkSchema(app, out, gu) {
       str(l.t, at + '.t');
       if (!Array.isArray(l.teach) || !l.teach.length) { err(`${at}.teach: serve almeno una frase`); return; }
       if (l.ex !== undefined && !Array.isArray(l.ex)) err(`${at}.ex: deve essere un elenco`);
+      else (l.ex || []).forEach((e, ei) => {
+        const w = `${at}, esercizio ${ei + 1}`;
+        if (!['mcq', 'build', 'dict'].includes(e.type)) { err(`${w}: tipo «${e.type}» sconosciuto (mcq, build, dict)`); return; }
+        if (e.type === 'mcq') {
+          str(e.q, w + '.q');
+          if (!Array.isArray(e.opts) || e.opts.length < 2 || e.opts.some(o => typeof o !== 'string' || !o.trim())) err(`${w}.opts: servono almeno 2 opzioni di testo`);
+          else {
+            if (new Set(e.opts).size !== e.opts.length) err(`${w}.opts: opzioni uguali tra loro`);
+            if (!Number.isInteger(e.a) || e.a < 0 || e.a >= e.opts.length) err(`${w}.a: indice della risposta giusta non valido`);
+          }
+        }
+      });
       l.teach.forEach((t, ti) => {
         const w = `${at}, frase ${ti + 1}`;
         if (str(t.jp, w + '.jp') && /[\uff01-\uff5e]/.test(t.jp.replace(/[！？（）～]/g, ''))) warn(`${w}: caratteri a larghezza piena nel testo «${t.jp}»`);
@@ -227,6 +239,9 @@ async function selftest(app, M) {
     bad('id di lezione sbagliato', g => { g.G1.lessons[1].id = 'G1-5'; }, 'error');
     bad('needs dopo l\'unità', g => { g.G1.needs = ['K4']; }, 'error');
     bad('lezione senza frasi', g => { g.G1.lessons[0].teach = []; }, 'error');
+    bad('mcq con risposta fuori elenco', g => { g.G1.lessons[0].ex[0].a = 9; }, 'error');
+    bad('mcq con opzioni uguali', g => { g.G1.lessons[0].ex[0].opts[1] = g.G1.lessons[0].ex[0].opts[0]; }, 'error');
+    bad('tipo di esercizio sconosciuto', g => { g.G1.lessons[0].ex[0].type = 'xyz'; }, 'error');
     bad('romaji diverso da toRo', g => { g.G1.lessons[1].teach[0].ro = 'nyaa'; }, 'warn');
     bad('romaji con macron', g => { g.G1.lessons[0].teach[1].ro = 'ohayō'; }, 'warn'); }
   const o = []; checkBaseline(app, signature(app), o); r.push(o.length === 0); console.log((o.length === 0 ? 'ok     ' : 'FALLITO ') + 'riferimento = file attuale');

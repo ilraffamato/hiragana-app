@@ -406,10 +406,12 @@ const GU={
    {jp:"すみません",ro:"sumimasen",it:"Scusi / Mi scusi",note:"Serve per chiedere scusa e per attirare l’attenzione, per esempio di un cameriere."},
    {jp:"また ね",ro:"mata ne",it:"A dopo / Ci vediamo",note:"Informale: si dice agli amici."},
    {jp:"はい",ro:"hai",it:"Sì",note:"Vuol dire anche “ho capito” o “presente”."},
-   {jp:"いいえ",ro:"iie",it:"No"}],ex:[]},
+   {jp:"いいえ",ro:"iie",it:"No"}],ex:[
+    {type:"mcq",q:"Che cosa si dice la mattina?",opts:["おはよう","おやすみ","さようなら","すみません"],a:0}]},
   {id:"G1-2",t:"Prime parole",teach:[
    {jp:"ねこ",ro:"neko",it:"gatto"},{jp:"いぬ",ro:"inu",it:"cane"},{jp:"さかな",ro:"sakana",it:"pesce"},
-   {jp:"ほん",ro:"hon",it:"libro"},{jp:"やま",ro:"yama",it:"montagna"},{jp:"かわ",ro:"kawa",it:"fiume"}],ex:[]}]}
+   {jp:"ほん",ro:"hon",it:"libro"},{jp:"やま",ro:"yama",it:"montagna"},{jp:"かわ",ro:"kawa",it:"fiume"}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “cane”?",opts:["ねこ","いぬ","さかな","ほん"],a:1}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -1551,22 +1553,79 @@ function num(){
 /* ripasso: i già imparati entrano in coda una volta sola */
 if(!ST.sd){let i=0;Object.entries(ST.m).forEach(([j,m])=>{if(m.c>0&&!ST.s[j]&&!ST.mst[j]&&(KG[j]||WM[j]))ST.s[j]={b:0,d:DAY()+1+(i++%4),r:m.r}});ST.sd=1;svST()}
 /* Impara (WP-03): una scheda per frase di una lezione di lingua. S.then = cosa fare alla fine (default: torna alla lista). */
-function startImpara(uid,li,then){const u=GU[uid],l=u&&u.lessons[li];if(!l||!l.teach.length)return;
- S={kind:"imp",u:uid,li,ix:0,items:l.teach,then};lr.hidden=false;ll.hidden=true;teachImp()}
+function startImpara(uid,li,then,label){const u=GU[uid],l=u&&u.lessons[li];if(!l||!l.teach.length)return;
+ S={kind:"imp",u:uid,li,ix:0,items:l.teach,then,label};lr.hidden=false;ll.hidden=true;teachImp()}
 function teachImp(){
  const it=S.items[S.ix],n=S.items.length,c=el("div","card"),jp=it.jp,sp1=(it.say||jp).replace(/ /g,"");
  const ro=el("div","q ro",it.ro||toRo(jp));ro.style.cssText="font-size:"+(jp.length>6?"1.6":"2.2")+"rem;margin:2px 0 6px";
  const me=el("p",0,it.it);me.style.cssText="font-size:1.4rem;font-weight:700;margin:2px 0 8px";
  const row=el("div","row");row.style.cssText="justify-content:center;margin:16px 0 0";
  if(S.ix>0){const bk=el("button","btn g","Indietro");bk.onclick=()=>{S.ix--;teachImp()};row.append(bk)}
- const last=S.ix===n-1,nb=el("button","btn",last?"Fine della lezione":"Avanti");
+ const last=S.ix===n-1,nb=el("button","btn",last?(S.label||"Fine della lezione"):"Avanti");
  nb.onclick=()=>{if(!last){S.ix++;teachImp()}else if(S.then)S.then();else exitL()};row.append(nb);
  c.append(el("p","note",GU[S.u].lessons[S.li].t+" · "+(S.ix+1)+" di "+n),el("div","q"+(jp.length>2?" sm":""),jp),ro,me);
  if(it.note)c.append(el("p","note",it.note));
  c.append(listenBtns(sp1),row);
  lr.replaceChildren(...lhead((S.ix+1)/n),c);if(it.say!==""&&!/\.\.\./.test(sp1))setTimeout(()=>say(sp1),200)}
-/* ingresso di prova finché la strada non mostra le unità G (WP-08): aggiungere #prova-G1-1 all'indirizzo della pagina */
-function openHash(){const m=/^#prova-(G\d+)-(\d+)$/.exec(location.hash);if(m)startImpara(m[1],+m[2]-1)}
+/* Esercizi di lingua (WP-04): "scegli il significato" (mean) e "ascolta e scegli" (listen), generati dalle frasi di teach;
+   le domande scritte a mano in ex (type "mcq") formano una terza fase. In tutto al massimo 14 domande per lezione (§7). Gli errori tornano in coda come negli esercizi di kana.
+   Percentuale = T/(T+errori); soglia di lingua 90% (§7). Alla fine chiama then({pct,pass}) oppure torna alla lista.
+   Il salvataggio dell'esito (chiavi di done per le lezioni G) arriva col WP-08. */
+const GMIN=90,gKeys=()=>Object.keys(GU).sort((a,b)=>+a.slice(1)-+b.slice(1)),gRo=x=>x.ro||toRo(x.jp),gSay=x=>(x.say||x.jp).replace(/ /g,""),gCan=x=>!/\.\.\./.test(x.say||x.jp);
+function gPool(uid,li){const out=[],seen=new Set();
+ gKeys().forEach(k=>{if(+k.slice(1)>+uid.slice(1))return;GU[k].lessons.forEach((l,i)=>{if(k===uid&&i>li)return;
+  l.teach.forEach(x=>{if(!seen.has(x.jp)){seen.add(x.jp);out.push({x,cur:k===uid&&i===li})}})})});return out}
+function gPhase(types,elig,cap){const a=shuffle(elig.slice()),out=[],t=Math.min(cap,a.length*types.length);
+ a.forEach(x=>{if(out.length<t)out.push({k:types[Math.floor(Math.random()*types.length)],x})});
+ for(const x of a){if(out.length>=t)break;const f=out.find(q=>q.x===x);if(f)out.push({k:types.find(y=>y!==f.k),x})}
+ return shuffle(out)}
+function gOpts(q){const f=q.k==="j2i"||q.k==="l2i"?"it":"jp",cor=q.x,seen=new Set([cor[f]]),ds=[];
+ shuffle(gPool(S.u,S.li).filter(p=>p.x!==cor)).sort((a,b)=>b.cur-a.cur).forEach(p=>{if(ds.length<3&&!seen.has(p.x[f])){seen.add(p.x[f]);ds.push(p.x)}});
+ return shuffle([{x:cor,ok:true},...ds.map(x=>({x,ok:false}))]).map(o=>({label:o.x[f],ro:f==="jp"?gRo(o.x):"",ok:o.ok}))}
+function startGLesson(uid,li,onDone){const l=GU[uid]&&GU[uid].lessons[li];if(!l||!l.teach.length)return;
+ startImpara(uid,li,()=>gStart(uid,li,onDone),"Iniziamo gli esercizi")}
+function gStart(uid,li,onDone){const l=GU[uid].lessons[li],mcq=(l.ex||[]).filter(e=>e.type==="mcq"),phs=[],qs={},cap=Math.max(3,Math.floor((14-mcq.length)/2));
+ if(gPool(uid,li).length>=2){qs.mean=gPhase(["j2i","i2j"],l.teach,cap);phs.push({id:"mean",t:"Scegli il significato"});
+  const ls=l.teach.filter(gCan);if(ls.length){qs.listen=gPhase(["l2i","l2j"],ls,cap);phs.push({id:"listen",t:"Ascolta e scegli"})}}
+ if(mcq.length){qs.extra=shuffle(mcq.map(e=>({k:"mcq",e})));phs.push({id:"extra",t:"Domande della lezione"})}
+ S={kind:"gx",u:uid,li,onDone,phs,qs,ph:0,q:[],tot:0,ok:0,err:0,T:0,lastErr:0};gPh()}
+function gPh(){if(S.ph>=S.phs.length)return gFin();const id=S.phs[S.ph].id;S.q=S.qs[id].slice();S.tot=S.q.length;S.ok=0;gQ()}
+function gNext(){S.T+=S.tot;S.ph++;gPh()}
+function gQ(){
+ if(!S.q.length)return gNext();
+ const q=S.q[0],c=el("div","card"),hn=el("p","hint",""),o=el("div","opts one"),nx=el("button","btn","Continua"),rw=el("div","row");let ans=false;
+ hn.style.margin="12px 0";nx.hidden=true;nx.onclick=gQ;rw.style.cssText="justify-content:center;margin:16px 0 0";rw.append(nx);
+ const hd=el("p","note","Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+S.phs[S.ph].t),head=[];let say1="",opts,good1="";
+ if(q.k==="mcq"){head.push(el("p",0,q.e.q));head[0].style.cssText="font-size:1.3rem;font-weight:700;margin:8px 0 12px";
+  opts=shuffle(q.e.opts.map((t,i)=>({label:t,ro:"",ok:i===q.e.a})));good1="Giusto!"}
+ else{opts=gOpts(q);const x=q.x;say1=gSay(x);
+  if(q.k==="j2i"){head.push(el("p","note","Che cosa significa?"),el("div","q sm",x.jp),el("div","note",gRo(x)));if(gCan(x))head.push(listenBtns(say1))}
+  else if(q.k==="i2j"){head.push(el("p","note","Come si dice in giapponese?"),el("p",0,x.it));head[1].style.cssText="font-size:1.5rem;font-weight:700;margin:8px 0 12px"}
+  else head.push(el("p","note",q.k==="l2i"?"Ascolta e scegli che cosa significa. Il testo non si vede.":"Ascolta e scegli la frase."),listenBtns(say1));
+  good1="Giusto! "+x.jp+" ("+gRo(x)+") = "+x.it}
+ opts.forEach(op=>{const b=el("button","opt");b.style.fontSize="1.2rem";b.append(el("span",0,op.label));
+  if(op.ro){const r=el("span",0,op.ro);r.style.cssText="display:block;font-size:.8rem;color:var(--mute)";b.append(r)}
+  b.dataset.c=op.ok?"1":"";
+  b.onclick=()=>{if(ans)return;ans=true;
+   o.querySelectorAll(".opt").forEach(y=>{if(y.dataset.c)y.classList.add("ok")});S.q.shift();
+   if(op.ok){S.ok++;if(!q.miss){ST.xp+=10;svST();xpUI()}hn.textContent=good1}
+   else{S.err++;q.miss=1;b.classList.add("ko");S.q.push(q);hn.textContent=(q.k==="mcq"?"No. Era: "+q.e.opts[q.e.a]:"Era: "+q.x.jp+" ("+gRo(q.x)+") = "+q.x.it)+". Lo rivedrai tra poco."}
+   if(say1&&gCan(q.x))say(say1);nx.hidden=false;nx.focus()};
+  o.append(b)});
+ c.append(hd,...head,hn,o,rw);lr.replaceChildren(...lhead(S.ok/S.tot),c);
+ if((q.k==="l2i"||q.k==="l2j")&&say1)setTimeout(()=>say(say1),200)}
+function gFin(){
+ const pct=S.T+S.err?Math.round(100*S.T/(S.T+S.err)):100,pass=pct>=GMIN,uid=S.u,li=S.li,od=S.onDone,c=el("div","card"),row=el("div","row");
+ row.style.cssText="justify-content:center;margin:16px 0 0";
+ const again=el("button","btn g","Riprova");again.onclick=()=>startGLesson(uid,li,od);
+ const ok=el("button","btn",pass?"Avanti":"Torna alla lista");ok.onclick=()=>{if(od)od({pct,pass});else exitL()};
+ row.append(again,ok);
+ c.append(el("p","note",GU[uid].lessons[li].t),el("div","q",pct+"%"),
+  el("p",0,pass?"Lezione superata.":"Non ancora: servono almeno "+GMIN+"%."),
+  el("p","note","Risposte giuste al primo colpo: "+S.T+" su "+(S.T+S.err)+" risposte date."),row);
+ lr.replaceChildren(...lhead(1),c);if(window.speechSynthesis)speechSynthesis.cancel()}
+/* ingresso di prova finché la strada non mostra le unità G (WP-08): aggiungere #prova-G1-1 (lezione intera: Impara + esercizi) o #impara-G1-1 (solo le schede) all'indirizzo della pagina */
+function openHash(){const m=/^#(prova|impara)-(G\d+)-(\d+)$/.exec(location.hash);if(m)(m[1]==="prova"?startGLesson:startImpara)(m[2],+m[3]-1)}
 window.addEventListener("hashchange",openHash);
 renderL();renderV();
 openHash();
