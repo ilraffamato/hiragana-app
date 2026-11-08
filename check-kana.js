@@ -6,7 +6,9 @@
  *  2. Controlla i testi giapponesi delle unità G: ogni kana deve essere già studiato (segnala i kana nascosti, per esempio
  *     が in ありがとう) e ogni kanji deve essere previsto dal piano (§10) per quell'unità o per una precedente.
  *  3. Controlla le parole delle lezioni esistenti (WV): ogni carattere deve comparire in una lezione di L.
- *  4. Confronta lezioni e unità K con check-baseline.json: se cambiano, le chiavi di done (i, "i:w", "i:p", "ultima:t") non
+ *  4. Controlla le unità di lingua già presenti in index.html (tabella GU, WP-03): schema (id, titoli, lezioni, frasi con jp e it,
+ *     ordine di needs), romaji dichiarato contro quello generato da toRo (avviso se diverso) e kana di frasi e note.
+ *  5. Confronta lezioni e unità K con check-baseline.json: se cambiano, le chiavi di done (i, "i:w", "i:p", "ultima:t") non
  *     sono più valide per chi ha già dei progressi.
  *
  * Uso (serve jsdom: npm i jsdom)
@@ -38,7 +40,7 @@ const KANJI = {
    indicata, ma con un avviso, perché il piano non dice dove insegnarli. */
 const EXTRA = { 'っ': 'K5', 'ッ': 'K6', 'ー': 'K6' };
 const NEUTRAL = /[\s\u3000。、，．！？「」『』（）・〜～…\u30fb]/;
-const KEYS = new Set(['jp', 'q', 'opts', 'tiles', 'ans', 'w', 'kana', 'text', 'k']);
+const KEYS = new Set(['jp', 'q', 'opts', 'tiles', 'ans', 'w', 'kana', 'text', 'k', 'note', 'say']);
 
 const isHira = c => /[\u3041-\u3096\u3099-\u309f]/.test(c);
 const isKata = c => /[\u30a1-\u30fa\u30fc-\u30ff]/.test(c);
@@ -52,7 +54,7 @@ function loadApp(indexPath) {
     beforeParse(w) { w.Element.prototype.scrollIntoView = () => {}; } });
   return new Promise(res => setTimeout(() => {
     const w = dom.window;
-    const data = JSON.parse(w.eval('JSON.stringify({L:L,PATH:PATH,WV:WV})'));
+    const data = JSON.parse(w.eval('JSON.stringify({L:L,PATH:PATH,WV:WV,GU:(typeof GU!=="undefined"?GU:{}),roGen:Object.fromEntries(Object.values(typeof GU!=="undefined"?GU:{}).flatMap(u=>u.lessons.flatMap(l=>l.teach.map(t=>[t.jp,toRo(t.jp)]))))})'));
     w.close(); res(data);
   }, 300));
 }
@@ -131,6 +133,40 @@ function checkLessonWords(app, M, out) {
   return { n, lo, hi };
 }
 
+const normRo = r => String(r).toLowerCase().replace(/[\s.,!?'’-]/g, '');
+function checkSchema(app, out, gu) {
+  gu = gu || app.GU || {};
+  const err = m => out.push({ level: 'error', msg: m }), warn = m => out.push({ level: 'warn', msg: m });
+  const str = (v, w) => typeof v === 'string' && v.trim() !== '' || (err(w + ': manca o è vuoto'), false);
+  for (const [key, u] of Object.entries(gu)) {
+    if (u.id !== key) err(`GU.${key}: id «${u.id}» diverso dalla chiave`);
+    if (!/^G\d+$/.test(key) || !ORDER.includes(key)) { err(`GU.${key}: non è un'unità G del piano`); continue; }
+    str(u.t, key + '.t');
+    if (!Array.isArray(u.needs) || !u.needs.length) err(`${key}.needs: serve un elenco di unità K`);
+    else u.needs.forEach(n => { if (!/^K\d+$/.test(n) || !ORDER.includes(n)) err(`${key}.needs: «${n}» non è un'unità K`); else if (ORDER.indexOf(n) > ORDER.indexOf(key)) err(`${key}.needs: ${n} viene dopo ${key} nel §6`); });
+    if (!Array.isArray(u.lessons) || !u.lessons.length) { err(`${key}.lessons: serve almeno una lezione`); continue; }
+    u.lessons.forEach((l, li) => {
+      const at = `${key} lezione ${li + 1}`;
+      if (l.id !== `${key}-${li + 1}`) err(`${at}: id «${l.id}», atteso «${key}-${li + 1}»`);
+      str(l.t, at + '.t');
+      if (!Array.isArray(l.teach) || !l.teach.length) { err(`${at}.teach: serve almeno una frase`); return; }
+      if (l.ex !== undefined && !Array.isArray(l.ex)) err(`${at}.ex: deve essere un elenco`);
+      l.teach.forEach((t, ti) => {
+        const w = `${at}, frase ${ti + 1}`;
+        if (str(t.jp, w + '.jp') && /[\uff01-\uff5e]/.test(t.jp.replace(/[！？（）～]/g, ''))) warn(`${w}: caratteri a larghezza piena nel testo «${t.jp}»`);
+        str(t.it, w + '.it');
+        ['ro', 'note', 'say'].forEach(f => { if (t[f] !== undefined && typeof t[f] !== 'string') err(`${w}.${f}: deve essere testo`); });
+        if (typeof t.jp === 'string' && /^[^\s]+(\s[^\s]+)*$/.test(t.jp) === false) warn(`${w}: spazi doppi o ai bordi in «${t.jp}»`);
+        if (t.ro) {
+          if (/[A-Z\u0100-\u017f]/.test(t.ro)) warn(`${w}: romaji «${t.ro}» con maiuscole o macron (il piano usa ou/oo)`);
+          const gen = app.roGen && app.roGen[t.jp];
+          if (gen !== undefined && normRo(gen) !== normRo(t.ro)) warn(`${w}: romaji «${t.ro}» diverso da quello generato da toRo «${gen}»`);
+        }
+      });
+    });
+  }
+}
+
 function signature(app) {
   return {
     lessons: app.L.map(l => l.g + ':' + l.k.map(p => p[0]).join('')),
@@ -185,6 +221,14 @@ async function selftest(app, M) {
     t('G9 kanji 私 (non nel piano)', 'G9', '私', true),
     t('Italiano misto ignorato', 'G2', 'Che cosa significa わたし?', false)
   ];
+  { const o = []; checkSchema(app, o); const ok1 = !o.some(x => x.level === 'error'); r.push(ok1); console.log((ok1 ? 'ok     ' : 'FALLITO ') + 'schema GU di index.html valido');
+    const bad = (name, mut, lvl) => { const g = JSON.parse(JSON.stringify(app.GU)); mut(g); const q = []; checkSchema(app, q, g); const ok2 = q.some(x => x.level === lvl); r.push(ok2); console.log((ok2 ? 'ok     ' : 'FALLITO ') + 'schema: ' + name); };
+    bad('frase senza traduzione', g => { delete g.G1.lessons[0].teach[0].it; }, 'error');
+    bad('id di lezione sbagliato', g => { g.G1.lessons[1].id = 'G1-5'; }, 'error');
+    bad('needs dopo l\'unità', g => { g.G1.needs = ['K4']; }, 'error');
+    bad('lezione senza frasi', g => { g.G1.lessons[0].teach = []; }, 'error');
+    bad('romaji diverso da toRo', g => { g.G1.lessons[1].teach[0].ro = 'nyaa'; }, 'warn');
+    bad('romaji con macron', g => { g.G1.lessons[0].teach[1].ro = 'ohayō'; }, 'warn'); }
   const o = []; checkBaseline(app, signature(app), o); r.push(o.length === 0); console.log((o.length === 0 ? 'ok     ' : 'FALLITO ') + 'riferimento = file attuale');
   const d = []; checkDone(app, [0, '1:w', '2:t', '3:t'], d); r.push(d.length === 1); console.log((d.length === 1 ? 'ok     ' : 'FALLITO ') + 'done: "3:t" rifiutato, gli altri validi');
   return r.every(Boolean);
@@ -210,6 +254,12 @@ async function main() {
     errors += report(o, `parole delle lezioni (${s.n} parole, sbloccate tra la lezione ${s.lo} e la ${s.hi})`); }
   if (fs.existsSync(basePath)) { const o = []; checkBaseline(app, JSON.parse(fs.readFileSync(basePath, 'utf8')), o); errors += report(o, 'lezioni e unità rispetto al riferimento'); }
   else console.log('nessun riferimento (' + basePath + '): crearlo con --write-baseline');
+  if (app.GU && Object.keys(app.GU).length) {
+    const o = []; checkSchema(app, o);
+    const texts = unitTexts(app.GU);
+    for (const [id, list] of Object.entries(texts)) if (ORDER.includes(id)) list.forEach(t => checkText(M, id, t, o));
+    errors += report(o, `unità di lingua in index.html (${Object.keys(app.GU).join(', ')}): schema, romaji, kana`);
+  }
   if (opt.units) {
     const texts = unitTexts(JSON.parse(fs.readFileSync(opt.units, 'utf8')));
     for (const [id, list] of Object.entries(texts)) { const o = []; list.forEach(t => checkText(M, id, t, o)); errors += report(o, `unità ${id} (${list.length} testi)`); }
@@ -217,4 +267,4 @@ async function main() {
   return errors ? 1 : 0;
 }
 if (require.main === module) main().then(c => process.exit(c)).catch(e => { console.error(e); process.exit(2); });
-module.exports = { ORDER, KANJI, EXTRA, loadApp, buildModel, checkText, unitTexts, checkLessonWords, signature, checkBaseline, checkDone };
+module.exports = { ORDER, KANJI, EXTRA, loadApp, buildModel, checkText, unitTexts, checkLessonWords, checkSchema, signature, checkBaseline, checkDone };

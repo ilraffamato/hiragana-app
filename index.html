@@ -390,6 +390,27 @@ const PATH=L.length===44?[
 const unitRange=u=>[PATH[u].from,PATH[u].to];
 const unitOf=i=>PATH.findIndex(u=>u.kind==="k"&&i>=u.from&&i<=u.to);
 const unitEnd=i=>PATH.some(u=>u.kind==="k"&&u.to===i);
+/* GU: unità di lingua (schema del §8, WP-03). Si collegano a PATH con lo stesso id (G1..G14); entrano nella strada col WP-08.
+   Unità: {id, t, needs:[id K richiesti], lessons:[...], test:{n,review}, poi:{e,t,w,x}}.
+   Lezione: {id:"G1-1", t, teach:[{jp, ro?, it, note?, say?}], ex:[...]}  (ex: esercizi, dal WP-04).
+   teach.jp = frase in kana con spazi tra le parole; ro = romaji Hepburn (se manca lo genera toRo); it = traduzione; note = nota d'uso
+   o di registro (facoltativa); say = testo da leggere con la voce, se diverso da jp senza spazi (per esempio quando jp contiene "...").
+   I testi si controllano con check-kana.js (kana già studiati, romaji). CONTENUTO PROVVISORIO: serve a provare Impara; il WP-10 lo sostituisce. */
+const GU={
+ G1:{id:"G1",t:"Saluti e prime parole",needs:["K1","K2","K3"],test:{n:25,review:5},lessons:[
+  {id:"G1-1",t:"Saluti",teach:[
+   {jp:"こんにちは",ro:"konnichiwa",it:"Buongiorno / Buon pomeriggio",note:"Si usa di giorno. L’ultimo は qui si legge “wa”."},
+   {jp:"おはよう",ro:"ohayou",it:"Buongiorno (la mattina)",note:"È il saluto del mattino, tra amici e in famiglia."},
+   {jp:"さようなら",ro:"sayounara",it:"Arrivederci",note:"Un po’ solenne: si sente a scuola o per un addio. Tra amici si dice più spesso また ね."},
+   {jp:"おやすみ",ro:"oyasumi",it:"Buonanotte"},
+   {jp:"すみません",ro:"sumimasen",it:"Scusi / Mi scusi",note:"Serve per chiedere scusa e per attirare l’attenzione, per esempio di un cameriere."},
+   {jp:"また ね",ro:"mata ne",it:"A dopo / Ci vediamo",note:"Informale: si dice agli amici."},
+   {jp:"はい",ro:"hai",it:"Sì",note:"Vuol dire anche “ho capito” o “presente”."},
+   {jp:"いいえ",ro:"iie",it:"No"}],ex:[]},
+  {id:"G1-2",t:"Prime parole",teach:[
+   {jp:"ねこ",ro:"neko",it:"gatto"},{jp:"いぬ",ro:"inu",it:"cane"},{jp:"さかな",ro:"sakana",it:"pesce"},
+   {jp:"ほん",ro:"hon",it:"libro"},{jp:"やま",ro:"yama",it:"montagna"},{jp:"かわ",ro:"kawa",it:"fiume"}],ex:[]}]}
+};
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
 function lockedL(i){if(i===0||isD(i,"c"))return false;const a=L[i-1],b=L[i];if((a.g[0]==="k")!==(b.g[0]==="k"))return false;if(!passL(i-1))return true;return unitEnd(i-1)&&!isD(i-1,"t")}
@@ -1529,7 +1550,26 @@ function num(){
  lr.replaceChildren(...lhead(S.ok/S.tot),c);setTimeout(()=>say(q.ja),200)}
 /* ripasso: i già imparati entrano in coda una volta sola */
 if(!ST.sd){let i=0;Object.entries(ST.m).forEach(([j,m])=>{if(m.c>0&&!ST.s[j]&&!ST.mst[j]&&(KG[j]||WM[j]))ST.s[j]={b:0,d:DAY()+1+(i++%4),r:m.r}});ST.sd=1;svST()}
+/* Impara (WP-03): una scheda per frase di una lezione di lingua. S.then = cosa fare alla fine (default: torna alla lista). */
+function startImpara(uid,li,then){const u=GU[uid],l=u&&u.lessons[li];if(!l||!l.teach.length)return;
+ S={kind:"imp",u:uid,li,ix:0,items:l.teach,then};lr.hidden=false;ll.hidden=true;teachImp()}
+function teachImp(){
+ const it=S.items[S.ix],n=S.items.length,c=el("div","card"),jp=it.jp,sp1=(it.say||jp).replace(/ /g,"");
+ const ro=el("div","q ro",it.ro||toRo(jp));ro.style.cssText="font-size:"+(jp.length>6?"1.6":"2.2")+"rem;margin:2px 0 6px";
+ const me=el("p",0,it.it);me.style.cssText="font-size:1.4rem;font-weight:700;margin:2px 0 8px";
+ const row=el("div","row");row.style.cssText="justify-content:center;margin:16px 0 0";
+ if(S.ix>0){const bk=el("button","btn g","Indietro");bk.onclick=()=>{S.ix--;teachImp()};row.append(bk)}
+ const last=S.ix===n-1,nb=el("button","btn",last?"Fine della lezione":"Avanti");
+ nb.onclick=()=>{if(!last){S.ix++;teachImp()}else if(S.then)S.then();else exitL()};row.append(nb);
+ c.append(el("p","note",GU[S.u].lessons[S.li].t+" · "+(S.ix+1)+" di "+n),el("div","q"+(jp.length>2?" sm":""),jp),ro,me);
+ if(it.note)c.append(el("p","note",it.note));
+ c.append(listenBtns(sp1),row);
+ lr.replaceChildren(...lhead((S.ix+1)/n),c);if(it.say!==""&&!/\.\.\./.test(sp1))setTimeout(()=>say(sp1),200)}
+/* ingresso di prova finché la strada non mostra le unità G (WP-08): aggiungere #prova-G1-1 all'indirizzo della pagina */
+function openHash(){const m=/^#prova-(G\d+)-(\d+)$/.exec(location.hash);if(m)startImpara(m[1],+m[2]-1)}
+window.addEventListener("hashchange",openHash);
 renderL();renderV();
+openHash();
 </script>
 <script>
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
