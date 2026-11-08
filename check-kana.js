@@ -144,7 +144,14 @@ function checkSchema(app, out, gu) {
     str(u.t, key + '.t');
     if (!Array.isArray(u.needs) || !u.needs.length) err(`${key}.needs: serve un elenco di unità K`);
     else u.needs.forEach(n => { if (!/^K\d+$/.test(n) || !ORDER.includes(n)) err(`${key}.needs: «${n}» non è un'unità K`); else if (ORDER.indexOf(n) > ORDER.indexOf(key)) err(`${key}.needs: ${n} viene dopo ${key} nel §6`); });
+    if (u.test !== undefined) {
+      const t = u.test || {};
+      if (!Number.isInteger(t.n) || t.n < 10 || t.n > 40) err(`${key}.test.n: numero di domande della verifica tra 10 e 40 (il piano dice 25)`);
+      else if (t.review !== undefined && (!Number.isInteger(t.review) || t.review < 0 || t.review > t.n)) err(`${key}.test.review: tra 0 e n (il piano dice 5)`);
+    }
     if (!Array.isArray(u.lessons) || !u.lessons.length) { err(`${key}.lessons: serve almeno una lezione`); continue; }
+    { const uniq = new Set(u.lessons.flatMap(l => (l.teach || []).map(t => t.jp))).size, n = (u.test && u.test.n) || 25;
+      if (uniq < 12) warn(`${key}: ${uniq} frasi diverse; la verifica da ${n} domande le ripete (il piano ne prevede 50-60 per unità)`); }
     u.lessons.forEach((l, li) => {
       const at = `${key} lezione ${li + 1}`;
       if (l.id !== `${key}-${li + 1}`) err(`${at}: id «${l.id}», atteso «${key}-${li + 1}»`);
@@ -263,6 +270,8 @@ async function selftest(app, M) {
     bad('lezione senza frasi', g => { g.G1.lessons[0].teach = []; }, 'error');
     bad('mcq con risposta fuori elenco', g => { g.G1.lessons[0].ex[0].a = 9; }, 'error');
     bad('mcq con opzioni uguali', g => { g.G1.lessons[0].ex[0].opts[1] = g.G1.lessons[0].ex[0].opts[0]; }, 'error');
+    bad('test.n troppo piccolo', g => { g.G1.test.n = 3; }, 'error');
+    bad('test.review più grande di n', g => { g.G1.test.review = 99; }, 'error');
     bad('dict: romaji con maiuscole', g => { g.G2.lessons[0].ex[1].ans = 'Arigatou'; }, 'error');
     bad('dict: romaji diverso da toRo', g => { g.G2.lessons[0].ex[1].ans = 'arigato'; }, 'warn');
     bad('dict: manca jp', g => { delete g.G2.lessons[0].ex[1].jp; }, 'error');

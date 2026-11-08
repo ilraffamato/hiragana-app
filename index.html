@@ -1606,10 +1606,11 @@ function gTiles(ans,uid,li){const nd=ans.length<=2?1:2,seen=new Set(ans),ds=[],c
  shuffle(gPool(uid,li)).sort((a,b)=>b.cur-a.cur).forEach(p=>gToks(p.x.jp).forEach(t=>{if(!/\.\.\./.test(t))c.push(t)}));
  c.forEach(t=>{if(ds.length<nd&&!seen.has(t)){seen.add(t);ds.push(t)}});
  let a,n=0;do{a=shuffle([...ans,...ds].map((t,i)=>({id:i,t})))}while(ans.length>1&&a.map(x=>x.t).join(" ")===ans.join(" ")&&n++<5);return a}
+function gBQ(x,uid,li){const ans=gToks(x.jp);return{k:"build",src:x.jp,ans,p:(x.jp.match(/[。？！?!]+$/)||[""])[0],it:x.it,ro:gRo(x),say:gSay(x),tiles:gTiles(ans,uid,li)}}
 function gBuildQs(l,uid,li){
  const ex=(l.ex||[]).filter(e=>e.type==="build").map(e=>({k:"build",ans:e.ans,p:e.p||"",it:e.it,ro:toRo(e.ans.join(" ")),say:e.say||e.ans.join(""),
    tiles:shuffle(e.tiles.map((t,i)=>({id:i,t})))})),
-  gen=shuffle(l.teach.filter(gBuildable)).map(x=>{const ans=gToks(x.jp);return{k:"build",ans,p:(x.jp.match(/[。？！?!]+$/)||[""])[0],it:x.it,ro:gRo(x),say:gSay(x),tiles:gTiles(ans,uid,li)}});
+  gen=shuffle(l.teach.filter(gBuildable)).map(x=>gBQ(x,uid,li));
  return [...ex,...gen].slice(0,4)}
 function gBuild(q){
  const c=el("div","card"),hn=el("p","hint",""),line=el("div","line"),bank=el("div","tiles"),ck=el("button","btn","Controlla"),nx=el("button","btn","Continua"),rw=el("div","row"),pr=el("p",0,q.it);
@@ -1624,7 +1625,7 @@ function gBuild(q){
   if(good){S.ok++;if(!q.miss){ST.xp+=10;svST();xpUI()}hn.textContent="Giusto! "+full+" ("+q.ro+")"}
   else{S.err++;q.miss=1;S.q.push(q);hn.textContent="Era: "+full+" ("+q.ro+"). Lo rivedrai tra poco."}
   say(q.say);ck.hidden=true;nx.hidden=false;nx.focus();draw()};
- c.append(el("p","note","Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+S.phs[S.ph].t),el("p","note","Componi la frase in giapponese."),pr,line,bank,hn,rw);
+ c.append(el("p","note",gHd()),el("p","note","Componi la frase in giapponese."),pr,line,bank,hn,rw);
  draw();lr.replaceChildren(...lhead(S.ok/S.tot),c)}
 /* Dettato (WP-06): la voce legge, si scrive in romaji. Fonti: frasi di teach (fino a 3, scelte tra le più lunghe) e ex
    {type:"dict", jp, ans (romaji), it facoltativo, say facoltativo}. Il confronto è tollerante: gNormRo piega le varianti d'uso
@@ -1637,9 +1638,10 @@ function gNormRo(s){s=String(s).toLowerCase().replace(/[āīūēō]/g,c=>({"ā":
 const gKana=s=>String(s).replace(/[\s。、？！?!・〜～]/g,"");
 function gDictOk(inp,q){inp=inp.trim();if(!inp)return false;
  if(/[\u3040-\u309f]/.test(inp))return gKana(inp)===gKana(q.jp);return gNormRo(inp)===gNormRo(q.ans)}
+const gDQ=x=>({k:"dict",src:x.jp,jp:x.jp,ans:gRo(x),it:x.it,say:gSay(x)});
 function gDictQs(l){
  const ex=(l.ex||[]).filter(e=>e.type==="dict").map(e=>({k:"dict",jp:e.jp,ans:e.ans,it:e.it||"",say:e.say||e.jp.replace(/ /g,"")})),
-  gen=shuffle(l.teach.filter(gCan).sort((a,b)=>b.jp.length-a.jp.length).slice(0,6)).map(x=>({k:"dict",jp:x.jp,ans:gRo(x),it:x.it,say:gSay(x)}));
+  gen=shuffle(l.teach.filter(gCan).sort((a,b)=>b.jp.length-a.jp.length).slice(0,6)).map(gDQ);
  return [...ex,...gen].slice(0,3)}
 function gDict(q){
  const c=el("div","card"),hn=el("p","hint",""),inp=el("input","dictin"),ck=el("button","btn","Controlla"),nx=el("button","btn","Continua"),rw=el("div","row");let done=false;
@@ -1652,8 +1654,32 @@ function gDict(q){
   if(good){S.ok++;if(!q.miss){ST.xp+=10;svST();xpUI()}hn.textContent="Giusto! "+full}
   else{S.err++;q.miss=1;S.q.push(q);hn.textContent="Era: "+full+". Lo rivedrai tra poco."}
   say(q.say);ck.hidden=true;nx.hidden=false;nx.focus()};
- c.append(el("p","note","Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+S.phs[S.ph].t),el("p","note","Ascolta e scrivi in romaji quello che senti."),listenBtns(q.say),inp,hn,rw);
+ c.append(el("p","note",gHd()),el("p","note","Ascolta e scrivi in romaji quello che senti."),listenBtns(q.say),inp,hn,rw);
  lr.replaceChildren(...lhead(S.ok/S.tot),c);setTimeout(()=>say(q.say),200)}
+/* Verifica di unità (WP-07): GU[id].test = {n, review} (default 25 e 5): n domande miste, di cui review di ripasso delle unità
+   precedenti (senza unità precedenti, tutte dall'unità). Tipi: significato e ascolto (j2i, i2j, l2i, l2j), fino a 3 di composizione
+   e 3 di dettato. Stessa regola delle lezioni: errori in coda, percentuale = giuste al primo colpo / risposte date, soglia GMIN.
+   onDone({pct, pass, test:true}). Ogni domanda ha src = frase di origine. */
+function gUnitItems(uid,prev){const out=[],seen=new Set();gKeys().forEach(k=>{const n=+k.slice(1),m=+uid.slice(1);if(prev?n>=m:n!==m)return;
+ GU[k].lessons.forEach(l=>l.teach.forEach(x=>{if(!seen.has(x.jp)){seen.add(x.jp);out.push(x)}}))});return out}
+function gSlots(items,count,uid,li,rich){
+ if(!items.length||count<=0)return[];
+ const sayable=items.filter(gCan),bld=rich?items.filter(gBuildable):[],nd=rich?Math.min(3,sayable.length,Math.floor(count/4)):0,nb=Math.min(3,bld.length,Math.floor(count/4)),
+  kinds=[...Array(nd).fill("dict"),...Array(nb).fill("build")],cyc=["j2i","l2i","i2j","l2j"];
+ for(let i=0;kinds.length<count;i++)kinds.push(cyc[i%4]);
+ const used={},done=new Set(),out=[];
+ kinds.forEach(k=>{
+  const pool=k==="dict"||k==="l2i"||k==="l2j"?sayable:k==="build"?bld:items;let cand=pool.length?pool:items,k2=k;
+  if(!pool.length&&(k==="l2i"||k==="l2j"))k2=k==="l2i"?"j2i":"i2j";
+  const best=shuffle(cand.slice()).sort((a,b)=>(used[a.jp]||0)-(used[b.jp]||0)),x=best.find(y=>!done.has(y.jp+"|"+k2))||best[0];
+  used[x.jp]=(used[x.jp]||0)+1;done.add(x.jp+"|"+k2);
+  out.push(k2==="build"?gBQ(x,uid,li):k2==="dict"?gDQ(x):{k:k2,src:x.jp,x})});
+ return out}
+function gTestQs(uid){const u=GU[uid],n=(u.test&&u.test.n)||25,li=u.lessons.length-1,prev=gUnitItems(uid,true),own=gUnitItems(uid,false),
+  rv=prev.length?Math.min((u.test&&u.test.review!==undefined?u.test.review:5),n):0;
+ return shuffle([...gSlots(own,n-rv,uid,li,true),...gSlots(prev,rv,uid,li,false)])}
+function startGTest(uid,onDone){const u=GU[uid];if(!u||!u.lessons.length)return;if(gPool(uid,u.lessons.length-1).length<2)return;const qs=gTestQs(uid);if(!qs.length)return;
+ S={kind:"gx",test:true,u:uid,li:u.lessons.length-1,onDone,phs:[{id:"test",t:"Verifica"}],qs:{test:qs},ph:0,q:[],tot:0,ok:0,err:0,T:0};lr.hidden=false;ll.hidden=true;gPh()}
 function startGLesson(uid,li,onDone){const l=GU[uid]&&GU[uid].lessons[li];if(!l||!l.teach.length)return;
  startImpara(uid,li,()=>gStart(uid,li,onDone),"Iniziamo gli esercizi")}
 function gStart(uid,li,onDone){const l=GU[uid].lessons[li],mcq=(l.ex||[]).filter(e=>e.type==="mcq"),phs=[],qs={},bq=gBuildQs(l,uid,li),dq=gDictQs(l),cap=Math.max(3,Math.floor((14-mcq.length-bq.length-dq.length)/2));
@@ -1663,6 +1689,7 @@ function gStart(uid,li,onDone){const l=GU[uid].lessons[li],mcq=(l.ex||[]).filter
  if(dq.length){qs.dict=dq;phs.push({id:"dict",t:"Dettato"})}
  if(mcq.length){qs.extra=shuffle(mcq.map(e=>({k:"mcq",e})));phs.push({id:"extra",t:"Domande della lezione"})}
  S={kind:"gx",u:uid,li,onDone,phs,qs,ph:0,q:[],tot:0,ok:0,err:0,T:0,lastErr:0};gPh()}
+const gHd=()=>S.test?"Verifica · domanda "+Math.min(S.ok+1,S.tot)+" di "+S.tot:"Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+S.phs[S.ph].t;
 function gPh(){if(S.ph>=S.phs.length)return gFin();const id=S.phs[S.ph].id;S.q=S.qs[id].slice();S.tot=S.q.length;S.ok=0;gQ()}
 function gNext(){S.T+=S.tot;S.ph++;gPh()}
 function gQ(){
@@ -1671,7 +1698,7 @@ function gQ(){
  if(S.q[0].k==="dict")return gDict(S.q[0]);
  const q=S.q[0],c=el("div","card"),hn=el("p","hint",""),o=el("div","opts one"),nx=el("button","btn","Continua"),rw=el("div","row");let ans=false;
  hn.style.margin="12px 0";nx.hidden=true;nx.onclick=gQ;rw.style.cssText="justify-content:center;margin:16px 0 0";rw.append(nx);
- const hd=el("p","note","Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+S.phs[S.ph].t),head=[];let say1="",opts,good1="";
+ const hd=el("p","note",gHd()),head=[];let say1="",opts,good1="";
  if(q.k==="mcq"){head.push(el("p",0,q.e.q));head[0].style.cssText="font-size:1.3rem;font-weight:700;margin:8px 0 12px";
   opts=shuffle(q.e.opts.map((t,i)=>({label:t,ro:"",ok:i===q.e.a})));good1="Giusto!"}
  else{opts=gOpts(q);const x=q.x;say1=gSay(x);
@@ -1693,15 +1720,15 @@ function gQ(){
 function gFin(){
  const pct=S.T+S.err?Math.round(100*S.T/(S.T+S.err)):100,pass=pct>=GMIN,uid=S.u,li=S.li,od=S.onDone,c=el("div","card"),row=el("div","row");
  row.style.cssText="justify-content:center;margin:16px 0 0";
- const again=el("button","btn g","Riprova");again.onclick=()=>startGLesson(uid,li,od);
- const ok=el("button","btn",pass?"Avanti":"Torna alla lista");ok.onclick=()=>{if(od)od({pct,pass});else exitL()};
+ const tst=S.test,again=el("button","btn g","Riprova");again.onclick=()=>tst?startGTest(uid,od):startGLesson(uid,li,od);
+ const ok=el("button","btn",pass?"Avanti":"Torna alla lista");ok.onclick=()=>{if(od)od(tst?{pct,pass,test:true}:{pct,pass});else exitL()};
  row.append(again,ok);
- c.append(el("p","note",GU[uid].lessons[li].t),el("div","q",pct+"%"),
-  el("p",0,pass?"Lezione superata.":"Non ancora: servono almeno "+GMIN+"%."),
+ c.append(el("p","note",tst?"Verifica · "+GU[uid].t:GU[uid].lessons[li].t),el("div","q",pct+"%"),
+  el("p",0,pass?(tst?"Verifica superata.":"Lezione superata."):"Non ancora: servono almeno "+GMIN+"%."+(tst?" Rivedi le lezioni dell’unità e riprova.":"")),
   el("p","note","Risposte giuste al primo colpo: "+S.T+" su "+(S.T+S.err)+" risposte date."),row);
  lr.replaceChildren(...lhead(1),c);if(window.speechSynthesis)speechSynthesis.cancel()}
-/* ingresso di prova finché la strada non mostra le unità G (WP-08): aggiungere #prova-G1-1 (lezione intera: Impara + esercizi) o #impara-G1-1 (solo le schede) all'indirizzo della pagina */
-function openHash(){const m=/^#(prova|impara)-(G\d+)-(\d+)$/.exec(location.hash);if(m)(m[1]==="prova"?startGLesson:startImpara)(m[2],+m[3]-1)}
+/* ingresso di prova finché la strada non mostra le unità G (WP-08): aggiungere #prova-G1-1 (lezione intera: Impara + esercizi) o #impara-G1-1 (solo le schede) o #verifica-G1 (verifica di unità) all'indirizzo della pagina */
+function openHash(){const h=location.hash,m=/^#(prova|impara)-(G\d+)-(\d+)$/.exec(h),v=/^#verifica-(G\d+)$/.exec(h);if(m)(m[1]==="prova"?startGLesson:startImpara)(m[2],+m[3]-1);else if(v)startGTest(v[1])}
 window.addEventListener("hashchange",openHash);
 renderL();renderV();
 openHash();
