@@ -415,13 +415,46 @@ const GU={
    {jp:"おやすみ",ro:"oyasumi",it:"Buonanotte"},
    {jp:"すみません",ro:"sumimasen",it:"Scusi / Mi scusi",note:"Serve per chiedere scusa e per attirare l’attenzione, per esempio di un cameriere."},
    {jp:"また ね",ro:"mata ne",it:"A dopo / Ci vediamo",note:"Informale: si dice agli amici."},
+   {jp:"また あした",ro:"mata ashita",it:"A domani",note:"Si dice a chi rivedrai il giorno dopo. Il secondo pezzo vuol dire “domani”."},
+   {jp:"ようこそ",ro:"youkoso",it:"Benvenuto / Benvenuti",note:"Si legge spesso su cartelli e insegne di benvenuto."},
+   {jp:"もしもし",ro:"moshimoshi",it:"Pronto?",note:"Si dice al telefono, per rispondere o quando si chiama."}],ex:[
+    {type:"mcq",q:"Che cosa si dice la mattina?",opts:["おはよう","おやすみ","さようなら","すみません"],a:0},
+    {type:"mcq",q:"Vuoi attirare l’attenzione di un cameriere. Che cosa dici?",opts:["すみません","おやすみ","また ね","ようこそ"],a:0},
+    {type:"mcq",q:"Saluti un amico che rivedrai presto. Che cosa dici?",opts:["また ね","さようなら","もしもし","ようこそ"],a:0}]},
+  {id:"G1-2",t:"Sì, no e capire",teach:[
    {jp:"はい",ro:"hai",it:"Sì",note:"Vuol dire anche “ho capito” o “presente”."},
-   {jp:"いいえ",ro:"iie",it:"No"}],ex:[
-    {type:"mcq",q:"Che cosa si dice la mattina?",opts:["おはよう","おやすみ","さようなら","すみません"],a:0}]},
-  {id:"G1-2",t:"Prime parole",teach:[
+   {jp:"いいえ",ro:"iie",it:"No",note:"Un no netto: in molte situazioni si preferisce rifiutare in modo più indiretto."},
+   {jp:"ええ",ro:"ee",it:"Sì (più morbido)",note:"Un “sì” più morbido e discorsivo di はい. Con un tono diverso esprime sorpresa."},
+   {jp:"うん",ro:"un",it:"Sì (tra amici)",note:"Informale: si usa con amici e famiglia, non con chi si deve rispettare."},
+   {jp:"ううん",ro:"uun",it:"No (tra amici)",note:"Informale come うん, ma vuol dire no."},
+   {jp:"わかります",ro:"wakarimasu",it:"Capisco / Ho capito",note:"Non serve dire “io”: dal contesto è chiaro."},
+   {jp:"わかりません",ro:"wakarimasen",it:"Non capisco",note:"In viaggio è molto utile, magari dopo すみません."}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “non capisco”?",opts:["わかりません","わかります","いいえ","はい"],a:0},
+    {type:"mcq",q:"Quale parola vuol dire “no”?",opts:["いいえ","はい","わかります","ええ"],a:0},
+    {type:"mcq",q:"Dici “sì” a un amico, in modo informale. Che cosa dici?",opts:["うん","ううん","いいえ","わかりません"],a:0}]},
+  {id:"G1-3",t:"Animali e natura",teach:[
    {jp:"ねこ",ro:"neko",it:"gatto"},{jp:"いぬ",ro:"inu",it:"cane"},{jp:"さかな",ro:"sakana",it:"pesce"},
-   {jp:"ほん",ro:"hon",it:"libro"},{jp:"やま",ro:"yama",it:"montagna"},{jp:"かわ",ro:"kawa",it:"fiume"}],ex:[
-    {type:"mcq",q:"Quale parola vuol dire “cane”?",opts:["ねこ","いぬ","さかな","ほん"],a:1}]}]},
+   {jp:"とり",ro:"tori",it:"uccello",note:"È il nome generico degli uccelli."},
+   {jp:"さる",ro:"saru",it:"scimmia"},{jp:"くま",ro:"kuma",it:"orso"},
+   {jp:"やま",ro:"yama",it:"montagna"},{jp:"かわ",ro:"kawa",it:"fiume"},{jp:"うみ",ro:"umi",it:"mare"},{jp:"そら",ro:"sora",it:"cielo"},
+   {jp:"あめ",ro:"ame",it:"pioggia",note:"Con un altro accento vuol dire “caramella”."},
+   {jp:"はな",ro:"hana",it:"fiore",note:"Con un altro accento vuol dire “naso”."}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “cane”?",opts:["ねこ","いぬ","さかな","とり"],a:1},
+    {type:"mcq",q:"Quale parola vuol dire “montagna”?",opts:["やま","かわ","うみ","そら"],a:0},
+    {type:"mcq",q:"Che cosa hanno in comune あめ e はな?",opts:["Hanno un altro significato con un accento diverso","Sono parole straniere","Si scrivono con i katakana","Si usano solo al plurale"],a:0}]},
+  {id:"G1-4",t:"Corpo, cose e luoghi",teach:[
+   {jp:"て",ro:"te",it:"mano"},{jp:"め",ro:"me",it:"occhio"},{jp:"くち",ro:"kuchi",it:"bocca"},{jp:"みみ",ro:"mimi",it:"orecchio"},
+   {jp:"あし",ro:"ashi",it:"piede / gamba",note:"Indica sia il piede sia la gamba."},
+   {jp:"かお",ro:"kao",it:"faccia"},
+   {jp:"ひと",ro:"hito",it:"persona",note:"Il plurale non cambia: lo si capisce dal contesto."},
+   {jp:"ほん",ro:"hon",it:"libro"},
+   {jp:"いえ",ro:"ie",it:"casa",note:"Si legge “ie”: le due vocali si pronunciano staccate."},
+   {jp:"くるま",ro:"kuruma",it:"auto"},
+   {jp:"えき",ro:"eki",it:"stazione",note:"La stazione dei treni. Parola molto utile: la vedrai su tanti cartelli."},
+   {jp:"みせ",ro:"mise",it:"negozio"}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “stazione”?",opts:["えき","みせ","いえ","ほん"],a:0},
+    {type:"mcq",q:"Con quale parte del corpo si ascolta?",opts:["みみ","め","くち","て"],a:0},
+    {type:"mcq",q:"Dove si compra qualcosa?",opts:["みせ","えき","いえ","くるま"],a:0}]}]},
  G2:{id:"G2",t:"Presentarsi",needs:["K1","K2","K3","K4"],test:{n:25,review:5},lessons:[
   {id:"G2-1",t:"Io sono...",teach:[
    {jp:"はじめまして",ro:"hajimemashite",it:"Piacere di conoscerti",note:"Si dice quando ci si presenta per la prima volta."},
