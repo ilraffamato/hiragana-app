@@ -533,7 +533,7 @@ function renderRoad(){
  ll.append(road);if(curEl)setTimeout(()=>curEl.scrollIntoView({block:"center"}),80)}
 function renderL(){
  ll.replaceChildren(el("p","note","Segui la strada: tocca una tappa per iniziare. Nei kana serve "+(MINK===100?"rispondere a tutto correttamente":"almeno il "+MINK+"% di risposte corrette")+"; nelle unità di lingua (verdi) basta il 90%."));
- ll.append(backupRow(),dueRow(),oddRow());
+ ll.append(backupRow(),dueRow(),...[gDueRow()].filter(Boolean),oddRow());
  const dn=done.filter(d=>typeof d==="number");if(dn.length){const rr=el("div","row"),bm=el("button","btn","Ripasso generale");bm.onclick=startMix;rr.append(bm);ll.append(rr)}
  renderRoad()}
 function startL(i){S={i,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["listen","read","pairs"],ws:wordsFor(i)};if(S.ws.length)S.phs.push("word");lr.hidden=false;ll.hidden=true;teach()}
@@ -1619,6 +1619,33 @@ function teachImp(){
    Percentuale = T/(T+errori); soglia di lingua 90% (§7). Alla fine chiama then({pct,pass}) oppure torna alla lista.
    Il salvataggio dell'esito (chiavi di done per le lezioni G) arriva col WP-08. */
 const GMIN=90,gMin=uid=>{const u=PATH.find(x=>x.id===uid);return u&&u.min||GMIN},gKeys=()=>Object.keys(GU).sort((a,b)=>+a.slice(1)-+b.slice(1)),gRo=x=>x.ro||toRo(x.jp),gSay=x=>(x.say||x.jp).replace(/ /g,""),gCan=x=>!/\.\.\./.test(x.say||x.jp);
+/* WP-09: ripasso a intervalli delle schede di lingua. Ogni scheda di teach (frase o parola) entra in ST.s con chiave "g:"+jp,
+   stessi intervalli IV dei kana; non tocca ST.m (statistiche dei kana) né dà XP (li danno già gli esercizi). dueList() dei kana resta com'è. */
+const GM={};Object.values(GU).forEach(u=>u.lessons.forEach((l,li)=>l.teach.forEach(x=>{if(!GM[x.jp])GM[x.jp]={x,uid:u.id,li}})));
+const isGk=k=>k.slice(0,2)==="g:";
+function recG(q,ok){const j=q.k==="mcq"?"":(q.src||(q.x&&q.x.jp)||""),it=GM[j];if(!it)return;
+ const key="g:"+j,t=DAY();ST.s=ST.s||{};ST.mst=ST.mst||{};const s=ST.s[key];
+ if(ok){if(s&&s.d<=t){s.b++;if(s.b>=IV.length){delete ST.s[key];ST.mst[key]=1}else{s.d=t+IV[s.b];if(s.b===3)cnt("sr")}}
+  else if(!s&&!ST.mst[key])ST.s[key]={b:0,d:t+IV[0],r:gRo(it.x)}}
+ else{ST.s[key]={b:0,d:t+IV[0],r:gRo(it.x)};delete ST.mst[key]}
+ svST()}
+const gDue=()=>Object.entries(ST.s||{}).filter(([k,q])=>isGk(k)&&GM[k.slice(2)]&&q.d<=DAY()).sort((a,b)=>a[1].d-b[1].d);
+const gAny=()=>Object.keys(ST.s||{}).some(k=>isGk(k)&&GM[k.slice(2)])||Object.keys(ST.mst||{}).some(isGk);
+function gDueRow(){if(!gAny())return null;const n=gDue().length,c=el("div","topic"+(n?"":" d")),th=el("div","th"),st=el("div","steps");
+ th.append(el("b",0,n?"Frasi e parole da ripassare: "+n:"Nessuna frase da ripassare"),el("span",0,"Le schede delle unità di lingua tornano dopo 1, 3, 7, 16, 35 e 90 giorni."));
+ if(n){const b=el("button","btn","Ripassa ora");b.onclick=startGSRS;st.append(b)}
+ c.append(th,st);c.style.marginBottom="14px";return c}
+function startGSRS(){const due=gDue().slice(0,10).map(([k])=>GM[k.slice(2)]);if(!due.length)return;
+ const mx=due.reduce((a,d)=>Math.max(a,+d.uid.slice(1)),0),uid="G"+mx,li=GU[uid].lessons.length-1;
+ if(gPool(uid,li).length<2)return;
+ const items=due.map(d=>d.x),qs=shuffle(gSlots(items,Math.max(6,items.length),uid,li,true));if(!qs.length)return;
+ S={kind:"gx",test:true,srs:true,u:uid,li,onDone:null,phs:[{id:"test",t:"Ripasso"}],qs:{test:qs},ph:0,q:[],tot:0,ok:0,err:0,T:0};lr.hidden=false;ll.hidden=true;gPh()}
+function gFinSRS(){const pct=S.T+S.err?Math.round(100*S.T/(S.T+S.err)):100,n=gDue().length,c=el("div","card"),row=el("div","row");
+ row.style.cssText="justify-content:center;margin:16px 0 0";
+ if(n){const more=el("button","btn","Altri "+n+" da ripassare");more.onclick=startGSRS;row.append(more)}
+ const bk=el("button",n?"btn g":"btn","Torna alla strada");bk.onclick=exitL;row.append(bk);
+ c.append(el("div","q sm hl","おめでとう"),el("h2",0,"Ripasso completato"),el("p","hint","Giuste al primo colpo: "+S.T+" su "+(S.T+S.err)+" risposte date ("+pct+"%). Le frasi sbagliate tornano domani."),row);
+ lr.replaceChildren(...lhead(1),c);if(window.speechSynthesis)speechSynthesis.cancel()}
 function gPool(uid,li){const out=[],seen=new Set();
  gKeys().forEach(k=>{if(+k.slice(1)>+uid.slice(1))return;GU[k].lessons.forEach((l,i)=>{if(k===uid&&i>li)return;
   l.teach.forEach(x=>{if(!seen.has(x.jp)){seen.add(x.jp);out.push({x,cur:k===uid&&i===li})}})})});return out}
@@ -1654,7 +1681,7 @@ function gBuild(q){
  ck.onclick=()=>{if(done||!sel.length)return;done=true;const good=sel.map(t=>t.t).join(" ")===q.ans.join(" ");S.q.shift();line.classList.add(good?"ok":"ko");
   if(good){S.ok++;if(!q.miss){ST.xp+=10;svST();xpUI()}hn.textContent="Giusto! "+full+" ("+q.ro+")"}
   else{S.err++;q.miss=1;S.q.push(q);hn.textContent="Era: "+full+" ("+q.ro+"). Lo rivedrai tra poco."}
-  say(q.say);ck.hidden=true;nx.hidden=false;nx.focus();draw()};
+  recG(q,good);say(q.say);ck.hidden=true;nx.hidden=false;nx.focus();draw()};
  c.append(el("p","note",gHd()),el("p","note","Componi la frase in giapponese."),pr,line,bank,hn,rw);
  draw();lr.replaceChildren(...lhead(S.ok/S.tot),c)}
 /* Dettato (WP-06): la voce legge, si scrive in romaji. Fonti: frasi di teach (fino a 3, scelte tra le più lunghe) e ex
@@ -1683,7 +1710,7 @@ function gDict(q){
   const full=q.ans+" ("+q.jp+")"+(q.it?" = "+q.it:"");
   if(good){S.ok++;if(!q.miss){ST.xp+=10;svST();xpUI()}hn.textContent="Giusto! "+full}
   else{S.err++;q.miss=1;S.q.push(q);hn.textContent="Era: "+full+". Lo rivedrai tra poco."}
-  say(q.say);ck.hidden=true;nx.hidden=false;nx.focus()};
+  recG(q,good);say(q.say);ck.hidden=true;nx.hidden=false;nx.focus()};
  c.append(el("p","note",gHd()),el("p","note","Ascolta e scrivi in romaji quello che senti."),listenBtns(q.say),inp,hn,rw);
  lr.replaceChildren(...lhead(S.ok/S.tot),c);setTimeout(()=>say(q.say),200)}
 /* Verifica di unità (WP-07): GU[id].test = {n, review} (default 25 e 5): n domande miste, di cui review di ripasso delle unità
@@ -1719,7 +1746,7 @@ function gStart(uid,li,onDone){const l=GU[uid].lessons[li],mcq=(l.ex||[]).filter
  if(dq.length){qs.dict=dq;phs.push({id:"dict",t:"Dettato"})}
  if(mcq.length){qs.extra=shuffle(mcq.map(e=>({k:"mcq",e})));phs.push({id:"extra",t:"Domande della lezione"})}
  S={kind:"gx",u:uid,li,onDone,phs,qs,ph:0,q:[],tot:0,ok:0,err:0,T:0,lastErr:0};gPh()}
-const gHd=()=>S.test?"Verifica · domanda "+Math.min(S.ok+1,S.tot)+" di "+S.tot:"Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+S.phs[S.ph].t;
+const gHd=()=>S.test?(S.srs?"Ripasso":"Verifica")+" · domanda "+Math.min(S.ok+1,S.tot)+" di "+S.tot:"Esercizio "+(S.ph+1)+" di "+S.phs.length+" · "+S.phs[S.ph].t;
 function gPh(){if(S.ph>=S.phs.length)return gFin();const id=S.phs[S.ph].id;S.q=S.qs[id].slice();S.tot=S.q.length;S.ok=0;gQ()}
 function gNext(){S.T+=S.tot;S.ph++;gPh()}
 function gQ(){
@@ -1743,11 +1770,12 @@ function gQ(){
    o.querySelectorAll(".opt").forEach(y=>{if(y.dataset.c)y.classList.add("ok")});S.q.shift();
    if(op.ok){S.ok++;if(!q.miss){ST.xp+=10;svST();xpUI()}hn.textContent=good1}
    else{S.err++;q.miss=1;b.classList.add("ko");S.q.push(q);hn.textContent=(q.k==="mcq"?"No. Era: "+q.e.opts[q.e.a]:"Era: "+q.x.jp+" ("+gRo(q.x)+") = "+q.x.it)+". Lo rivedrai tra poco."}
-   if(say1&&gCan(q.x))say(say1);nx.hidden=false;nx.focus()};
+   recG(q,op.ok);if(say1&&gCan(q.x))say(say1);nx.hidden=false;nx.focus()};
   o.append(b)});
  c.append(hd,...head,hn,o,rw);lr.replaceChildren(...lhead(S.ok/S.tot),c);
  if((q.k==="l2i"||q.k==="l2j")&&say1)setTimeout(()=>say(say1),200)}
 function gFin(){
+ if(S.srs)return gFinSRS();
  const pct=S.T+S.err?Math.round(100*S.T/(S.T+S.err)):100,pass=pct>=gMin(S.u),uid=S.u,li=S.li,od=S.onDone,c=el("div","card"),row=el("div","row");
  row.style.cssText="justify-content:center;margin:16px 0 0";
  const tst=S.test,again=el("button","btn g","Riprova");again.onclick=()=>tst?startGTest(uid,od):startGLesson(uid,li,od);
