@@ -378,13 +378,15 @@ const MINK=100,need=()=>MINK===100?"senza errori":"con almeno il "+MINK+"% di ri
 /* PATH: modello unico del percorso (WP-01). kind "k" = capitolo di kana (K1..K11), "g" = unità di lingua (G1..G14, dal WP-03).
    Campi: id, kind, cap (numero mostrato), sec (prefisso del banner), t (titolo), from/to (indici in L, solo kana),
    poi (indice in POI), test:{n} (domande della verifica), needs (id delle unità richieste dal piano; non ancora applicato: oggi
-   si sblocca solo in sequenza dentro hiragana e dentro katakana, il vincolo tra unità arriva col WP-08).
+   le sequenze di kana restano indipendenti; le unità G si aprono con gUnitLocked: verifiche di needs + verifica della G precedente, WP-08).
    Le chiavi di done restano quelle di sempre: i, "i:w", "i:p", "ultima:t" (ultima = indice dell'ultima lezione dell'unità). */
 const PATH=L.length===44?[
  {id:"K1",kind:"k",cap:1,sec:"Hiragana · ",t:"Hiragana あ・か・さ",from:0,to:2,poi:0,test:{n:30},needs:[]},
  {id:"K2",kind:"k",cap:2,sec:"",t:"Hiragana た・な・は",from:3,to:5,poi:1,test:{n:30},needs:["K1"]},
  {id:"K3",kind:"k",cap:3,sec:"",t:"Hiragana ま・や・ら・わ・ん",from:6,to:9,poi:2,test:{n:30},needs:["K1","K2"]},
+ {id:"G1",kind:"g",cap:1,sec:"Lingua · ",t:"Saluti e prime parole",poi:11,test:{n:25},needs:["K1","K2","K3"]},
  {id:"K4",kind:"k",cap:4,sec:"",t:"Dakuon e handakuon",from:10,to:14,poi:3,test:{n:30},needs:["K1","K2","K3"]},
+ {id:"G2",kind:"g",cap:2,sec:"",t:"Presentarsi",poi:12,test:{n:25},needs:["K1","K2","K3","K4"]},
  {id:"K5",kind:"k",cap:5,sec:"",t:"Yōon",from:15,to:20,poi:4,test:{n:30},needs:["K4"]},
  {id:"K6",kind:"k",cap:6,sec:"Katakana · ",t:"Katakana ア・カ・サ",from:21,to:23,poi:5,test:{n:30},needs:["K1","K2","K3","K4","K5"]},
  {id:"K7",kind:"k",cap:7,sec:"",t:"Katakana タ・ナ・ハ",from:24,to:26,poi:6,test:{n:30},needs:["K6"]},
@@ -393,6 +395,8 @@ const PATH=L.length===44?[
  {id:"K10",kind:"k",cap:10,sec:"",t:"Katakana yōon",from:36,to:41,poi:9,test:{n:30},needs:["K9"]},
  {id:"K11",kind:"k",cap:11,sec:"",t:"Katakana estesi",from:42,to:43,poi:10,test:{n:30},needs:["K10"]}
 ]:[{id:"K1",kind:"k",cap:1,sec:"",t:"Kana",from:0,to:L.length-1,poi:0,test:{n:30},needs:[]}];
+/* WP-08: soglia per unità (min): 100 per i kana, 90 per la lingua. Per i kana resta in vigore MINK. */
+PATH.forEach(u=>{if(u.min===undefined)u.min=u.kind==="g"?90:100});
 const unitRange=u=>[PATH[u].from,PATH[u].to];
 const unitOf=i=>PATH.findIndex(u=>u.kind==="k"&&i>=u.from&&i<=u.to);
 const unitEnd=i=>PATH.some(u=>u.kind==="k"&&u.to===i);
@@ -432,6 +436,19 @@ const GU={
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
+/* WP-08: unità di lingua nella strada. Chiavi in done: "G1-1" (lezione superata, numero da 1), "G1:t" (verifica); pct con le stesse chiavi. */
+const gD=k=>done.includes(k),utDone=c=>PATH[c].kind==="g"?gD(PATH[c].id+":t"):isD(unitRange(c)[1],"t");
+const gPrev=c=>{for(let j=c-1;j>=0;j--)if(PATH[j].kind==="g")return j;return -1};
+const gMiss=c=>{const u=PATH[c],m=[];(u.needs||[]).forEach(id=>{const j=PATH.findIndex(x=>x.id===id);if(j<0||!utDone(j))m.push(j)});const p=gPrev(c);if(p>=0&&!utDone(p)&&!m.includes(p))m.push(p);return m.sort((a,b)=>a-b)};
+const gUnitLocked=c=>!GU[PATH[c].id]||gMiss(c).length>0;
+const gLessonPassed=(c,li)=>gD(PATH[c].id+"-"+(li+1));
+const gLessonLocked=(c,li)=>gUnitLocked(c)||(li>0&&!gLessonPassed(c,li-1));
+const gTestLocked=c=>gUnitLocked(c)||GU[PATH[c].id].lessons.some((l,li)=>!gLessonPassed(c,li));
+const gWhy=c=>{const m=gMiss(c).filter(j=>j>=0);return m.length?"Per aprire questa unità supera prima la verifica di: "+m.map(j=>PATH[j].kind==="g"?"unità "+PATH[j].cap:"capitolo "+PATH[j].cap).join(", ")+".":"Non ancora disponibile."};
+function gRes(key,r,bonus){
+ if(r&&r.pass){try{const pp=pc();pp[key]=Math.max(pp[key]||0,r.pct);localStorage.setItem("hira-pct",JSON.stringify(pp))}catch(e){}
+  if(!done.includes(key)){done.push(key);try{localStorage.setItem("hira-done",JSON.stringify(done))}catch(e){}ST.xp+=bonus;svST();xpUI()}}
+ exitL()}
 function lockedL(i){if(i===0||isD(i,"c"))return false;const a=L[i-1],b=L[i];if((a.g[0]==="k")!==(b.g[0]==="k"))return false;if(!passL(i-1))return true;return unitEnd(i-1)&&!isD(i-1,"t")}
 function startCh(c){const [a,b]=unitRange(c);const ks=shuffle(L.slice(a,b+1).flatMap(x=>x.k));S={i:b,kind:"t",ch:c,ix:0,q:[],tot:0,ok:0,err:0,ph:0,phs:["listen","read"],kq:ks.slice(0,15)};lr.hidden=false;ll.hidden=true;startPh()}
 function isD(i,t){return done.includes(t==="c"?i:i+":"+t)}
@@ -450,6 +467,7 @@ const ROADCSS=`.road{position:relative;margin:14px 0;border-radius:26px;backgrou
 @media (prefers-reduced-motion:reduce){.pn.cur{animation:none}}
 .pb{position:absolute;left:50%;transform:translate(-50%,-50%);background:var(--paper);color:var(--pen);font:700 .85rem var(--ui);padding:7px 16px;border-radius:99px;white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis;box-shadow:0 3px 0 #0005}
 .dc{position:absolute;font-size:1.8rem;opacity:.9;pointer-events:none}
+.pn.gn.o{border-color:#4aa59a}.pn.gn.d{background:#2f7d73;border-color:#e6f5f2;color:#fff}.pn.gn.cur{border-color:#4aa59a}.pb.gb{background:#d4ebe6}
 .sh{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;z-index:60}`;
 const pc=()=>{try{return JSON.parse(localStorage.getItem("hira-pct")||"{}")}catch(e){return{}}};
 const POI=[
@@ -463,15 +481,27 @@ const POI=[
 {e:"🍜",t:"Il ramen istantaneo",w:"Osaka, 1958",x:"Il ラーメン arrivò dalla Cina, ma quello istantaneo è un’invenzione giapponese: nel 1958 Momofuku Ando lanciò a Osaka il primo, il Chicken Ramen. Oggi si mangia in tutto il mondo."},
 {e:"🎴",t:"Nintendo prima dei videogiochi",w:"Kyoto, 1889",x:"Prima dei ゲーム, Nintendo faceva carte da gioco: fu fondata a Kyoto nel 1889 da Fusajirō Yamauchi per produrre le hanafuda, le carte con i fiori dei dodici mesi. Si usano ancora oggi."},
 {e:"🥤",t:"Distributori ovunque",w:"Tutto il Giappone",x:"In Giappone ci sono più di due milioni di distributori automatici, anche in posti isolati. Vendono ジュース, tè, caffè in lattina e perfino zuppa, e la stessa macchina offre bevande calde e fredde."},
-{e:"🏪",t:"Il konbini sempre aperto",w:"Ovunque, a ogni ora",x:"Il Giappone ha più di 50.000 コンビニ, aperti quasi sempre: pagano bollette, spediscono pacchi e vendono pasti caldi davvero buoni. I katakana estesi come ファ servono a scrivere nomi stranieri come ファミマ, cioè FamilyMart."}];
+{e:"🏪",t:"Il konbini sempre aperto",w:"Ovunque, a ogni ora",x:"Il Giappone ha più di 50.000 コンビニ, aperti quasi sempre: pagano bollette, spediscono pacchi e vendono pasti caldi davvero buoni. I katakana estesi come ファ servono a scrivere nomi stranieri come ファミマ, cioè FamilyMart."},
+{e:"🙇",t:"L’inchino",w:"Tutto il Giappone",x:"Il saluto per eccellenza è l’inchino, ojigi: si piega il busto dalla vita, con la schiena dritta. Più è profondo, più mostra rispetto: circa 15° per un saluto tra conoscenti, circa 30° nelle situazioni formali, circa 45° per scuse sincere o grande riguardo. Le sue radici stanno nei riti buddhisti e nell’etichetta dei samurai, e non ci sono regole rigide sugli angoli. Spesso accompagna parole come こんにちは o さようなら. Se qualcuno si inchina a te, ricambia con un cenno leggero."},
+{e:"💼",t:"Il biglietto da visita",w:"Uffici e aziende di tutto il Giappone",x:"Nel mondo del lavoro ci si presenta con il めいし, il biglietto da visita, e lo scambio è quasi un rito. Lo si porge con due mani, con il testo rivolto verso chi lo riceve, accompagnandolo con un lieve inchino e con はじめまして e il proprio nome. Chi lo riceve lo prende con due mani, lo legge con attenzione e non ci scrive sopra né lo infila subito in tasca: il biglietto si tratta con il rispetto dovuto alla persona."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
- const lk=!isD(unitRange(c)[1],"t");
- if(lk)k.append(el("div","q sm","🔒"),el("h2",0,"Punto di interesse"),el("p","hint","Supera la verifica del capitolo "+PATH[c].cap+" per scoprire questa tappa."));
+ const lk=!utDone(c);
+ if(lk)k.append(el("div","q sm","🔒"),el("h2",0,"Punto di interesse"),el("p","hint","Supera la verifica "+(PATH[c].kind==="g"?"dell’unità ":"del capitolo ")+PATH[c].cap+" per scoprire questa tappa."));
  else{try{const s=JSON.parse(localStorage.getItem("hira-seen")||"[]");if(!s.includes(PATH[c].poi)){s.push(PATH[c].poi);localStorage.setItem("hira-seen",JSON.stringify(s))}}catch(e){}
   k.append(el("div","q sm",p.e),el("h2",0,p.t),el("p","note","📍 "+p.w),el("p","hint",p.x))}
  const cl=el("button","btn",lk?"Chiudi":"Continua");cl.style.marginTop="12px";cl.onclick=()=>{o.remove();renderL()};o.onclick=e=>{if(e.target===o)cl.click()};k.append(cl);o.append(k);document.body.append(o)}
-function openNode(n){if(n.p!==undefined)return openPoi(n.p);const o=el("div","sh"),c=el("div","card");c.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");o.onclick=e=>{if(e.target===o)o.remove()};
+function openG(n){const o=el("div","sh"),c=el("div","card");c.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");o.onclick=e=>{if(e.target===o)o.remove()};
+ const P=pc(),act=(txt,key,dn,f)=>{const b=el("button","step"+(dn?" d":""),txt+(dn?" 済":"")+(P[key]?" · "+P[key]+"%":""));b.style.cssText="width:100%;margin:6px 0";b.onclick=()=>{o.remove();f()};return b};
+ const cl=el("button","btn g","Chiudi");cl.style.marginTop="10px";cl.onclick=()=>o.remove();
+ if(n.gl){const [ci,li]=n.gl,u=PATH[ci],l=GU[u.id].lessons[li],key=u.id+"-"+(li+1);c.append(el("div","q sm","💬"),el("h2",0,l.t));
+  if(gLessonLocked(ci,li))c.append(el("p","hint",gUnitLocked(ci)?gWhy(ci):"Completa prima la lezione precedente con almeno il "+u.min+"%."));
+  else c.append(el("p","hint","Schede da imparare e poi esercizi. Per andare avanti serve almeno il "+u.min+"% di risposte giuste al primo colpo."),act("Lezione",key,gD(key),()=>startGLesson(u.id,li,r=>gRes(key,r,20))),act("Rivedi solo le schede (facoltativo)","",false,()=>startImpara(u.id,li)))}
+ else{const ci=n.gt,u=PATH[ci],key=u.id+":t";c.append(el("div","q sm","🏁"),el("h2",0,"Verifica dell’unità "+u.cap));
+  if(gTestLocked(ci))c.append(el("p","hint",gUnitLocked(ci)?gWhy(ci):"Supera tutte le lezioni dell’unità, con almeno il "+u.min+"%, per sbloccare la verifica."));
+  else c.append(el("p","hint",u.test.n+" domande miste sull’unità, con un po’ di ripasso. Serve almeno il "+u.min+"%."),act("Inizia la verifica",key,gD(key),()=>startGTest(u.id,r=>gRes(key,r,30))))}
+ c.append(cl);o.append(c);document.body.append(o)}
+function openNode(n){if(n.gl||n.gt!==undefined)return openG(n);if(n.p!==undefined)return openPoi(n.p);const o=el("div","sh"),c=el("div","card");c.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");o.onclick=e=>{if(e.target===o)o.remove()};
  const P=pc(),act=(txt,key,dn,f)=>{const b=el("button","step"+(dn?" d":""),txt+(dn?" 済":"")+(P[key]?" · "+P[key]+"%":""));b.style.cssText="width:100%;margin:6px 0";b.onclick=()=>{o.remove();f()};return b};
  const cl=el("button","btn g","Chiudi");cl.style.marginTop="10px";cl.onclick=()=>o.remove();
  if(n.i!==undefined){const i=n.i,l=L[i];c.append(el("div","q sm",l.k.map(x=>x[0]).join(" ")),el("h2",0,l.t));
@@ -483,8 +513,8 @@ function openNode(n){if(n.p!==undefined)return openPoi(n.p);const o=el("div","sh
  c.append(cl);o.append(c);document.body.append(o)}
 function renderRoad(){
  if(!document.getElementById("roadcss")){const s=el("style");s.id="roadcss";s.textContent=ROADCSS;document.head.append(s)}
- const N=[];PATH.forEach((u,c)=>{if(u.kind!=="k")return;const [a,b]=unitRange(c);N.push({b:c});for(let i=a;i<=b;i++)N.push({i});N.push({t:c});N.push({p:c})});
- const stt=n=>n.p!==undefined?(!isD(unitRange(n.p)[1],"t")?"l":seenP(PATH[n.p].poi)?"d":"o"):n.i!==undefined?(passL(n.i)?"d":lockedL(n.i)?"l":"o"):(isD(unitRange(n.t)[1],"t")?"d":unitLocked(n.t)?"l":"o");
+ const N=[];PATH.forEach((u,c)=>{if(u.kind==="g"){if(!GU[u.id])return;N.push({b:c});GU[u.id].lessons.forEach((l,li)=>N.push({gl:[c,li]}));N.push({gt:c});N.push({p:c});return}if(u.kind!=="k")return;const [a,b]=unitRange(c);N.push({b:c});for(let i=a;i<=b;i++)N.push({i});N.push({t:c});N.push({p:c})});
+ const stt=n=>n.p!==undefined?(!utDone(n.p)?"l":seenP(PATH[n.p].poi)?"d":"o"):n.gl?(gLessonPassed(...n.gl)?"d":gLessonLocked(...n.gl)?"l":"o"):n.gt!==undefined?(gD(PATH[n.gt].id+":t")?"d":gTestLocked(n.gt)?"l":"o"):n.i!==undefined?(passL(n.i)?"d":lockedL(n.i)?"l":"o"):(isD(unitRange(n.t)[1],"t")?"d":unitLocked(n.t)?"l":"o");
  let y=30,k=0,cur=-1;const pts=[];
  N.forEach((n,ix)=>{if(n.b!==undefined){n.y=y+22;y+=64}else{n.s=stt(n);if(cur<0&&n.s==="o")cur=ix;n.k=k++;n.x=50+28*Math.sin(n.k*.95);n.y=y+40;y+=92;pts.push(n)}});
  const H=y+30,road=el("div","road");road.style.height=H+"px";
@@ -494,15 +524,15 @@ function renderRoad(){
  svg.innerHTML='<path d="'+d+'" class="r0"/><path d="'+d+'" class="r1"/><path d="'+d+'" class="r3"/><path d="'+dp+'" class="r2"/>';road.append(svg);
  const P=pc();let curEl=null;
  N.forEach((n,ix)=>{
-  if(n.b!==undefined){const [a,b]=unitRange(n.b),nm=L.slice(a,b+1).map(l=>l.k[0][0]).join("・"),pre=PATH[n.b].sec;const bn=el("div","pb",pre+"Capitolo "+PATH[n.b].cap+" · "+nm);bn.style.top=n.y+"px";road.append(bn);return}
-  const v=n.t!==undefined,pp=n.p!==undefined,b=el("button","pn "+n.s+(v?" v":"")+(pp?" pp":"")+(ix===cur?" cur":""));b.style.left=n.x+"%";b.style.top=n.y+"px";
-  b.setAttribute("aria-label",(pp?"Punto di interesse":v?"Verifica capitolo "+PATH[n.t].cap:L[n.i].t)+(n.s==="l"?", bloccata":n.s==="d"?", completata":""));
-  b.append(el("span","g",n.s==="l"?"🔒":pp?POI[PATH[n.p].poi].e:v?"🏁":L[n.i].k[0][0]));
-  const pv=pp?0:v?P[unitRange(n.t)[1]+":t"]:P[n.i];if(n.s==="d"&&pv)b.append(el("small",0,pv+"%"));
+  if(n.b!==undefined){const ug=PATH[n.b].kind==="g",[a,b]=ug?[0,0]:unitRange(n.b),nm=ug?PATH[n.b].t:L.slice(a,b+1).map(l=>l.k[0][0]).join("・"),pre=PATH[n.b].sec;const bn=el("div",ug?"pb gb":"pb",pre+(ug?"Unità ":"Capitolo ")+PATH[n.b].cap+" · "+nm);bn.style.top=n.y+"px";road.append(bn);return}
+  const gg=!!n.gl||n.gt!==undefined,v=n.t!==undefined||n.gt!==undefined,pp=n.p!==undefined,b=el("button","pn "+n.s+(v?" v":"")+(pp?" pp":"")+(gg?" gn":"")+(ix===cur?" cur":""));b.style.left=n.x+"%";b.style.top=n.y+"px";if(gg||pp&&PATH[n.p].kind==="g")b.dataset.g="1";
+  b.setAttribute("aria-label",(pp?"Punto di interesse":n.gl?"Lingua, "+GU[PATH[n.gl[0]].id].lessons[n.gl[1]].t:n.gt!==undefined?"Verifica unità "+PATH[n.gt].cap:v?"Verifica capitolo "+PATH[n.t].cap:L[n.i].t)+(n.s==="l"?", bloccata":n.s==="d"?", completata":""));
+  b.append(el("span","g",n.s==="l"?"🔒":pp?POI[PATH[n.p].poi].e:v?"🏁":n.gl?"💬":L[n.i].k[0][0]));
+  const pv=pp?0:n.gl?P[PATH[n.gl[0]].id+"-"+(n.gl[1]+1)]:n.gt!==undefined?P[PATH[n.gt].id+":t"]:v?P[unitRange(n.t)[1]+":t"]:P[n.i];if(n.s==="d"&&pv)b.append(el("small",0,pv+"%"));
   b.onclick=()=>openNode(n);if(ix===cur)curEl=b;road.append(b)});
  ll.append(road);if(curEl)setTimeout(()=>curEl.scrollIntoView({block:"center"}),80)}
 function renderL(){
- ll.replaceChildren(el("p","note","Segui la strada: tocca una tappa per iniziare. Per proseguire serve "+(MINK===100?"rispondere a tutto correttamente.":"almeno il "+MINK+"% di risposte corrette.")));
+ ll.replaceChildren(el("p","note","Segui la strada: tocca una tappa per iniziare. Nei kana serve "+(MINK===100?"rispondere a tutto correttamente":"almeno il "+MINK+"% di risposte corrette")+"; nelle unità di lingua (verdi) basta il 90%."));
  ll.append(backupRow(),dueRow(),oddRow());
  const dn=done.filter(d=>typeof d==="number");if(dn.length){const rr=el("div","row"),bm=el("button","btn","Ripasso generale");bm.onclick=startMix;rr.append(bm);ll.append(rr)}
  renderRoad()}
@@ -1588,7 +1618,7 @@ function teachImp(){
    le domande scritte a mano in ex (type "mcq") formano una fase finale; "componi la frase" (build) è descritto più sotto. In tutto al massimo 14 domande per lezione (§7). Gli errori tornano in coda come negli esercizi di kana.
    Percentuale = T/(T+errori); soglia di lingua 90% (§7). Alla fine chiama then({pct,pass}) oppure torna alla lista.
    Il salvataggio dell'esito (chiavi di done per le lezioni G) arriva col WP-08. */
-const GMIN=90,gKeys=()=>Object.keys(GU).sort((a,b)=>+a.slice(1)-+b.slice(1)),gRo=x=>x.ro||toRo(x.jp),gSay=x=>(x.say||x.jp).replace(/ /g,""),gCan=x=>!/\.\.\./.test(x.say||x.jp);
+const GMIN=90,gMin=uid=>{const u=PATH.find(x=>x.id===uid);return u&&u.min||GMIN},gKeys=()=>Object.keys(GU).sort((a,b)=>+a.slice(1)-+b.slice(1)),gRo=x=>x.ro||toRo(x.jp),gSay=x=>(x.say||x.jp).replace(/ /g,""),gCan=x=>!/\.\.\./.test(x.say||x.jp);
 function gPool(uid,li){const out=[],seen=new Set();
  gKeys().forEach(k=>{if(+k.slice(1)>+uid.slice(1))return;GU[k].lessons.forEach((l,i)=>{if(k===uid&&i>li)return;
   l.teach.forEach(x=>{if(!seen.has(x.jp)){seen.add(x.jp);out.push({x,cur:k===uid&&i===li})}})})});return out}
@@ -1718,13 +1748,13 @@ function gQ(){
  c.append(hd,...head,hn,o,rw);lr.replaceChildren(...lhead(S.ok/S.tot),c);
  if((q.k==="l2i"||q.k==="l2j")&&say1)setTimeout(()=>say(say1),200)}
 function gFin(){
- const pct=S.T+S.err?Math.round(100*S.T/(S.T+S.err)):100,pass=pct>=GMIN,uid=S.u,li=S.li,od=S.onDone,c=el("div","card"),row=el("div","row");
+ const pct=S.T+S.err?Math.round(100*S.T/(S.T+S.err)):100,pass=pct>=gMin(S.u),uid=S.u,li=S.li,od=S.onDone,c=el("div","card"),row=el("div","row");
  row.style.cssText="justify-content:center;margin:16px 0 0";
  const tst=S.test,again=el("button","btn g","Riprova");again.onclick=()=>tst?startGTest(uid,od):startGLesson(uid,li,od);
  const ok=el("button","btn",pass?"Avanti":"Torna alla lista");ok.onclick=()=>{if(od)od(tst?{pct,pass,test:true}:{pct,pass});else exitL()};
  row.append(again,ok);
  c.append(el("p","note",tst?"Verifica · "+GU[uid].t:GU[uid].lessons[li].t),el("div","q",pct+"%"),
-  el("p",0,pass?(tst?"Verifica superata.":"Lezione superata."):"Non ancora: servono almeno "+GMIN+"%."+(tst?" Rivedi le lezioni dell’unità e riprova.":"")),
+  el("p",0,pass?(tst?"Verifica superata.":"Lezione superata."):"Non ancora: servono almeno "+gMin(uid)+"%."+(tst?" Rivedi le lezioni dell’unità e riprova.":"")),
   el("p","note","Risposte giuste al primo colpo: "+S.T+" su "+(S.T+S.err)+" risposte date."),row);
  lr.replaceChildren(...lhead(1),c);if(window.speechSynthesis)speechSynthesis.cancel()}
 /* ingresso di prova finché la strada non mostra le unità G (WP-08): aggiungere #prova-G1-1 (lezione intera: Impara + esercizi) o #impara-G1-1 (solo le schede) o #verifica-G1 (verifica di unità) all'indirizzo della pagina */

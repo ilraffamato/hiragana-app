@@ -54,7 +54,7 @@ function loadApp(indexPath) {
     beforeParse(w) { w.Element.prototype.scrollIntoView = () => {}; } });
   return new Promise(res => setTimeout(() => {
     const w = dom.window;
-    const data = JSON.parse(w.eval('JSON.stringify({L:L,PATH:PATH,WV:WV,GU:(typeof GU!=="undefined"?GU:{}),roGen:Object.fromEntries(Object.values(typeof GU!=="undefined"?GU:{}).flatMap(u=>u.lessons.flatMap(l=>[...l.teach.map(t=>t.jp),...(l.ex||[]).filter(e=>e.type==="dict").map(e=>e.jp)].map(j=>[j,toRo(j)]))))})'));
+    const data = JSON.parse(w.eval('JSON.stringify({L:L,PATH:PATH,POIn:POI.length,WV:WV,GU:(typeof GU!=="undefined"?GU:{}),roGen:Object.fromEntries(Object.values(typeof GU!=="undefined"?GU:{}).flatMap(u=>u.lessons.flatMap(l=>[...l.teach.map(t=>t.jp),...(l.ex||[]).filter(e=>e.type==="dict").map(e=>e.jp)].map(j=>[j,toRo(j)]))))})'));
     w.close(); res(data);
   }, 300));
 }
@@ -212,7 +212,7 @@ function signature(app) {
   return {
     lessons: app.L.map(l => l.g + ':' + l.k.map(p => p[0]).join('')),
     units: app.PATH.filter(u => u.kind === 'k').map(u => [u.id, u.from, u.to, u.poi]),
-    doneKeys: 'i = Caratteri; "i:w" = Parole; "i:p" = Pronuncia; "ultima:t" = verifica (ultima = indice dell\'ultima lezione dell\'unità)'
+    doneKeys: 'i = Caratteri; "i:w" = Parole; "i:p" = Pronuncia; "ultima:t" = verifica (ultima = indice dell\'ultima lezione dell\'unità); G: "G1-1" = lezione, "G1:t" = verifica'
   };
 }
 function checkBaseline(app, base, out) {
@@ -223,9 +223,34 @@ function checkBaseline(app, base, out) {
   base.units.forEach((u, i) => { const c = cur.units[i]; if (!c || JSON.stringify(c) !== JSON.stringify(u)) out.push({ level: 'error', msg: `unità ${u[0]} cambiata: ${JSON.stringify(c)} al posto di ${JSON.stringify(u)}: cambia la chiave "ultima:t"` }); });
   if (cur.units.length > base.units.length) out.push({ level: 'warn', msg: `ci sono ${cur.units.length - base.units.length} unità K in più del riferimento` });
 }
+/* WP-08: coerenza del percorso: ordine del §6, needs, soglia, cartoline */
+function checkPath(app, out) {
+  const ids = app.PATH.map(u => u.id), pos = id => ORDER.indexOf(id);
+  for (let i = 1; i < ids.length; i++) if (pos(ids[i]) < 0 || pos(ids[i - 1]) < 0 || pos(ids[i]) < pos(ids[i - 1])) out.push({ level: 'error', msg: `PATH: ${ids[i]} è fuori ordine rispetto al §6 (dopo ${ids[i - 1]})` });
+  const pois = new Set();
+  app.PATH.forEach((u, i) => {
+    if (pois.has(u.poi)) out.push({ level: 'error', msg: `PATH: la cartolina ${u.poi} è usata da più di un'unità (${u.id})` }); pois.add(u.poi);
+    if (app.POIn !== undefined && !(u.poi >= 0 && u.poi < app.POIn)) out.push({ level: 'error', msg: `PATH: ${u.id} usa la cartolina ${u.poi}, che non esiste (ce ne sono ${app.POIn})` });
+    if (!(u.min >= 1 && u.min <= 100)) out.push({ level: 'error', msg: `PATH: ${u.id} senza soglia min valida` });
+    if (u.kind === 'k' && u.min !== 100) out.push({ level: 'error', msg: `PATH: ${u.id} è un'unità di kana, la soglia deve restare 100` });
+    if (u.kind === 'g') {
+      if (!app.GU || !app.GU[u.id]) out.push({ level: 'error', msg: `PATH: ${u.id} non ha la tabella GU` });
+      else if (!app.GU[u.id].lessons.length) out.push({ level: 'warn', msg: `${u.id}: nessuna lezione, nella strada non compare` });
+      (u.needs || []).forEach(n => { const j = ids.indexOf(n); if (j < 0 || j >= i) out.push({ level: 'error', msg: `PATH: ${u.id} richiede ${n}, che non lo precede` }); });
+    }
+  });
+  if (app.GU) Object.keys(app.GU).forEach(id => { if (!ids.includes(id)) out.push({ level: 'warn', msg: `GU.${id} non è ancora in PATH: non compare nella strada` }); });
+}
 function checkDone(app, done, out) {
   const ends = new Set(app.PATH.filter(u => u.kind === 'k').map(u => u.to));
   for (const k of done) {
+    const g = /^(G\d+)(?:-(\d+)|:(t))$/.exec(String(k));
+    if (g) {
+      const u = app.PATH.find(x => x.id === g[1]), gu = app.GU && app.GU[g[1]];
+      if (!u || u.kind !== 'g' || !gu) out.push({ level: 'error', msg: `chiave ${JSON.stringify(k)}: l'unità ${g[1]} non esiste nel percorso` });
+      else if (g[2] && (+g[2] < 1 || +g[2] > gu.lessons.length)) out.push({ level: 'error', msg: `chiave ${JSON.stringify(k)}: ${g[1]} ha ${gu.lessons.length} lezioni` });
+      continue;
+    }
     const m = /^(\d+)(?::([wpt]))?$/.exec(String(k));
     if (!m) { out.push({ level: 'error', msg: `chiave non valida: ${JSON.stringify(k)}` }); continue; }
     const i = +m[1];
@@ -283,6 +308,16 @@ async function selftest(app, M) {
     bad('romaji con macron', g => { g.G1.lessons[0].teach[1].ro = 'ohayō'; }, 'warn'); }
   const o = []; checkBaseline(app, signature(app), o); r.push(o.length === 0); console.log((o.length === 0 ? 'ok     ' : 'FALLITO ') + 'riferimento = file attuale');
   const d = []; checkDone(app, [0, '1:w', '2:t', '3:t'], d); r.push(d.length === 1); console.log((d.length === 1 ? 'ok     ' : 'FALLITO ') + 'done: "3:t" rifiutato, gli altri validi');
+  { const o = []; checkPath(app, o); const ok3 = !o.some(x => x.level === 'error'); r.push(ok3); console.log((ok3 ? 'ok     ' : 'FALLITO ') + 'percorso di index.html coerente');
+    const badP = (name, mut) => { const a2 = JSON.parse(JSON.stringify(app)); mut(a2); const q = []; checkPath(a2, q); const ok4 = q.some(x => x.level === 'error'); r.push(ok4); console.log((ok4 ? 'ok     ' : 'FALLITO ') + 'percorso: ' + name + ' rifiutato'); };
+    badP('G1 dopo K4', a => { const i = a.PATH.findIndex(u => u.id === 'G1'), j = a.PATH.findIndex(u => u.id === 'K4'); [a.PATH[i], a.PATH[j]] = [a.PATH[j], a.PATH[i]]; });
+    badP('cartolina doppia', a => { a.PATH.find(u => u.id === 'G1').poi = 0; });
+    badP('cartolina inesistente', a => { a.PATH.find(u => u.id === 'G2').poi = 99; });
+    badP('G con soglia mancante', a => { delete a.PATH.find(u => u.id === 'G2').min; });
+    badP('K con soglia diversa da 100', a => { a.PATH.find(u => u.id === 'K2').min = 90; });
+    badP('needs che non precede', a => { a.PATH.find(u => u.id === 'G1').needs = ['K4']; }); }
+  { const d2 = []; checkDone(app, ['G1-1', 'G1-2', 'G1:t', 'G2-1', 'G2:t'], d2); const ok5 = d2.length === 0; r.push(ok5); console.log((ok5 ? 'ok     ' : 'FALLITO ') + 'done: chiavi G valide accettate');
+    [['G1-9', 'lezione inesistente'], ['G9:t', 'unità inesistente'], ['G1-0', 'lezione 0'], ['K1:t', 'prefisso sbagliato']].forEach(([k, n]) => { const d3 = []; checkDone(app, [k], d3); const ok6 = d3.length === 1; r.push(ok6); console.log((ok6 ? 'ok     ' : 'FALLITO ') + 'done: ' + k + ' rifiutato (' + n + ')'); }); }
   return r.every(Boolean);
 }
 
@@ -306,6 +341,7 @@ async function main() {
     errors += report(o, `parole delle lezioni (${s.n} parole, sbloccate tra la lezione ${s.lo} e la ${s.hi})`); }
   if (fs.existsSync(basePath)) { const o = []; checkBaseline(app, JSON.parse(fs.readFileSync(basePath, 'utf8')), o); errors += report(o, 'lezioni e unità rispetto al riferimento'); }
   else console.log('nessun riferimento (' + basePath + '): crearlo con --write-baseline');
+  { const o = []; checkPath(app, o); errors += report(o, 'percorso (ordine, needs, soglie, cartoline)'); }
   if (app.GU && Object.keys(app.GU).length) {
     const o = []; checkSchema(app, o);
     const texts = unitTexts(app.GU);
@@ -319,4 +355,4 @@ async function main() {
   return errors ? 1 : 0;
 }
 if (require.main === module) main().then(c => process.exit(c)).catch(e => { console.error(e); process.exit(2); });
-module.exports = { ORDER, KANJI, EXTRA, loadApp, buildModel, checkText, unitTexts, checkLessonWords, checkSchema, signature, checkBaseline, checkDone };
+module.exports = { checkPath, ORDER, KANJI, EXTRA, loadApp, buildModel, checkText, unitTexts, checkLessonWords, checkSchema, signature, checkBaseline, checkDone };
