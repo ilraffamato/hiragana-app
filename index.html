@@ -456,16 +456,64 @@ const GU={
     {type:"mcq",q:"Con quale parte del corpo si ascolta?",opts:["みみ","め","くち","て"],a:0},
     {type:"mcq",q:"Dove si compra qualcosa?",opts:["みせ","えき","いえ","くるま"],a:0}]}]},
  G2:{id:"G2",t:"Presentarsi",needs:["K1","K2","K3","K4"],test:{n:25,review:5},lessons:[
-  {id:"G2-1",t:"Io sono...",teach:[
-   {jp:"はじめまして",ro:"hajimemashite",it:"Piacere di conoscerti",note:"Si dice quando ci si presenta per la prima volta."},
-   {jp:"わたし は がくせい です。",ro:"watashi wa gakusei desu",it:"Sono uno studente / una studentessa.",note:"は qui si legge “wa”. です chiude la frase."},
-   {jp:"わたし は せんせい です。",ro:"watashi wa sensei desu",it:"Sono un insegnante."},
+  {id:"G2-1",t:"Io e tu",teach:[
+   {jp:"わたし",ro:"watashi",it:"io",note:"Il modo più neutro e gentile per dire “io”, usato da uomini e donne."},
+   {jp:"あなた",ro:"anata",it:"tu / lei",note:"Si usa poco: di solito si preferisce il nome seguito da さん. A una persona che si conosce bene può suonare troppo diretto."},
+   {jp:"さん",ro:"san",it:"signor / signora (dopo il nome)",note:"Si mette dopo il nome o il cognome di un’altra persona, per rispetto. Mai dopo il proprio nome."},
+   {jp:"たなか さん",ro:"tanaka san",it:"signor Tanaka / signora Tanaka",note:"さん vale per uomini e donne e non cambia."},
+   {jp:"がくせい",ro:"gakusei",it:"studente / studentessa"},
+   {jp:"せんせい",ro:"sensei",it:"insegnante",note:"Si usa anche per rivolgersi a un insegnante o a un medico, al posto di さん."},
+   {jp:"わたし は ... です。",ro:"watashi wa ... desu",it:"Io sono ...",note:"は qui si legge “wa”. です chiude la frase e la rende cortese: al posto dei puntini va una parola."},
+   {jp:"わたし は たなか です。",ro:"watashi wa tanaka desu",it:"Sono Tanaka."},
+   {jp:"わたし は がくせい です。",ro:"watashi wa gakusei desu",it:"Sono uno studente / una studentessa."},
+   {jp:"たなか さん は せんせい です。",ro:"tanaka san wa sensei desu",it:"Il signor Tanaka è un insegnante."},
+   {jp:"わたし も がくせい です。",ro:"watashi mo gakusei desu",it:"Anch’io sono studente.",note:"も prende il posto di は e vuol dire “anche”."}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “io”?",opts:["わたし","あなた","さん","せんせい"],a:0},
+    {type:"mcq",q:"Che cosa si aggiunge dopo il nome di un’altra persona, per rispetto?",opts:["さん","です","も","の"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire も in “わたし も がくせい です。”?",opts:["anche","di","e poi","ma"],a:0}]},
+  {id:"G2-2",t:"Nazionalità e mestieri",teach:[
+   {jp:"いたりあじん",ro:"itariajin",it:"italiano / italiana",note:"じん vuol dire “persona di (un paese)”. Di solito il nome del paese si scrive in katakana, che vedrai più avanti."},
+   {jp:"にほんじん",ro:"nihonjin",it:"giapponese (persona)",note:"にほん è il Giappone."},
+   {jp:"かんこくじん",ro:"kankokujin",it:"coreano / coreana (della Corea del Sud)"},
+   {jp:"だいがくせい",ro:"daigakusei",it:"studente universitario / studentessa universitaria"},
+   {jp:"かんごし",ro:"kangoshi",it:"infermiere / infermiera"},
+   {jp:"てんいん",ro:"tenin",it:"commesso / commessa"},
+   {jp:"ぎんこういん",ro:"ginkouin",it:"impiegato / impiegata di banca"},
    {jp:"わたし は いたりあじん です。",ro:"watashi wa itariajin desu",it:"Sono italiano / italiana."},
-   {jp:"わたし も がくせい です。",ro:"watashi mo gakusei desu",it:"Anch’io sono studente.",note:"も prende il posto di は e vuol dire “anche”."},
-   {jp:"あなた は にほんじん です か。",ro:"anata wa nihonjin desu ka",it:"Sei giapponese?",note:"か alla fine della frase fa una domanda."},
-   {jp:"どうぞ よろしく。",ro:"douzo yoroshiku",it:"Molto lieto / lieta.",note:"Si dice dopo essersi presentati."}],
-   ex:[{type:"build",it:"Anch’io sono italiano.",tiles:["わたし","も","いたりあじん","です","は","の"],ans:["わたし","も","いたりあじん","です"],p:"。"},
-    {type:"dict",jp:"ありがとう",ans:"arigatou",it:"Grazie"}]}]}
+   {jp:"たなか さん は にほんじん です。",ro:"tanaka san wa nihonjin desu",it:"Il signor Tanaka è giapponese."},
+   {jp:"やまだ さん は かんごし です。",ro:"yamada san wa kangoshi desu",it:"La signora Yamada è infermiera."},
+   {jp:"すずき さん は ぎんこういん です。",ro:"suzuki san wa ginkouin desu",it:"Il signor Suzuki è impiegato di banca."}],ex:[
+    {type:"mcq",q:"Che cosa vuol dire じん alla fine di いたりあじん?",opts:["persona di (un paese)","studente","lingua","città"],a:0},
+    {type:"mcq",q:"Quale parola vuol dire “giapponese (persona)”?",opts:["にほんじん","いたりあじん","かんこくじん","てんいん"],a:0},
+    {type:"mcq",q:"Quale parola vuol dire “infermiere / infermiera”?",opts:["かんごし","せんせい","てんいん","がくせい"],a:0}]},
+  {id:"G2-3",t:"Presentarsi",teach:[
+   {jp:"はじめまして",ro:"hajimemashite",it:"Piacere di conoscerti",note:"Si dice quando ci si presenta per la prima volta."},
+   {jp:"どうぞ よろしく",ro:"douzo yoroshiku",it:"Molto lieto / lieta",note:"Si dice dopo essersi presentati."},
+   {jp:"どうぞ よろしく おねがいします",ro:"douzo yoroshiku onegaishimasu",it:"Molto lieto / lieta (più formale)",note:"La versione più cortese: si usa con persone da rispettare, per esempio al lavoro."},
+   {jp:"なまえ",ro:"namae",it:"nome"},
+   {jp:"わたし の なまえ は たなか です。",ro:"watashi no namae wa tanaka desu",it:"Il mio nome è Tanaka.",note:"の collega due nomi: “il nome di me”, cioè “il mio nome”."},
+   {jp:"わたし の ほん",ro:"watashi no hon",it:"il mio libro"},
+   {jp:"あなた の くるま",ro:"anata no kuruma",it:"la tua auto"},
+   {jp:"たなか さん の いえ",ro:"tanaka san no ie",it:"la casa del signor Tanaka"}],ex:[
+    {type:"mcq",q:"Che cosa si dice dopo はじめまして, presentandosi?",opts:["どうぞ よろしく","おやすみ","さようなら","わかりません"],a:0},
+    {type:"mcq",q:"Che cosa fa の in “わたし の ほん”?",opts:["Collega due nomi: “il mio libro”","Fa una domanda","Vuol dire “anche”","Chiude la frase"],a:0},
+    {type:"mcq",q:"Come si dice “il mio nome”?",opts:["わたし の なまえ","なまえ わたし の","わたし は なまえ","なまえ の わたし"],a:0}]},
+  {id:"G2-4",t:"Cortesie",teach:[
+   {jp:"ありがとう",ro:"arigatou",it:"Grazie",note:"Informale: con amici e famiglia."},
+   {jp:"ありがとう ございます",ro:"arigatou gozaimasu",it:"Grazie (cortese)",note:"La forma gentile, adatta a quasi tutte le situazioni."},
+   {jp:"どういたしまして",ro:"douitashimashite",it:"Prego / Di niente"},
+   {jp:"ごめんなさい",ro:"gomennasai",it:"Mi dispiace / Scusa",note:"Più personale di すみません, che serve anche per attirare l’attenzione."},
+   {jp:"おねがいします",ro:"onegaishimasu",it:"Per favore",note:"Si aggiunge dopo una richiesta, per esempio dopo aver indicato ciò che si vuole."},
+   {jp:"どうぞ",ro:"douzo",it:"Prego (si accomodi / prenda pure)",note:"Si dice quando si offre qualcosa o si cede il passo."},
+   {jp:"おはよう ございます",ro:"ohayou gozaimasu",it:"Buongiorno (cortese)",note:"Versione più gentile di おはよう: si usa con colleghi e persone da rispettare."},
+   {jp:"こんばんは",ro:"konbanwa",it:"Buonasera",note:"L’ultimo は qui si legge “wa”."},
+   {jp:"いただきます",ro:"itadakimasu",it:"Buon appetito (prima di mangiare)",note:"Si dice prima di mangiare. Letteralmente vuol dire “ricevo con gratitudine”."},
+   {jp:"ごちそうさまでした",ro:"gochisousama deshita",it:"Grazie per il pasto",note:"Si dice dopo aver mangiato. Tra amici basta ごちそうさま."},
+   {jp:"ただいま",ro:"tadaima",it:"Sono a casa / Eccomi",note:"Si dice rientrando in casa. Chi è già dentro risponde おかえりなさい."},
+   {jp:"おかえりなさい",ro:"okaerinasai",it:"Bentornato / Bentornata"}],ex:[
+    {type:"mcq",q:"Qualcuno ti dice ありがとう. Che cosa rispondi?",opts:["どういたしまして","ただいま","いただきます","おやすみ"],a:0},
+    {type:"mcq",q:"Che cosa si dice prima di mangiare?",opts:["いただきます","ごちそうさまでした","ただいま","どうぞ"],a:0},
+    {type:"mcq",q:"Rientri a casa. Che cosa dici?",opts:["ただいま","おかえりなさい","いただきます","どうぞ"],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -1729,9 +1777,9 @@ const gKana=s=>String(s).replace(/[\s。、？！?!・〜～]/g,"");
 function gDictOk(inp,q){inp=inp.trim();if(!inp)return false;
  if(/[\u3040-\u309f]/.test(inp))return gKana(inp)===gKana(q.jp);return gNormRo(inp)===gNormRo(q.ans)}
 const gDQ=x=>({k:"dict",src:x.jp,jp:x.jp,ans:gRo(x),it:x.it,say:gSay(x)});
-function gDictQs(l){
+function gDictQs(l,avoid){
  const ex=(l.ex||[]).filter(e=>e.type==="dict").map(e=>({k:"dict",jp:e.jp,ans:e.ans,it:e.it||"",say:e.say||e.jp.replace(/ /g,"")})),
-  gen=shuffle(l.teach.filter(gCan).sort((a,b)=>b.jp.length-a.jp.length).slice(0,6)).map(gDQ);
+  pool=l.teach.filter(gCan).sort((a,b)=>b.jp.length-a.jp.length),alt=avoid?pool.filter(x=>!avoid.has(x.jp)):pool,gen=shuffle((alt.length>=3?alt:pool).slice(0,6)).map(gDQ);
  return [...ex,...gen].slice(0,3)}
 function gDict(q){
  const c=el("div","card"),hn=el("p","hint",""),inp=el("input","dictin"),ck=el("button","btn","Controlla"),nx=el("button","btn","Continua"),rw=el("div","row");let done=false;
@@ -1772,7 +1820,7 @@ function startGTest(uid,onDone){const u=GU[uid];if(!u||!u.lessons.length)return;
  S={kind:"gx",test:true,u:uid,li:u.lessons.length-1,onDone,phs:[{id:"test",t:"Verifica"}],qs:{test:qs},ph:0,q:[],tot:0,ok:0,err:0,T:0};lr.hidden=false;ll.hidden=true;gPh()}
 function startGLesson(uid,li,onDone){const l=GU[uid]&&GU[uid].lessons[li];if(!l||!l.teach.length)return;
  startImpara(uid,li,()=>gStart(uid,li,onDone),"Iniziamo gli esercizi")}
-function gStart(uid,li,onDone){const l=GU[uid].lessons[li],mcq=(l.ex||[]).filter(e=>e.type==="mcq"),phs=[],qs={},bq=gBuildQs(l,uid,li),dq=gDictQs(l),cap=Math.max(3,Math.floor((14-mcq.length-bq.length-dq.length)/2));
+function gStart(uid,li,onDone){const l=GU[uid].lessons[li],mcq=(l.ex||[]).filter(e=>e.type==="mcq"),phs=[],qs={},bq=gBuildQs(l,uid,li),dq=gDictQs(l,new Set(bq.map(q=>q.src))),cap=Math.max(2,Math.floor((14-mcq.length-bq.length-dq.length)/2));
  if(gPool(uid,li).length>=2){qs.mean=gPhase(["j2i","i2j"],l.teach,cap);phs.push({id:"mean",t:"Scegli il significato"});
   const ls=l.teach.filter(gCan);if(ls.length){qs.listen=gPhase(["l2i","l2j"],ls,cap);phs.push({id:"listen",t:"Ascolta e scegli"})}}
  if(bq.length){qs.build=bq;phs.push({id:"build",t:"Componi la frase"})}

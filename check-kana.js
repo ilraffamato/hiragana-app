@@ -297,12 +297,12 @@ async function selftest(app, M) {
     bad('mcq con opzioni uguali', g => { g.G1.lessons[0].ex[0].opts[1] = g.G1.lessons[0].ex[0].opts[0]; }, 'error');
     bad('test.n troppo piccolo', g => { g.G1.test.n = 3; }, 'error');
     bad('test.review più grande di n', g => { g.G1.test.review = 99; }, 'error');
-    bad('dict: romaji con maiuscole', g => { g.G2.lessons[0].ex[1].ans = 'Arigatou'; }, 'error');
-    bad('dict: romaji diverso da toRo', g => { g.G2.lessons[0].ex[1].ans = 'arigato'; }, 'warn');
-    bad('dict: manca jp', g => { delete g.G2.lessons[0].ex[1].jp; }, 'error');
-    bad('build: parola di ans non tra le tessere', g => { g.G2.lessons[0].ex[0].ans[0] = 'ほん'; }, 'error');
-    bad('build: tessere senza spazi', g => { g.G2.lessons[0].ex[0].tiles[0] = 'わたし は'; }, 'error');
-    bad('build: nessuna tessera in più', g => { g.G2.lessons[0].ex[0].tiles = g.G2.lessons[0].ex[0].ans.slice(); }, 'warn');
+    bad('dict: romaji con maiuscole', g => { g.G2.lessons[0].ex.push({ type: 'dict', jp: 'ありがとう', ans: 'Arigatou', it: 'Grazie' }); }, 'error');
+    bad('dict: romaji diverso da toRo', g => { g.G2.lessons[0].ex.push({ type: 'dict', jp: 'ありがとう', ans: 'arigato', it: 'Grazie' }); }, 'warn');
+    bad('dict: manca jp', g => { g.G2.lessons[0].ex.push({ type: 'dict', ans: 'arigatou' }); }, 'error');
+    bad('build: parola di ans non tra le tessere', g => { g.G2.lessons[0].ex.push({ type: 'build', it: 'x', tiles: ['わたし', 'は', 'です'], ans: ['ほん', 'は'], p: '。' }); }, 'error');
+    bad('build: tessere senza spazi', g => { g.G2.lessons[0].ex.push({ type: 'build', it: 'x', tiles: ['わたし は', 'です', 'も'], ans: ['わたし', 'です'], p: '。' }); }, 'error');
+    bad('build: nessuna tessera in più', g => { g.G2.lessons[0].ex.push({ type: 'build', it: 'x', tiles: ['わたし', 'です'], ans: ['わたし', 'です'], p: '。' }); }, 'warn');
     bad('tipo di esercizio sconosciuto', g => { g.G1.lessons[0].ex[0].type = 'xyz'; }, 'error');
     bad('romaji diverso da toRo', g => { g.G1.lessons[1].teach[0].ro = 'nyaa'; }, 'warn');
     bad('romaji con macron', g => { g.G1.lessons[0].teach[1].ro = 'ohayō'; }, 'warn'); }
