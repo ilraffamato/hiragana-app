@@ -387,6 +387,7 @@ const PATH=L.length===44?[
  {id:"G1",kind:"g",cap:1,sec:"Lingua · ",t:"Saluti e prime parole",poi:11,test:{n:25},needs:["K1","K2","K3"]},
  {id:"K4",kind:"k",cap:4,sec:"",t:"Dakuon e handakuon",from:10,to:14,poi:3,test:{n:30},needs:["K1","K2","K3"]},
  {id:"G2",kind:"g",cap:2,sec:"",t:"Presentarsi",poi:12,test:{n:25},needs:["K1","K2","K3","K4"]},
+ {id:"G3",kind:"g",cap:3,sec:"",t:"Domande",poi:13,test:{n:25},needs:["K1","K2","K3","K4"]},
  {id:"K5",kind:"k",cap:5,sec:"",t:"Yōon",from:15,to:20,poi:4,test:{n:30},needs:["K4"]},
  {id:"K6",kind:"k",cap:6,sec:"Katakana · ",t:"Katakana ア・カ・サ",from:21,to:23,poi:5,test:{n:30},needs:["K1","K2","K3","K4","K5"]},
  {id:"K7",kind:"k",cap:7,sec:"",t:"Katakana タ・ナ・ハ",from:24,to:26,poi:6,test:{n:30},needs:["K6"]},
@@ -513,7 +514,66 @@ const GU={
    {jp:"おかえりなさい",ro:"okaerinasai",it:"Bentornato / Bentornata"}],ex:[
     {type:"mcq",q:"Qualcuno ti dice ありがとう. Che cosa rispondi?",opts:["どういたしまして","ただいま","いただきます","おやすみ"],a:0},
     {type:"mcq",q:"Che cosa si dice prima di mangiare?",opts:["いただきます","ごちそうさまでした","ただいま","どうぞ"],a:0},
-    {type:"mcq",q:"Rientri a casa. Che cosa dici?",opts:["ただいま","おかえりなさい","いただきます","どうぞ"],a:0}]}]}
+    {type:"mcq",q:"Rientri a casa. Che cosa dici?",opts:["ただいま","おかえりなさい","いただきます","どうぞ"],a:0}]}]},
+ G3:{id:"G3",t:"Domande",needs:["K1","K2","K3","K4"],test:{n:25,review:5},lessons:[
+  {id:"G3-1",t:"か e なん",teach:[
+   {jp:"か",ro:"ka",it:"(fa una domanda)",note:"Messo in fondo a una frase la trasforma in domanda. La frase può finire con か。 oppure con ？."},
+   {jp:"なん",ro:"nan",it:"che cosa",note:"Si usa soprattutto davanti a です."},
+   {jp:"なに",ro:"nani",it:"che cosa",note:"Stessa parola di なん. Con です si dice なん; なに la vedrai con i verbi."},
+   {jp:"これ",ro:"kore",it:"questo",note:"Indica una cosa vicina a chi parla. それ e あれ arrivano più avanti."},
+   {jp:"これ は なん です か。",ro:"kore wa nan desu ka",it:"Che cos’è questo?",note:"は qui si legge “wa”."},
+   {jp:"これ は ほん です。",ro:"kore wa hon desu",it:"Questo è un libro."},
+   {jp:"あなた は がくせい です か。",ro:"anata wa gakusei desu ka",it:"Sei studente?",note:"Si risponde con はい o いいえ e poi con la frase."},
+   {jp:"はい、 わたし は がくせい です。",ro:"hai watashi wa gakusei desu",it:"Sì, sono studente."},
+   {jp:"いいえ、 わたし は せんせい です。",ro:"iie watashi wa sensei desu",it:"No, sono insegnante."},
+   {jp:"そう です か。",ro:"sou desu ka",it:"Ah, davvero? / Capisco",note:"Si dice per mostrare interesse o per riconoscere ciò che ha detto l’altro."}],ex:[
+    {type:"mcq",q:"Che cosa fa か alla fine di una frase?",opts:["La trasforma in una domanda","La rende negativa","Vuol dire “anche”","Indica il passato"],a:0},
+    {type:"mcq",q:"Come si chiede “Che cos’è questo?”",opts:["これ は なん です か。","これ は だれ です か。","これ は どこ です か。","これ は いつ です か。"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire そう です か。?",opts:["Ah, davvero?","Mi dispiace","Grazie mille","Non capisco"],a:0}]},
+  {id:"G3-2",t:"Chi? Di chi?",teach:[
+   {jp:"だれ",ro:"dare",it:"chi"},
+   {jp:"だれ の",ro:"dare no",it:"di chi"},
+   {jp:"どなた",ro:"donata",it:"chi (più cortese)",note:"Versione gentile di だれ: si usa con persone da rispettare o in situazioni formali."},
+   {jp:"おなまえ",ro:"onamae",it:"il nome (di chi ascolta)",note:"お rende la parola più gentile: si usa parlando del nome dell’altra persona, non del proprio."},
+   {jp:"おなまえ は なん です か。",ro:"onamae wa nan desu ka",it:"Come si chiama? / Come ti chiami?",note:"Letteralmente “Qual è il suo nome?”. Si risponde con わたし の なまえ は ... です。"},
+   {jp:"これ は だれ の ほん です か。",ro:"kore wa dare no hon desu ka",it:"Di chi è questo libro?"},
+   {jp:"これ は わたし の ほん です。",ro:"kore wa watashi no hon desu",it:"Questo è il mio libro."},
+   {jp:"これ は あなた の くるま です か。",ro:"kore wa anata no kuruma desu ka",it:"Questa è la tua auto?"}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “chi”?",opts:["だれ","なん","どこ","いつ"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire だれ の ほん?",opts:["il libro di chi?","che libro?","dov’è il libro?","quando è il libro?"],a:0},
+    {type:"mcq",q:"Quale parola è la versione più cortese di だれ?",opts:["どなた","なん","いつ","これ"],a:0}]},
+  {id:"G3-3",t:"Dove, quando, perché",teach:[
+   {jp:"どこ",ro:"doko",it:"dove"},
+   {jp:"いつ",ro:"itsu",it:"quando"},
+   {jp:"どうして",ro:"doushite",it:"perché",note:"Si può dire anche da solo, come domanda: どうして です か。"},
+   {jp:"おくに",ro:"okuni",it:"il paese (di chi ascolta)",note:"お rende la parola più gentile: si usa parlando del paese dell’altra persona."},
+   {jp:"おくに は どこ です か。",ro:"okuni wa doko desu ka",it:"Di quale paese è? / Di dove sei?",note:"Si risponde con il nome del paese e です, per esempio いたりあ です。"},
+   {jp:"にほん",ro:"nihon",it:"Giappone"},
+   {jp:"いたりあ",ro:"itaria",it:"Italia",note:"Di solito si scrive in katakana, che vedrai più avanti."},
+   {jp:"いたりあ です。",ro:"itaria desu",it:"(È) l’Italia."},
+   {jp:"えき は どこ です か。",ro:"eki wa doko desu ka",it:"Dov’è la stazione?"},
+   {jp:"おてあらい は どこ です か。",ro:"otearai wa doko desu ka",it:"Dov’è il bagno?",note:"おてあらい è il modo gentile per dire “bagno / toilette”. Molto utile in viaggio."},
+   {jp:"やすみ",ro:"yasumi",it:"vacanza / giorno libero",note:"Indica un giorno di riposo, una pausa o una vacanza."},
+   {jp:"やすみ は いつ です か。",ro:"yasumi wa itsu desu ka",it:"Quando è la vacanza? / Quando hai il giorno libero?"}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “dove”?",opts:["どこ","いつ","だれ","なん"],a:0},
+    {type:"mcq",q:"Quale parola usi per chiedere “quando”?",opts:["いつ","どこ","だれ","どうして"],a:0},
+    {type:"mcq",q:"Che cosa chiede おくに は どこ です か。?",opts:["Di quale paese sei?","Come ti chiami?","Quanti anni hai?","Che ore sono?"],a:0}]},
+  {id:"G3-4",t:"La famiglia",teach:[
+   {jp:"ともだち",ro:"tomodachi",it:"amico / amica"},
+   {jp:"かぞく",ro:"kazoku",it:"famiglia",note:"Per la famiglia di un altro si dice ごかぞく."},
+   {jp:"おかあさん",ro:"okaasan",it:"madre (di un altro) / mamma",note:"Si usa per la madre di un altro e per rivolgersi alla propria madre."},
+   {jp:"おとうさん",ro:"otousan",it:"padre (di un altro) / papà",note:"Si usa per il padre di un altro e per rivolgersi al proprio padre."},
+   {jp:"おにいさん",ro:"oniisan",it:"fratello maggiore (di un altro)",note:"In famiglia ci si rivolge così anche al proprio fratello maggiore."},
+   {jp:"おねえさん",ro:"oneesan",it:"sorella maggiore (di un altro)",note:"In famiglia ci si rivolge così anche alla propria sorella maggiore."},
+   {jp:"いもうと",ro:"imouto",it:"sorella minore (mia)",note:"Si dice parlando della propria sorella minore; per quella di un altro si usa いもうとさん."},
+   {jp:"はは",ro:"haha",it:"mia madre",note:"Si usa parlando della propria madre con altre persone. Per la madre di un altro si dice おかあさん."},
+   {jp:"ちち",ro:"chichi",it:"mio padre",note:"Si usa parlando del proprio padre con altre persone. Per il padre di un altro si dice おとうさん."},
+   {jp:"これ は わたし の はは です。",ro:"kore wa watashi no haha desu",it:"Questa è mia madre."},
+   {jp:"たなか さん の おかあさん は せんせい です。",ro:"tanaka san no okaasan wa sensei desu",it:"La madre del signor Tanaka è insegnante."},
+   {jp:"あなた の ともだち は にほんじん です か。",ro:"anata no tomodachi wa nihonjin desu ka",it:"Il tuo amico è giapponese?"}],ex:[
+    {type:"mcq",q:"Parli della tua mamma a una persona che non è della famiglia. Quale parola usi?",opts:["はは","おかあさん","おとうさん","ちち"],a:0},
+    {type:"mcq",q:"Quale parola vuol dire “famiglia”?",opts:["かぞく","ともだち","いもうと","ちち"],a:0},
+    {type:"mcq",q:"Parli della mamma del signor Tanaka. Quale parola usi?",opts:["おかあさん","はは","ちち","いもうと"],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -564,7 +624,8 @@ const POI=[
 {e:"🥤",t:"Distributori ovunque",w:"Tutto il Giappone",x:"In Giappone ci sono più di due milioni di distributori automatici, anche in posti isolati. Vendono ジュース, tè, caffè in lattina e perfino zuppa, e la stessa macchina offre bevande calde e fredde."},
 {e:"🏪",t:"Il konbini sempre aperto",w:"Ovunque, a ogni ora",x:"Il Giappone ha più di 50.000 コンビニ, aperti quasi sempre: pagano bollette, spediscono pacchi e vendono pasti caldi davvero buoni. I katakana estesi come ファ servono a scrivere nomi stranieri come ファミマ, cioè FamilyMart."},
 {e:"🙇",t:"L’inchino",w:"Tutto il Giappone",x:"Il saluto per eccellenza è l’inchino, ojigi: si piega il busto dalla vita, con la schiena dritta. Più è profondo, più mostra rispetto: circa 15° per un saluto tra conoscenti, circa 30° nelle situazioni formali, circa 45° per scuse sincere o grande riguardo. Le sue radici stanno nei riti buddhisti e nell’etichetta dei samurai, e non ci sono regole rigide sugli angoli. Spesso accompagna parole come こんにちは o さようなら. Se qualcuno si inchina a te, ricambia con un cenno leggero."},
-{e:"💼",t:"Il biglietto da visita",w:"Uffici e aziende di tutto il Giappone",x:"Nel mondo del lavoro ci si presenta con il めいし, il biglietto da visita, e lo scambio è quasi un rito. Lo si porge con due mani, con il testo rivolto verso chi lo riceve, accompagnandolo con un lieve inchino e con はじめまして e il proprio nome. Chi lo riceve lo prende con due mani, lo legge con attenzione e non ci scrive sopra né lo infila subito in tasca: il biglietto si tratta con il rispetto dovuto alla persona."}];
+{e:"💼",t:"Il biglietto da visita",w:"Uffici e aziende di tutto il Giappone",x:"Nel mondo del lavoro ci si presenta con il めいし, il biglietto da visita, e lo scambio è quasi un rito. Lo si porge con due mani, con il testo rivolto verso chi lo riceve, accompagnandolo con un lieve inchino e con はじめまして e il proprio nome. Chi lo riceve lo prende con due mani, lo legge con attenzione e non ci scrive sopra né lo infila subito in tasca: il biglietto si tratta con il rispetto dovuto alla persona."},
+{e:"📛",t:"Il cognome prima del nome",w:"Tutto il Giappone",x:"In giapponese il cognome viene prima del nome: la persona che si chiama Tanaka Hanako ha Tanaka come cognome e Hanako come nome. Per questo, alla domanda おなまえ は なん です か。 si dice prima il cognome. In italiano, e in molte lingue occidentali, l’ordine è l’inverso, e per circa un secolo e mezzo anche i giapponesi hanno invertito i loro nomi quando scrivevano con l’alfabeto latino, a partire dall’era Meiji. Dal 1° gennaio 2020 il governo giapponese scrive invece prima il cognome anche in alfabeto latino nei documenti ufficiali, salvo eccezioni, a volte con il cognome in maiuscolo per evitare dubbi, come in TANAKA Hanako."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);
