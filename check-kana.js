@@ -39,6 +39,8 @@ const KANJI = {
 /* Segni che nessun capitolo K insegna con una lezione (nell'app stanno nella Tabella e nelle Regole): si ammettono dall'unità
    indicata, ma con un avviso, perché il piano non dice dove insegnarli. */
 const EXTRA = { 'っ': 'K5', 'ッ': 'K6', 'ー': 'K6' };
+/* Dal WP-13 il piccolo っ si insegna in una lezione di lingua (G4-3, ろっぴゃく): dall'unità indicata nessun avviso, prima è un errore. */
+const TAUGHT = { 'っ': 'G4' };
 const NEUTRAL = /[\s\u3000。、，．！？「」『』（）・〜～…\u30fb]/;
 const KEYS = new Set(['jp', 'q', 'opts', 'tiles', 'ans', 'w', 'kana', 'text', 'k', 'note', 'say']);
 
@@ -83,7 +85,9 @@ function checkText(M, unit, text, out) {
     if (!isJp(ch) || NEUTRAL.test(ch) || seen.has(ch)) continue;
     seen.add(ch);
     const k = M.first[ch];
-    if (EXTRA[ch]) {
+    if (TAUGHT[ch] && ORDER.includes(TAUGHT[ch])) {
+      if (ORDER.indexOf(unit) < ORDER.indexOf(TAUGHT[ch])) out.push({ level: 'error', unit, text, ch, msg: `「${ch}」 in «${text}» (${unit}): si insegna in ${TAUGHT[ch]}, non prima` });
+    } else if (EXTRA[ch]) {
       if (!ORDER.includes(EXTRA[ch]) || ORDER.indexOf(EXTRA[ch]) >= ORDER.indexOf(unit))
         out.push({ level: 'error', unit, text, ch, msg: `「${ch}」 in «${text}» (${unit}): si ammette solo dopo ${EXTRA[ch]}` });
       else out.push({ level: 'warn', unit, text, ch, msg: `「${ch}」 in «${text}» (${unit}): nessuna lezione di K lo insegna (solo Tabella e Regole); il piano deve dire dove` });
@@ -227,6 +231,8 @@ function checkBaseline(app, base, out) {
 function checkPath(app, out) {
   const ids = app.PATH.map(u => u.id), pos = id => ORDER.indexOf(id);
   for (let i = 1; i < ids.length; i++) if (pos(ids[i]) < 0 || pos(ids[i - 1]) < 0 || pos(ids[i]) < pos(ids[i - 1])) out.push({ level: 'error', msg: `PATH: ${ids[i]} è fuori ordine rispetto al §6 (dopo ${ids[i - 1]})` });
+  { const seenJp = {}; Object.values(app.GU || {}).forEach(u => u.lessons.forEach(l => (l.teach || []).forEach(x => {
+      if (seenJp[x.jp]) out.push({ level: 'error', msg: `scheda duplicata «${x.jp}» in ${l.id} e ${seenJp[x.jp]}: il ripasso usa il testo giapponese come chiave` }); else seenJp[x.jp] = l.id; }))); }
   const pois = new Set();
   app.PATH.forEach((u, i) => {
     if (pois.has(u.poi)) out.push({ level: 'error', msg: `PATH: la cartolina ${u.poi} è usata da più di un'unità (${u.id})` }); pois.add(u.poi);
@@ -281,7 +287,9 @@ async function selftest(app, M) {
     t('G5 レストラン (katakana non ancora noti)', 'G5', 'レストラン', true),
     t('G6 レストラン (servono K7 e K8)', 'G6', 'レストラン', true),
     t('G11 レストラン (dopo K11)', 'G11', 'レストラン', false),
-    t('G12 ちょっと (っ senza lezione: avviso)', 'G12', 'ちょっと', false, true),
+    t('G12 ちょっと (っ insegnato in G4: nessun avviso)', 'G12', 'ちょっと', false, false),
+    t('G3 いっぷん (っ prima di G4: errore)', 'G3', 'いっぷん', true),
+    t('G11 こーひー (ー senza lezione: avviso)', 'G11', 'こーひー', false, true),
     t('G4 kanji 一 (previsto)', 'G4', '一ひゃく', false),
     t('G4 kanji 日 (previsto in G5)', 'G4', '日', true),
     t('G9 kanji 私 (non nel piano)', 'G9', '私', true),
@@ -315,6 +323,7 @@ async function selftest(app, M) {
     badP('cartolina inesistente', a => { a.PATH.find(u => u.id === 'G2').poi = 99; });
     badP('G con soglia mancante', a => { delete a.PATH.find(u => u.id === 'G2').min; });
     badP('K con soglia diversa da 100', a => { a.PATH.find(u => u.id === 'K2').min = 90; });
+    badP('scheda duplicata tra unità', a => { a.GU.G2.lessons[0].teach.push({ jp: a.GU.G1.lessons[0].teach[0].jp, ro: 'x', it: 'x' }); });
     badP('needs che non precede', a => { a.PATH.find(u => u.id === 'G1').needs = ['K4']; }); }
   { const d2 = []; checkDone(app, ['G1-1', 'G1-2', 'G1:t', 'G2-1', 'G2:t'], d2); const ok5 = d2.length === 0; r.push(ok5); console.log((ok5 ? 'ok     ' : 'FALLITO ') + 'done: chiavi G valide accettate');
     [['G1-9', 'lezione inesistente'], ['G9:t', 'unità inesistente'], ['G1-0', 'lezione 0'], ['K1:t', 'prefisso sbagliato']].forEach(([k, n]) => { const d3 = []; checkDone(app, [k], d3); const ok6 = d3.length === 1; r.push(ok6); console.log((ok6 ? 'ok     ' : 'FALLITO ') + 'done: ' + k + ' rifiutato (' + n + ')'); }); }

@@ -389,6 +389,7 @@ const PATH=L.length===44?[
  {id:"G2",kind:"g",cap:2,sec:"",t:"Presentarsi",poi:12,test:{n:25},needs:["K1","K2","K3","K4"]},
  {id:"G3",kind:"g",cap:3,sec:"",t:"Domande",poi:13,test:{n:25},needs:["K1","K2","K3","K4"]},
  {id:"K5",kind:"k",cap:5,sec:"",t:"Yōon",from:15,to:20,poi:4,test:{n:30},needs:["K4"]},
+ {id:"G4",kind:"g",cap:4,sec:"",t:"Numeri e prezzi",poi:14,test:{n:25},needs:["K1","K2","K3","K4","K5"]},
  {id:"K6",kind:"k",cap:6,sec:"Katakana · ",t:"Katakana ア・カ・サ",from:21,to:23,poi:5,test:{n:30},needs:["K1","K2","K3","K4","K5"]},
  {id:"K7",kind:"k",cap:7,sec:"",t:"Katakana タ・ナ・ハ",from:24,to:26,poi:6,test:{n:30},needs:["K6"]},
  {id:"K8",kind:"k",cap:8,sec:"",t:"Katakana マ・ヤ・ラ・ワ",from:27,to:30,poi:7,test:{n:30},needs:["K7"]},
@@ -460,8 +461,7 @@ const GU={
   {id:"G2-1",t:"Io e tu",teach:[
    {jp:"わたし",ro:"watashi",it:"io",note:"Il modo più neutro e gentile per dire “io”, usato da uomini e donne."},
    {jp:"あなた",ro:"anata",it:"tu / lei",note:"Si usa poco: di solito si preferisce il nome seguito da さん. A una persona che si conosce bene può suonare troppo diretto."},
-   {jp:"さん",ro:"san",it:"signor / signora (dopo il nome)",note:"Si mette dopo il nome o il cognome di un’altra persona, per rispetto. Mai dopo il proprio nome."},
-   {jp:"たなか さん",ro:"tanaka san",it:"signor Tanaka / signora Tanaka",note:"さん vale per uomini e donne e non cambia."},
+   {jp:"たなか さん",ro:"tanaka san",it:"signor Tanaka / signora Tanaka",note:"さん si mette dopo il nome o il cognome di un’altra persona, per rispetto. Mai dopo il proprio nome. Vale per uomini e donne e non cambia."},
    {jp:"がくせい",ro:"gakusei",it:"studente / studentessa"},
    {jp:"せんせい",ro:"sensei",it:"insegnante",note:"Si usa anche per rivolgersi a un insegnante o a un medico, al posto di さん."},
    {jp:"わたし は ... です。",ro:"watashi wa ... desu",it:"Io sono ...",note:"は qui si legge “wa”. です chiude la frase e la rende cortese: al posto dei puntini va una parola."},
@@ -573,7 +573,76 @@ const GU={
    {jp:"あなた の ともだち は にほんじん です か。",ro:"anata no tomodachi wa nihonjin desu ka",it:"Il tuo amico è giapponese?"}],ex:[
     {type:"mcq",q:"Parli della tua mamma a una persona che non è della famiglia. Quale parola usi?",opts:["はは","おかあさん","おとうさん","ちち"],a:0},
     {type:"mcq",q:"Quale parola vuol dire “famiglia”?",opts:["かぞく","ともだち","いもうと","ちち"],a:0},
-    {type:"mcq",q:"Parli della mamma del signor Tanaka. Quale parola usi?",opts:["おかあさん","はは","ちち","いもうと"],a:0}]}]}
+    {type:"mcq",q:"Parli della mamma del signor Tanaka. Quale parola usi?",opts:["おかあさん","はは","ちち","いもうと"],a:0}]}]},
+ G4:{id:"G4",t:"Numeri e prezzi",needs:["K1","K2","K3","K4","K5"],test:{n:25,review:5},lessons:[
+  {id:"G4-1",t:"Numeri da 0 a 10",teach:[
+   {jp:"ぜろ",ro:"zero",it:"zero (0)",note:"Di solito si scrive in katakana, che vedrai più avanti. Si dice anche れい."},
+   {jp:"いち",ro:"ichi",it:"uno (1)"},
+   {jp:"に",ro:"ni",it:"due (2)"},
+   {jp:"さん",ro:"san",it:"tre (3)"},
+   {jp:"よん",ro:"yon",it:"quattro (4)",note:"Si dice anche し, ma よん è più comune: し suona come la parola “morte”."},
+   {jp:"ご",ro:"go",it:"cinque (5)"},
+   {jp:"ろく",ro:"roku",it:"sei (6)"},
+   {jp:"なな",ro:"nana",it:"sette (7)",note:"Si dice anche しち."},
+   {jp:"はち",ro:"hachi",it:"otto (8)"},
+   {jp:"きゅう",ro:"kyuu",it:"nove (9)",note:"Si dice anche く, ma きゅう è più comune."},
+   {jp:"じゅう",ro:"juu",it:"dieci (10)"}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “cinque”?",opts:["ご","ろく","なな","はち"],a:0},
+    {type:"mcq",q:"Come si dice di solito “quattro”?",opts:["よん","ろく","きゅう","じゅう"],a:0},
+    {type:"mcq",q:"Quale numero è じゅう?",opts:["10","7","9","1"],a:0}]},
+  {id:"G4-2",t:"Da 11 a 99",teach:[
+   {jp:"じゅういち",ro:"juuichi",it:"undici (11)",note:"Si compone: “dieci-uno”."},
+   {jp:"じゅうに",ro:"juuni",it:"dodici (12)"},
+   {jp:"じゅうご",ro:"juugo",it:"quindici (15)"},
+   {jp:"にじゅう",ro:"nijuu",it:"venti (20)",note:"Si compone: “due-dieci”, cioè 2 × 10."},
+   {jp:"にじゅういち",ro:"nijuuichi",it:"ventuno (21)"},
+   {jp:"さんじゅう",ro:"sanjuu",it:"trenta (30)"},
+   {jp:"よんじゅう",ro:"yonjuu",it:"quaranta (40)"},
+   {jp:"ごじゅう",ro:"gojuu",it:"cinquanta (50)"},
+   {jp:"ろくじゅう",ro:"rokujuu",it:"sessanta (60)"},
+   {jp:"ななじゅう",ro:"nanajuu",it:"settanta (70)"},
+   {jp:"はちじゅう",ro:"hachijuu",it:"ottanta (80)"},
+   {jp:"きゅうじゅう",ro:"kyuujuu",it:"novanta (90)"},
+   {jp:"きゅうじゅうきゅう",ro:"kyuujuukyuu",it:"novantanove (99)"}],ex:[
+    {type:"mcq",q:"Come si dice 20?",opts:["にじゅう","じゅうに","さんじゅう","よんじゅう"],a:0},
+    {type:"mcq",q:"Che numero è じゅうご?",opts:["15","50","5","105"],a:0},
+    {type:"mcq",q:"Che numero è ごじゅう?",opts:["50","15","5","500"],a:0}]},
+  {id:"G4-3",t:"Cento, mille e yen",teach:[
+   {jp:"ひゃく",ro:"hyaku",it:"cento (100)",note:"Per 200 si dice にひゃく."},
+   {jp:"せん",ro:"sen",it:"mille (1000)"},
+   {jp:"まん",ro:"man",it:"diecimila (10000)",note:"Per 10.000 si dice sempre いちまん, con いち davanti."},
+   {jp:"えん",ro:"en",it:"yen",note:"La moneta del Giappone. Si mette dopo il numero: ひゃく えん, 100 yen."},
+   {jp:"いくら",ro:"ikura",it:"quanto (costa)"},
+   {jp:"これ は いくら です か。",ro:"kore wa ikura desu ka",it:"Quanto costa questo?",note:"Molto utile nei negozi."},
+   {jp:"ひゃく えん です。",ro:"hyaku en desu",it:"Sono 100 yen."},
+   {jp:"ごひゃく えん です。",ro:"gohyaku en desu",it:"Sono 500 yen."},
+   {jp:"さんびゃく",ro:"sanbyaku",it:"trecento (300)",note:"Dopo さん, ひゃく diventa びゃく."},
+   {jp:"ろっぴゃく",ro:"roppyaku",it:"seicento (600)",note:"ろく + ひゃく diventa ろっぴゃく. Il piccolo っ non si pronuncia: raddoppia il suono che segue (roppyaku)."},
+   {jp:"はっぴゃく",ro:"happyaku",it:"ottocento (800)",note:"はち + ひゃく diventa はっぴゃく, con il piccolo っ."},
+   {jp:"さんぜん",ro:"sanzen",it:"tremila (3000)",note:"Dopo さん, せん diventa ぜん."},
+   {jp:"はっせん",ro:"hassen",it:"ottomila (8000)",note:"はち + せん diventa はっせん, con il piccolo っ."},
+   {jp:"いちまん えん です。",ro:"ichiman en desu",it:"Sono 10.000 yen."}],ex:[
+    {type:"mcq",q:"Che cosa vuol dire いくら です か。?",opts:["Quanto costa?","Che ore sono?","Dov’è?","Chi è?"],a:0},
+    {type:"mcq",q:"Quale numero è せん?",opts:["1000","100","10","10000"],a:0},
+    {type:"mcq",q:"Che numero è ろっぴゃく?",opts:["600","300","800","60"],a:0}]},
+  {id:"G4-4",t:"Che ore sono?",teach:[
+   {jp:"とけい",ro:"tokei",it:"orologio"},
+   {jp:"いま",ro:"ima",it:"adesso"},
+   {jp:"なんじ",ro:"nanji",it:"che ora",note:"È なん + じ: “quale ora”."},
+   {jp:"いま なんじ です か。",ro:"ima nanji desu ka",it:"Che ore sono?"},
+   {jp:"さんじ です。",ro:"sanji desu",it:"Sono le tre.",note:"じ si aggiunge al numero e vuol dire “ora, ore”."},
+   {jp:"よじ です。",ro:"yoji desu",it:"Sono le quattro.",note:"Le 4 si dicono よじ, non よんじ."},
+   {jp:"くじ です。",ro:"kuji desu",it:"Sono le nove.",note:"Le 9 si dicono くじ, non きゅうじ."},
+   {jp:"さんじ はん です。",ro:"sanji han desu",it:"Sono le tre e mezza.",note:"はん vuol dire “mezza”."},
+   {jp:"ごぜん",ro:"gozen",it:"di mattina",note:"Si mette prima dell’ora: ごぜん くじ, le nove di mattina."},
+   {jp:"ごご",ro:"gogo",it:"del pomeriggio / di sera",note:"Si mette prima dell’ora, per le ore dopo mezzogiorno."},
+   {jp:"ごぜん くじ です。",ro:"gozen kuji desu",it:"Sono le nove di mattina."},
+   {jp:"いっぷん",ro:"ippun",it:"un minuto",note:"I minuti si contano con ふん o ぷん: ぷん dopo 1, 3, 4, 6, 8 e 10 (con il piccolo っ per 1, 6, 8 e 10)."},
+   {jp:"ごふん",ro:"gofun",it:"cinque minuti",note:"Dopo 2, 5, 7 e 9 si usa ふん."},
+   {jp:"さんじ ごふん です。",ro:"sanji gofun desu",it:"Sono le tre e cinque."}],ex:[
+    {type:"mcq",q:"Come si chiede “Che ore sono?”",opts:["いま なんじ です か。","いま いくら です か。","いま どこ です か。","いま だれ です か。"],a:0},
+    {type:"mcq",q:"Quale parola vuol dire “di mattina”?",opts:["ごぜん","ごご","いま","とけい"],a:0},
+    {type:"mcq",q:"Come si dicono le 4?",opts:["よじ","よんじ","しじ","ごじ"],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -625,7 +694,8 @@ const POI=[
 {e:"🏪",t:"Il konbini sempre aperto",w:"Ovunque, a ogni ora",x:"Il Giappone ha più di 50.000 コンビニ, aperti quasi sempre: pagano bollette, spediscono pacchi e vendono pasti caldi davvero buoni. I katakana estesi come ファ servono a scrivere nomi stranieri come ファミマ, cioè FamilyMart."},
 {e:"🙇",t:"L’inchino",w:"Tutto il Giappone",x:"Il saluto per eccellenza è l’inchino, ojigi: si piega il busto dalla vita, con la schiena dritta. Più è profondo, più mostra rispetto: circa 15° per un saluto tra conoscenti, circa 30° nelle situazioni formali, circa 45° per scuse sincere o grande riguardo. Le sue radici stanno nei riti buddhisti e nell’etichetta dei samurai, e non ci sono regole rigide sugli angoli. Spesso accompagna parole come こんにちは o さようなら. Se qualcuno si inchina a te, ricambia con un cenno leggero."},
 {e:"💼",t:"Il biglietto da visita",w:"Uffici e aziende di tutto il Giappone",x:"Nel mondo del lavoro ci si presenta con il めいし, il biglietto da visita, e lo scambio è quasi un rito. Lo si porge con due mani, con il testo rivolto verso chi lo riceve, accompagnandolo con un lieve inchino e con はじめまして e il proprio nome. Chi lo riceve lo prende con due mani, lo legge con attenzione e non ci scrive sopra né lo infila subito in tasca: il biglietto si tratta con il rispetto dovuto alla persona."},
-{e:"📛",t:"Il cognome prima del nome",w:"Tutto il Giappone",x:"In giapponese il cognome viene prima del nome: la persona che si chiama Tanaka Hanako ha Tanaka come cognome e Hanako come nome. Per questo, alla domanda おなまえ は なん です か。 si dice prima il cognome. In italiano, e in molte lingue occidentali, l’ordine è l’inverso, e per circa un secolo e mezzo anche i giapponesi hanno invertito i loro nomi quando scrivevano con l’alfabeto latino, a partire dall’era Meiji. Dal 1° gennaio 2020 il governo giapponese scrive invece prima il cognome anche in alfabeto latino nei documenti ufficiali, salvo eccezioni, a volte con il cognome in maiuscolo per evitare dubbi, come in TANAKA Hanako."}];
+{e:"📛",t:"Il cognome prima del nome",w:"Tutto il Giappone",x:"In giapponese il cognome viene prima del nome: la persona che si chiama Tanaka Hanako ha Tanaka come cognome e Hanako come nome. Per questo, alla domanda おなまえ は なん です か。 si dice prima il cognome. In italiano, e in molte lingue occidentali, l’ordine è l’inverso, e per circa un secolo e mezzo anche i giapponesi hanno invertito i loro nomi quando scrivevano con l’alfabeto latino, a partire dall’era Meiji. Dal 1° gennaio 2020 il governo giapponese scrive invece prima il cognome anche in alfabeto latino nei documenti ufficiali, salvo eccezioni, a volte con il cognome in maiuscolo per evitare dubbi, come in TANAKA Hanako."},
+{e:"🔢",t:"Il 4 e il 9, numeri da evitare",w:"Tutto il Giappone",x:"Il 4 si può leggere し, come la parola “morte”, e il 9 si può leggere く, come la parola “sofferenza”. Per questo di solito si dice よん e きゅう. Non succede ovunque, ma in certi alberghi e ospedali mancano le stanze o i piani con il 4, e per i regali si evitano le confezioni da quattro: meglio tre o cinque. Nei prezzi e nell’ora, invece, i numeri si dicono senza pensieri: ti serviranno subito per chiedere いくら です か。"}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);
