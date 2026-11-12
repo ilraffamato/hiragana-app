@@ -390,6 +390,7 @@ const PATH=L.length===44?[
  {id:"G3",kind:"g",cap:3,sec:"",t:"Domande",poi:13,test:{n:25},needs:["K1","K2","K3","K4"]},
  {id:"K5",kind:"k",cap:5,sec:"",t:"Yōon",from:15,to:20,poi:4,test:{n:30},needs:["K4"]},
  {id:"G4",kind:"g",cap:4,sec:"",t:"Numeri e prezzi",poi:14,test:{n:25},needs:["K1","K2","K3","K4","K5"]},
+ {id:"G5",kind:"g",cap:5,sec:"",t:"Cose e posti",poi:15,test:{n:25},needs:["K1","K2","K3","K4","K5"]},
  {id:"K6",kind:"k",cap:6,sec:"Katakana · ",t:"Katakana ア・カ・サ",from:21,to:23,poi:5,test:{n:30},needs:["K1","K2","K3","K4","K5"]},
  {id:"K7",kind:"k",cap:7,sec:"",t:"Katakana タ・ナ・ハ",from:24,to:26,poi:6,test:{n:30},needs:["K6"]},
  {id:"K8",kind:"k",cap:8,sec:"",t:"Katakana マ・ヤ・ラ・ワ",from:27,to:30,poi:7,test:{n:30},needs:["K7"]},
@@ -642,7 +643,72 @@ const GU={
    {jp:"さんじ ごふん です。",ro:"sanji gofun desu",it:"Sono le tre e cinque."}],ex:[
     {type:"mcq",q:"Come si chiede “Che ore sono?”",opts:["いま なんじ です か。","いま いくら です か。","いま どこ です か。","いま だれ です か。"],a:0},
     {type:"mcq",q:"Quale parola vuol dire “di mattina”?",opts:["ごぜん","ごご","いま","とけい"],a:0},
-    {type:"mcq",q:"Come si dicono le 4?",opts:["よじ","よんじ","しじ","ごじ"],a:0}]}]}
+    {type:"mcq",q:"Come si dicono le 4?",opts:["よじ","よんじ","しじ","ごじ"],a:0}]}]},
+ G5:{id:"G5",t:"Cose e posti",needs:["K1","K2","K3","K4","K5"],test:{n:25,review:5},lessons:[
+  {id:"G5-1",t:"それ, あれ, どれ",teach:[
+   {jp:"それ",ro:"sore",it:"quello (vicino a te)",note:"Indica una cosa vicina a chi ascolta. これ (G3) è la cosa vicina a chi parla."},
+   {jp:"あれ",ro:"are",it:"quello là (lontano da tutti e due)",note:"Indica una cosa lontana sia da chi parla sia da chi ascolta."},
+   {jp:"どれ",ro:"dore",it:"quale? (tra tre o più cose)",note:"Si usa per scegliere tra tre o più cose. これ, それ, あれ, どれ stanno da soli, senza un nome dopo."},
+   {jp:"それ は なん です か。",ro:"sore wa nan desu ka",it:"Che cos’è quello (vicino a te)?"},
+   {jp:"あれ は なん です か。",ro:"are wa nan desu ka",it:"Che cos’è quello là?"},
+   {jp:"それ は わたし の ほん です。",ro:"sore wa watashi no hon desu",it:"Quello è il mio libro."},
+   {jp:"それ は あなた の ほん です か。",ro:"sore wa anata no hon desu ka",it:"Quello è il tuo libro?"},
+   {jp:"あれ は えき です。",ro:"are wa eki desu",it:"Quella là è una stazione."},
+   {jp:"あれ は だれ の くるま です か。",ro:"are wa dare no kuruma desu ka",it:"Di chi è quella macchina là?"},
+   {jp:"あなた の くるま は どれ です か。",ro:"anata no kuruma wa dore desu ka",it:"Qual è la tua macchina?"},
+   {jp:"わたし の くるま は あれ です。",ro:"watashi no kuruma wa are desu",it:"La mia macchina è quella là."}],ex:[
+    {type:"mcq",q:"Che cosa indica あれ?",opts:["una cosa lontana da tutti e due","una cosa vicina a me","una cosa vicina a te","una persona"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire どれ?",opts:["quale? (tra più cose)","chi?","dove?","quanto?"],a:0},
+    {type:"mcq",q:"Il libro è vicino alla persona con cui parli. Quale parola usi?",opts:["それ","これ","あれ","どれ"],a:0}]},
+  {id:"G5-2",t:"この, その, あの",teach:[
+   {jp:"この",ro:"kono",it:"questo ... (vicino a me)",note:"この, その, あの e どの vogliono sempre un nome dopo: この ほん, “questo libro”. Da soli non stanno."},
+   {jp:"その",ro:"sono",it:"quel ... (vicino a te)"},
+   {jp:"あの",ro:"ano",it:"quel ... là (lontano da tutti e due)"},
+   {jp:"どの",ro:"dono",it:"quale ...? (tra più cose)"},
+   {jp:"この ほん は いくら です か。",ro:"kono hon wa ikura desu ka",it:"Quanto costa questo libro?"},
+   {jp:"この ほん は せん えん です。",ro:"kono hon wa sen en desu",it:"Questo libro costa mille yen."},
+   {jp:"その とけい は いくら です か。",ro:"sono tokei wa ikura desu ka",it:"Quanto costa quell’orologio (vicino a te)?"},
+   {jp:"あの ひと は だれ です か。",ro:"ano hito wa dare desu ka",it:"Chi è quella persona là?"},
+   {jp:"あの ひと は たなか さん です。",ro:"ano hito wa tanaka san desu",it:"Quella persona là è il signor Tanaka."},
+   {jp:"どの くるま です か。",ro:"dono kuruma desu ka",it:"Quale macchina?"},
+   {jp:"あの みせ は わたし の ともだち の みせ です。",ro:"ano mise wa watashi no tomodachi no mise desu",it:"Quel negozio là è il negozio di un mio amico."}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “quale ...?” davanti a un nome?",opts:["どの","どれ","どこ","いつ"],a:0},
+    {type:"mcq",q:"Quale espressione vuol dire “quel libro là, lontano”?",opts:["あの ほん","あれ ほん","あそこ ほん","その ほん"],a:0},
+    {type:"mcq",q:"Che cosa chiede この ほん は いくら です か。?",opts:["Quanto costa questo libro?","Di chi è questo libro?","Dov’è questo libro?","Che libro è questo?"],a:0}]},
+  {id:"G5-3",t:"ここ, そこ, あそこ",teach:[
+   {jp:"ここ",ro:"koko",it:"qui",note:"Anche i luoghi seguono lo schema: ここ vicino a chi parla, そこ vicino a chi ascolta, あそこ lontano da tutti e due. どこ (G3) è “dove?”."},
+   {jp:"そこ",ro:"soko",it:"lì (vicino a te)"},
+   {jp:"あそこ",ro:"asoko",it:"laggiù"},
+   {jp:"こちら",ro:"kochira",it:"qui (più cortese) / questa persona",note:"È la forma più cortese di ここ e si usa anche per presentare una persona. そちら, あちら e どちら seguono lo stesso schema."},
+   {jp:"ここ は どこ です か。",ro:"koko wa doko desu ka",it:"Dove siamo? (Qui, dove è?)"},
+   {jp:"ここ は にほん です。",ro:"koko wa nihon desu",it:"Qui è il Giappone."},
+   {jp:"あそこ は えき です。",ro:"asoko wa eki desu",it:"Laggiù c’è la stazione."},
+   {jp:"えき は あそこ です。",ro:"eki wa asoko desu",it:"La stazione è laggiù."},
+   {jp:"おてあらい は あそこ です。",ro:"otearai wa asoko desu",it:"Il bagno è laggiù."},
+   {jp:"わたし の いえ は ここ です。",ro:"watashi no ie wa koko desu",it:"Casa mia è qui."},
+   {jp:"そこ は あなた の いえ です か。",ro:"soko wa anata no ie desu ka",it:"Lì è casa tua?"},
+   {jp:"こちら は たなか さん です。",ro:"kochira wa tanaka san desu",it:"Questo è il signor Tanaka.",note:"Si usa per presentare qualcuno a un’altra persona."}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “laggiù”?",opts:["あそこ","ここ","そこ","どこ"],a:0},
+    {type:"mcq",q:"Come si chiede “Dove siamo?”",opts:["ここ は どこ です か。","ここ は だれ です か。","ここ は いくら です か。","ここ は いつ です か。"],a:0},
+    {type:"mcq",q:"Presenti il signor Tanaka a un amico. Quale parola metti all’inizio?",opts:["こちら","どれ","あそこ","いくら"],a:0}]},
+  {id:"G5-4",t:"Cose e posti",teach:[
+   {jp:"かばん",ro:"kaban",it:"borsa / zaino"},
+   {jp:"さいふ",ro:"saifu",it:"portafoglio"},
+   {jp:"けいたい",ro:"keitai",it:"telefono cellulare",note:"È l’abbreviazione di けいたい でんわ, “telefono portatile”."},
+   {jp:"くつ",ro:"kutsu",it:"scarpe",note:"In casa si tolgono all’ingresso: la cartolina di questa unità ne parla."},
+   {jp:"きっぷ",ro:"kippu",it:"biglietto (del treno, dell’autobus)",note:"Il piccolo っ raddoppia la consonante dopo: kippu."},
+   {jp:"がっこう",ro:"gakkou",it:"scuola",note:"Il piccolo っ raddoppia la k: gakkou."},
+   {jp:"びょういん",ro:"byouin",it:"ospedale",note:"Non confonderlo con びよういん, il parrucchiere: è facile sbagliare, la differenza sta nel piccolo ょ."},
+   {jp:"こうえん",ro:"kouen",it:"parco"},
+   {jp:"ぎんこう",ro:"ginkou",it:"banca"},
+   {jp:"ゆうびんきょく",ro:"yuubinkyoku",it:"ufficio postale"},
+   {jp:"くうこう",ro:"kuukou",it:"aeroporto"},
+   {jp:"これ は わたし の かばん です。",ro:"kore wa watashi no kaban desu",it:"Questa è la mia borsa."},
+   {jp:"ゆうびんきょく は どこ です か。",ro:"yuubinkyoku wa doko desu ka",it:"Dov’è l’ufficio postale?"},
+   {jp:"この きっぷ は いくら です か。",ro:"kono kippu wa ikura desu ka",it:"Quanto costa questo biglietto?"}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “biglietto (del treno)”?",opts:["きっぷ","さいふ","かばん","くつ"],a:0},
+    {type:"mcq",q:"Quale parola vuol dire “aeroporto”?",opts:["くうこう","こうえん","ぎんこう","がっこう"],a:0},
+    {type:"mcq",q:"Devi spedire una lettera. Dove vai?",opts:["ゆうびんきょく","がっこう","こうえん","くうこう"],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -695,7 +761,8 @@ const POI=[
 {e:"🙇",t:"L’inchino",w:"Tutto il Giappone",x:"Il saluto per eccellenza è l’inchino, ojigi: si piega il busto dalla vita, con la schiena dritta. Più è profondo, più mostra rispetto: circa 15° per un saluto tra conoscenti, circa 30° nelle situazioni formali, circa 45° per scuse sincere o grande riguardo. Le sue radici stanno nei riti buddhisti e nell’etichetta dei samurai, e non ci sono regole rigide sugli angoli. Spesso accompagna parole come こんにちは o さようなら. Se qualcuno si inchina a te, ricambia con un cenno leggero."},
 {e:"💼",t:"Il biglietto da visita",w:"Uffici e aziende di tutto il Giappone",x:"Nel mondo del lavoro ci si presenta con il めいし, il biglietto da visita, e lo scambio è quasi un rito. Lo si porge con due mani, con il testo rivolto verso chi lo riceve, accompagnandolo con un lieve inchino e con はじめまして e il proprio nome. Chi lo riceve lo prende con due mani, lo legge con attenzione e non ci scrive sopra né lo infila subito in tasca: il biglietto si tratta con il rispetto dovuto alla persona."},
 {e:"📛",t:"Il cognome prima del nome",w:"Tutto il Giappone",x:"In giapponese il cognome viene prima del nome: la persona che si chiama Tanaka Hanako ha Tanaka come cognome e Hanako come nome. Per questo, alla domanda おなまえ は なん です か。 si dice prima il cognome. In italiano, e in molte lingue occidentali, l’ordine è l’inverso, e per circa un secolo e mezzo anche i giapponesi hanno invertito i loro nomi quando scrivevano con l’alfabeto latino, a partire dall’era Meiji. Dal 1° gennaio 2020 il governo giapponese scrive invece prima il cognome anche in alfabeto latino nei documenti ufficiali, salvo eccezioni, a volte con il cognome in maiuscolo per evitare dubbi, come in TANAKA Hanako."},
-{e:"🔢",t:"Il 4 e il 9, numeri da evitare",w:"Tutto il Giappone",x:"Il 4 si può leggere し, come la parola “morte”, e il 9 si può leggere く, come la parola “sofferenza”. Per questo di solito si dice よん e きゅう. Non succede ovunque, ma in certi alberghi e ospedali mancano le stanze o i piani con il 4, e per i regali si evitano le confezioni da quattro: meglio tre o cinque. Nei prezzi e nell’ora, invece, i numeri si dicono senza pensieri: ti serviranno subito per chiedere いくら です か。"}];
+{e:"🔢",t:"Il 4 e il 9, numeri da evitare",w:"Tutto il Giappone",x:"Il 4 si può leggere し, come la parola “morte”, e il 9 si può leggere く, come la parola “sofferenza”. Per questo di solito si dice よん e きゅう. Non succede ovunque, ma in certi alberghi e ospedali mancano le stanze o i piani con il 4, e per i regali si evitano le confezioni da quattro: meglio tre o cinque. Nei prezzi e nell’ora, invece, i numeri si dicono senza pensieri: ti serviranno subito per chiedere いくら です か。"},
+{e:"👟",t:"Le scarpe restano all’ingresso",w:"Case, locande tradizionali, templi e molti ristoranti",x:"In una casa giapponese l’ingresso si chiama げんかん ed è un piccolo spazio al livello della strada, con un gradino che porta al resto della casa. Le scarpe, くつ, si tolgono lì, prima di salire, e si lasciano in ordine con la punta verso la porta. Spesso ci sono pantofole per gli ospiti, che si tolgono entrando in una stanza con i tatami, e il bagno ha di solito le sue. Entrando in casa d’altri si dice おじゃまします, “scusate il disturbo”, mentre chi rientra a casa sua dice ただいま. Lo stesso vale in molti templi, nelle locande tradizionali e in alcuni ristoranti: se vedi un gradino o file di scarpe, togli le tue."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);
