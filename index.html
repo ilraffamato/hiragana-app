@@ -392,6 +392,7 @@ const PATH=L.length===44?[
  {id:"G4",kind:"g",cap:4,sec:"",t:"Numeri e prezzi",poi:14,test:{n:25},needs:["K1","K2","K3","K4","K5"]},
  {id:"G5",kind:"g",cap:5,sec:"",t:"Cose e posti",poi:15,test:{n:25},needs:["K1","K2","K3","K4","K5"]},
  {id:"K6",kind:"k",cap:6,sec:"Katakana · ",t:"Katakana ア・カ・サ",from:21,to:23,poi:5,test:{n:30},needs:["K1","K2","K3","K4","K5"]},
+ {id:"G6",kind:"g",cap:6,sec:"",t:"Verbi base",poi:16,test:{n:25},needs:["K1","K2","K3","K4","K5","K6"]},
  {id:"K7",kind:"k",cap:7,sec:"",t:"Katakana タ・ナ・ハ",from:24,to:26,poi:6,test:{n:30},needs:["K6"]},
  {id:"K8",kind:"k",cap:8,sec:"",t:"Katakana マ・ヤ・ラ・ワ",from:27,to:30,poi:7,test:{n:30},needs:["K7"]},
  {id:"K9",kind:"k",cap:9,sec:"",t:"Katakana dakuon e handakuon",from:31,to:35,poi:8,test:{n:30},needs:["K8"]},
@@ -708,7 +709,76 @@ const GU={
    {jp:"この きっぷ は いくら です か。",ro:"kono kippu wa ikura desu ka",it:"Quanto costa questo biglietto?"}],ex:[
     {type:"mcq",q:"Quale parola vuol dire “biglietto (del treno)”?",opts:["きっぷ","さいふ","かばん","くつ"],a:0},
     {type:"mcq",q:"Quale parola vuol dire “aeroporto”?",opts:["くうこう","こうえん","ぎんこう","がっこう"],a:0},
-    {type:"mcq",q:"Devi spedire una lettera. Dove vai?",opts:["ゆうびんきょく","がっこう","こうえん","くうこう"],a:0}]}]}
+    {type:"mcq",q:"Devi spedire una lettera. Dove vai?",opts:["ゆうびんきょく","がっこう","こうえん","くうこう"],a:0}]}]},
+ G6:{id:"G6",t:"Verbi base",needs:["K1","K2","K3","K4","K5","K6"],test:{n:25,review:5},lessons:[
+  {id:"G6-1",t:"たべます, のみます",teach:[
+   {jp:"たべます",ro:"tabemasu",it:"mangio / mangi / mangia (mangiare)",note:"ます è la forma gentile del verbo e va bene con tutti. Non cambia con la persona (io, tu, lui) e vale per il presente e per il futuro: il contesto, per esempio あした, lo chiarisce."},
+   {jp:"のみます",ro:"nomimasu",it:"bevo / bevi / beve (bere)"},
+   {jp:"ごはん",ro:"gohan",it:"riso cotto / pasto",note:"Vuol dire sia “riso cotto” sia “pasto”."},
+   {jp:"みず",ro:"mizu",it:"acqua"},
+   {jp:"おちゃ",ro:"ocha",it:"tè",note:"In Giappone di solito è tè verde."},
+   {jp:"ごはん を たべます。",ro:"gohan o tabemasu",it:"Mangio il riso.",note:"を segna l’oggetto, ciò che si mangia, si beve, si legge. Si scrive を ma si legge o. Il verbo sta in fondo alla frase."},
+   {jp:"みず を のみます。",ro:"mizu o nomimasu",it:"Bevo l’acqua."},
+   {jp:"おちゃ を のみます。",ro:"ocha o nomimasu",it:"Bevo il tè."},
+   {jp:"わたし は ごはん を たべます。",ro:"watashi wa gohan o tabemasu",it:"Io mangio il riso."},
+   {jp:"たなか さん は おちゃ を のみます。",ro:"tanaka san wa ocha o nomimasu",it:"Il signor Tanaka beve il tè."},
+   {jp:"ごはん を たべます か。",ro:"gohan o tabemasu ka",it:"Mangi il riso?",note:"Per fare una domanda basta か in fondo, come in G3."},
+   {jp:"はい、 ごはん を たべます。",ro:"hai, gohan o tabemasu",it:"Sì, mangio il riso."}],ex:[
+    {type:"mcq",q:"Che cosa segna を in ごはん を たべます。?",opts:["l’oggetto: ciò che si mangia","chi mangia","dove si mangia","quando si mangia"],a:0},
+    {type:"mcq",q:"Come si legge を in una frase?",opts:["o","wo","e","wa"],a:0},
+    {type:"mcq",q:"Quale parola vuol dire “bere”?",opts:["のみます","たべます","みます","ねます"],a:0}]},
+  {id:"G6-2",t:"みます, ききます, よみます",teach:[
+   {jp:"みます",ro:"mimasu",it:"vedo / guardo (vedere, guardare)"},
+   {jp:"ききます",ro:"kikimasu",it:"ascolto / sento (ascoltare, sentire)",note:"Vuol dire anche “chiedere”: il senso si capisce dalla frase."},
+   {jp:"よみます",ro:"yomimasu",it:"leggo (leggere)"},
+   {jp:"かきます",ro:"kakimasu",it:"scrivo (scrivere)",note:"Attenzione a non confonderlo con かいます (comprare): cambia una sola sillaba."},
+   {jp:"てがみ",ro:"tegami",it:"lettera"},
+   {jp:"おんがく",ro:"ongaku",it:"musica"},
+   {jp:"えいが",ro:"eiga",it:"film"},
+   {jp:"えいが を みます。",ro:"eiga o mimasu",it:"Guardo un film."},
+   {jp:"ほん を よみます。",ro:"hon o yomimasu",it:"Leggo un libro."},
+   {jp:"てがみ を かきます。",ro:"tegami o kakimasu",it:"Scrivo una lettera."},
+   {jp:"おんがく を ききます。",ro:"ongaku o kikimasu",it:"Ascolto musica."},
+   {jp:"たなか さん は ほん を よみます。",ro:"tanaka san wa hon o yomimasu",it:"Il signor Tanaka legge un libro."},
+   {jp:"あなた は えいが を みます か。",ro:"anata wa eiga o mimasu ka",it:"Guardi un film?"}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “leggere”?",opts:["よみます","かきます","ききます","みます"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire おんがく を ききます。?",opts:["Ascolto musica.","Guardo un film.","Leggo un libro.","Scrivo una lettera."],a:0},
+    {type:"mcq",q:"Dove va il verbo in una frase giapponese?",opts:["in fondo","all’inizio","dopo il soggetto","prima di を"],a:0}]},
+  {id:"G6-3",t:"いきます, きます, かえります",teach:[
+   {jp:"いきます",ro:"ikimasu",it:"vado (andare)"},
+   {jp:"きます",ro:"kimasu",it:"vengo (venire)"},
+   {jp:"かえります",ro:"kaerimasu",it:"torno (tornare a casa)",note:"Si usa per tornare al posto a cui si appartiene: casa, il proprio paese."},
+   {jp:"きょう",ro:"kyou",it:"oggi"},
+   {jp:"あした",ro:"ashita",it:"domani"},
+   {jp:"まいにち",ro:"mainichi",it:"ogni giorno",note:"Le parole di tempo come きょう, あした e まいにち stanno di solito all’inizio della frase, prima del verbo."},
+   {jp:"あした いきます。",ro:"ashita ikimasu",it:"Domani vado."},
+   {jp:"あした きます。",ro:"ashita kimasu",it:"Domani vengo."},
+   {jp:"わたし は あした かえります。",ro:"watashi wa ashita kaerimasu",it:"Io domani torno a casa."},
+   {jp:"たなか さん は きょう きます。",ro:"tanaka san wa kyou kimasu",it:"Oggi il signor Tanaka viene."},
+   {jp:"まいにち ほん を よみます。",ro:"mainichi hon o yomimasu",it:"Leggo un libro ogni giorno."},
+   {jp:"いつ かえります か。",ro:"itsu kaerimasu ka",it:"Quando torni?"},
+   {jp:"はい、 あした いきます。",ro:"hai, ashita ikimasu",it:"Sì, domani vado."}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “domani”?",opts:["あした","きょう","まいにち","いま"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire かえります?",opts:["tornare a casa","andare","venire","dormire"],a:0},
+    {type:"mcq",q:"Come si dice “Domani vado.”?",opts:["あした いきます。","あした きます。","きょう かえります。","まいにち いきます か。"],a:0}]},
+  {id:"G6-4",t:"Altri verbi e domande",teach:[
+   {jp:"ねます",ro:"nemasu",it:"dormo / vado a letto (dormire)"},
+   {jp:"おきます",ro:"okimasu",it:"mi alzo / mi sveglio (alzarsi)"},
+   {jp:"かいます",ro:"kaimasu",it:"compro (comprare)"},
+   {jp:"あいます",ro:"aimasu",it:"incontro (incontrare)",note:"Per dire chi si incontra serve una particella che si vede in G7."},
+   {jp:"はなします",ro:"hanashimasu",it:"parlo (parlare)"},
+   {jp:"します",ro:"shimasu",it:"faccio (fare)",note:"È il verbo “fare”: なに を します か。 vuol dire “Che cosa fai?”."},
+   {jp:"にほんご",ro:"nihongo",it:"giapponese (la lingua)"},
+   {jp:"なに を します か。",ro:"nani o shimasu ka",it:"Che cosa fai?"},
+   {jp:"なに を たべます か。",ro:"nani o tabemasu ka",it:"Che cosa mangi?"},
+   {jp:"なに を かいます か。",ro:"nani o kaimasu ka",it:"Che cosa compri?"},
+   {jp:"あした なに を します か。",ro:"ashita nani o shimasu ka",it:"Domani che cosa fai?"},
+   {jp:"きっぷ を かいます。",ro:"kippu o kaimasu",it:"Compro un biglietto."},
+   {jp:"にほんご を はなします。",ro:"nihongo o hanashimasu",it:"Parlo giapponese."},
+   {jp:"わたし は いたりあご を はなします。",ro:"watashi wa itariago o hanashimasu",it:"Io parlo italiano."}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “comprare”?",opts:["かいます","かきます","かえります","あいます"],a:0},
+    {type:"mcq",q:"Come si chiede “Che cosa mangi?”",opts:["なに を たべます か。","なに を のみます か。","だれ を たべます か。","どこ を たべます か。"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire にほんご を はなします。?",opts:["Parlo giapponese.","Leggo il giapponese.","Scrivo in giapponese.","Compro un libro."],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -762,7 +832,8 @@ const POI=[
 {e:"💼",t:"Il biglietto da visita",w:"Uffici e aziende di tutto il Giappone",x:"Nel mondo del lavoro ci si presenta con il めいし, il biglietto da visita, e lo scambio è quasi un rito. Lo si porge con due mani, con il testo rivolto verso chi lo riceve, accompagnandolo con un lieve inchino e con はじめまして e il proprio nome. Chi lo riceve lo prende con due mani, lo legge con attenzione e non ci scrive sopra né lo infila subito in tasca: il biglietto si tratta con il rispetto dovuto alla persona."},
 {e:"📛",t:"Il cognome prima del nome",w:"Tutto il Giappone",x:"In giapponese il cognome viene prima del nome: la persona che si chiama Tanaka Hanako ha Tanaka come cognome e Hanako come nome. Per questo, alla domanda おなまえ は なん です か。 si dice prima il cognome. In italiano, e in molte lingue occidentali, l’ordine è l’inverso, e per circa un secolo e mezzo anche i giapponesi hanno invertito i loro nomi quando scrivevano con l’alfabeto latino, a partire dall’era Meiji. Dal 1° gennaio 2020 il governo giapponese scrive invece prima il cognome anche in alfabeto latino nei documenti ufficiali, salvo eccezioni, a volte con il cognome in maiuscolo per evitare dubbi, come in TANAKA Hanako."},
 {e:"🔢",t:"Il 4 e il 9, numeri da evitare",w:"Tutto il Giappone",x:"Il 4 si può leggere し, come la parola “morte”, e il 9 si può leggere く, come la parola “sofferenza”. Per questo di solito si dice よん e きゅう. Non succede ovunque, ma in certi alberghi e ospedali mancano le stanze o i piani con il 4, e per i regali si evitano le confezioni da quattro: meglio tre o cinque. Nei prezzi e nell’ora, invece, i numeri si dicono senza pensieri: ti serviranno subito per chiedere いくら です か。"},
-{e:"👟",t:"Le scarpe restano all’ingresso",w:"Case, locande tradizionali, templi e molti ristoranti",x:"In una casa giapponese l’ingresso si chiama げんかん ed è un piccolo spazio al livello della strada, con un gradino che porta al resto della casa. Le scarpe, くつ, si tolgono lì, prima di salire, e si lasciano in ordine con la punta verso la porta. Spesso ci sono pantofole per gli ospiti, che si tolgono entrando in una stanza con i tatami, e il bagno ha di solito le sue. Entrando in casa d’altri si dice おじゃまします, “scusate il disturbo”, mentre chi rientra a casa sua dice ただいま. Lo stesso vale in molti templi, nelle locande tradizionali e in alcuni ristoranti: se vedi un gradino o file di scarpe, togli le tue."}];
+{e:"👟",t:"Le scarpe restano all’ingresso",w:"Case, locande tradizionali, templi e molti ristoranti",x:"In una casa giapponese l’ingresso si chiama げんかん ed è un piccolo spazio al livello della strada, con un gradino che porta al resto della casa. Le scarpe, くつ, si tolgono lì, prima di salire, e si lasciano in ordine con la punta verso la porta. Spesso ci sono pantofole per gli ospiti, che si tolgono entrando in una stanza con i tatami, e il bagno ha di solito le sue. Entrando in casa d’altri si dice おじゃまします, “scusate il disturbo”, mentre chi rientra a casa sua dice ただいま. Lo stesso vale in molti templi, nelle locande tradizionali e in alcuni ristoranti: se vedi un gradino o file di scarpe, togli le tue."},
+{e:"🥢",t:"Le bacchette: due cose da non fare",w:"A tavola in Giappone",x:"Le bacchette si chiamano はし. A tavola ci sono due gesti da evitare più degli altri, perché ricordano i funerali buddhisti. Il primo è piantarle dritte nel riso: così si offre il riso ai defunti. Il secondo è passare il cibo da una coppia di bacchette all’altra: ricorda il rito in cui, dopo la cremazione, le ossa si passano così tra i parenti. Se vuoi offrire un boccone a qualcuno, mettilo sul suo piatto. Quando non mangi, appoggia le bacchette sul はしおき, il piccolo supporto che spesso trovi in tavola. Prima di mangiare si dice いただきます, alla fine ごちそうさまでした."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);
