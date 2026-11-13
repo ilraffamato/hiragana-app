@@ -394,6 +394,7 @@ const PATH=L.length===44?[
  {id:"K6",kind:"k",cap:6,sec:"Katakana · ",t:"Katakana ア・カ・サ",from:21,to:23,poi:5,test:{n:30},needs:["K1","K2","K3","K4","K5"]},
  {id:"G6",kind:"g",cap:6,sec:"",t:"Verbi base",poi:16,test:{n:25},needs:["K1","K2","K3","K4","K5","K6"]},
  {id:"K7",kind:"k",cap:7,sec:"",t:"Katakana タ・ナ・ハ",from:24,to:26,poi:6,test:{n:30},needs:["K6"]},
+ {id:"G7",kind:"g",cap:7,sec:"",t:"Particelle",poi:17,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7"]},
  {id:"K8",kind:"k",cap:8,sec:"",t:"Katakana マ・ヤ・ラ・ワ",from:27,to:30,poi:7,test:{n:30},needs:["K7"]},
  {id:"K9",kind:"k",cap:9,sec:"",t:"Katakana dakuon e handakuon",from:31,to:35,poi:8,test:{n:30},needs:["K8"]},
  {id:"K10",kind:"k",cap:10,sec:"",t:"Katakana yōon",from:36,to:41,poi:9,test:{n:30},needs:["K9"]},
@@ -778,7 +779,80 @@ const GU={
    {jp:"わたし は いたりあご を はなします。",ro:"watashi wa itariago o hanashimasu",it:"Io parlo italiano."}],ex:[
     {type:"mcq",q:"Quale parola vuol dire “comprare”?",opts:["かいます","かきます","かえります","あいます"],a:0},
     {type:"mcq",q:"Come si chiede “Che cosa mangi?”",opts:["なに を たべます か。","なに を のみます か。","だれ を たべます か。","どこ を たべます か。"],a:0},
-    {type:"mcq",q:"Che cosa vuol dire にほんご を はなします。?",opts:["Parlo giapponese.","Leggo il giapponese.","Scrivo in giapponese.","Compro un libro."],a:0}]}]}
+    {type:"mcq",q:"Che cosa vuol dire にほんご を はなします。?",opts:["Parlo giapponese.","Leggo il giapponese.","Scrivo in giapponese.","Compro un libro."],a:0}]}]},
+ G7:{id:"G7",t:"Particelle",needs:["K1","K2","K3","K4","K5","K6","K7"],test:{n:25,review:5},lessons:[
+  {id:"G7-1",t:"へ e に: dove si va",teach:[
+   {jp:"かいしゃ",ro:"kaisha",it:"azienda / ufficio",note:"È il luogo di lavoro: かいしゃ へ いきます, “vado al lavoro”."},
+   {jp:"うち",ro:"uchi",it:"casa (mia)",note:"Si usa per la propria casa o famiglia; いえ (G1) è la casa come edificio."},
+   {jp:"だいがく",ro:"daigaku",it:"università"},
+   {jp:"としょかん",ro:"toshokan",it:"biblioteca"},
+   {jp:"えき へ いきます。",ro:"eki e ikimasu",it:"Vado alla stazione.",note:"へ indica la direzione, il luogo verso cui si va. Si scrive へ ma si legge e. Dopo へ vanno verbi come いきます, きます, かえります."},
+   {jp:"がっこう へ いきます。",ro:"gakkou e ikimasu",it:"Vado a scuola."},
+   {jp:"くうこう へ いきます。",ro:"kuukou e ikimasu",it:"Vado all’aeroporto."},
+   {jp:"まいにち かいしゃ へ いきます。",ro:"mainichi kaisha e ikimasu",it:"Ogni giorno vado al lavoro."},
+   {jp:"あした だいがく へ いきます。",ro:"ashita daigaku e ikimasu",it:"Domani vado all’università."},
+   {jp:"うち へ かえります。",ro:"uchi e kaerimasu",it:"Torno a casa."},
+   {jp:"にほん へ きます。",ro:"nihon e kimasu",it:"Vengo in Giappone."},
+   {jp:"どこ へ いきます か。",ro:"doko e ikimasu ka",it:"Dove vai?"},
+   {jp:"えき に いきます。",ro:"eki ni ikimasu",it:"Vado alla stazione.",note:"Con i verbi di movimento に e へ sono quasi uguali: に indica la meta, へ la direzione. In pratica si possono scambiare."},
+   {jp:"としょかん へ いきます か。",ro:"toshokan e ikimasu ka",it:"Vai in biblioteca?"}],ex:[
+    {type:"mcq",q:"Come si legge へ come particella?",opts:["e","he","wa","o"],a:0},
+    {type:"mcq",q:"Che cosa indica へ in えき へ いきます。?",opts:["il luogo verso cui si va","il luogo dove si mangia","l’oggetto del verbo","chi va"],a:0},
+    {type:"mcq",q:"Come si dice “Dove vai?”",opts:["どこ へ いきます か。","どこ を いきます か。","だれ へ いきます か。","なに へ いきます か。"],a:0}]},
+  {id:"G7-2",t:"に: ora e persone",teach:[
+   {jp:"でんわ",ro:"denwa",it:"telefono / telefonata"},
+   {jp:"くじ に おきます。",ro:"kuji ni okimasu",it:"Mi alzo alle nove.",note:"に segna l’ora precisa: くじ に, “alle nove”. Con parole come きょう e あした, che non sono un’ora, non serve に."},
+   {jp:"なんじ に おきます か。",ro:"nanji ni okimasu ka",it:"A che ora ti alzi?"},
+   {jp:"ろくじ はん に おきます。",ro:"rokuji han ni okimasu",it:"Mi alzo alle sei e mezza."},
+   {jp:"じゅうじ に ねます。",ro:"juuji ni nemasu",it:"Vado a letto alle dieci."},
+   {jp:"さんじ に かえります。",ro:"sanji ni kaerimasu",it:"Torno alle tre."},
+   {jp:"ごぜん くじ に いきます。",ro:"gozen kuji ni ikimasu",it:"Vado alle nove di mattina."},
+   {jp:"ともだち に あいます。",ro:"tomodachi ni aimasu",it:"Incontro un amico.",note:"Con あいます, la persona che si incontra è segnata da に."},
+   {jp:"たなか さん に あいます。",ro:"tanaka san ni aimasu",it:"Incontro il signor Tanaka."},
+   {jp:"あした ともだち に あいます。",ro:"ashita tomodachi ni aimasu",it:"Domani incontro un amico."},
+   {jp:"だれ に あいます か。",ro:"dare ni aimasu ka",it:"Chi incontri?"},
+   {jp:"ともだち に てがみ を かきます。",ro:"tomodachi ni tegami o kakimasu",it:"Scrivo una lettera a un amico.",note:"に segna anche chi riceve: a chi si scrive, a chi si telefona."},
+   {jp:"はは に でんわ を します。",ro:"haha ni denwa o shimasu",it:"Telefono a mia madre."},
+   {jp:"せんせい に ききます。",ro:"sensei ni kikimasu",it:"Chiedo all’insegnante."}],ex:[
+    {type:"mcq",q:"Che cosa segna に in くじ に おきます。?",opts:["l’ora precisa","il luogo","l’oggetto","il mezzo"],a:0},
+    {type:"mcq",q:"Come si dice “Incontro un amico.”?",opts:["ともだち に あいます。","ともだち を あいます。","ともだち で あいます。","ともだち へ あいます。"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire はは に でんわ を します。?",opts:["Telefono a mia madre.","Incontro mia madre.","Scrivo a mia madre.","Torno da mia madre."],a:0}]},
+  {id:"G7-3",t:"で: luogo e mezzo",teach:[
+   {jp:"でんしゃ",ro:"densha",it:"treno (elettrico)"},
+   {jp:"ひこうき",ro:"hikouki",it:"aereo"},
+   {jp:"じてんしゃ",ro:"jitensha",it:"bicicletta"},
+   {jp:"ちかてつ",ro:"chikatetsu",it:"metropolitana"},
+   {jp:"でんしゃ で いきます。",ro:"densha de ikimasu",it:"Vado in treno.",note:"で segna il mezzo: でんしゃ で, “in treno”. Non va confuso con です."},
+   {jp:"くるま で かえります。",ro:"kuruma de kaerimasu",it:"Torno in macchina."},
+   {jp:"ひこうき で にほん へ きます。",ro:"hikouki de nihon e kimasu",it:"Vengo in Giappone in aereo."},
+   {jp:"じてんしゃ で がっこう へ いきます。",ro:"jitensha de gakkou e ikimasu",it:"Vado a scuola in bicicletta."},
+   {jp:"なに で いきます か。",ro:"nani de ikimasu ka",it:"Con che cosa vai? (con quale mezzo)"},
+   {jp:"がっこう で ほん を よみます。",ro:"gakkou de hon o yomimasu",it:"Leggo un libro a scuola.",note:"で segna anche il luogo dove si fa un’azione. に con いきます indica la meta, で il posto dove l’azione avviene."},
+   {jp:"うち で ごはん を たべます。",ro:"uchi de gohan o tabemasu",it:"Mangio il riso a casa."},
+   {jp:"えき で きっぷ を かいます。",ro:"eki de kippu o kaimasu",it:"Compro il biglietto alla stazione."},
+   {jp:"どこ で かいます か。",ro:"doko de kaimasu ka",it:"Dove compri?"},
+   {jp:"にほんご で はなします。",ro:"nihongo de hanashimasu",it:"Parlo in giapponese.",note:"で segna anche lo strumento o la lingua con cui si fa qualcosa."}],ex:[
+    {type:"mcq",q:"Che cosa segna で in でんしゃ で いきます。?",opts:["il mezzo","l’ora","l’oggetto","la persona"],a:0},
+    {type:"mcq",q:"Come si dice “Compro il biglietto alla stazione.”?",opts:["えき で きっぷ を かいます。","えき を きっぷ で かいます。","えき に きっぷ を かいます。","きっぷ で えき を かいます。"],a:0},
+    {type:"mcq",q:"Quale parola vuol dire “bicicletta”?",opts:["じてんしゃ","でんしゃ","ひこうき","ちかてつ"],a:0}]},
+  {id:"G7-4",t:"と, から, まで",teach:[
+   {jp:"から",ro:"kara",it:"da (punto di partenza)",note:"から indica dove o quando comincia qualcosa: えき から, “dalla stazione”; くじ から, “dalle nove”."},
+   {jp:"まで",ro:"made",it:"fino a",note:"まで indica dove o quando finisce: くうこう まで, “fino all’aeroporto”; さんじ まで, “fino alle tre”."},
+   {jp:"ともだち と いきます。",ro:"tomodachi to ikimasu",it:"Vado con un amico.",note:"と vuol dire “con” e segna chi fa l’azione insieme a te."},
+   {jp:"たなか さん と はなします。",ro:"tanaka san to hanashimasu",it:"Parlo con il signor Tanaka."},
+   {jp:"だれ と いきます か。",ro:"dare to ikimasu ka",it:"Con chi vai?"},
+   {jp:"ともだち と えいが を みます。",ro:"tomodachi to eiga o mimasu",it:"Guardo un film con un amico."},
+   {jp:"わたし は ともだち と にほん へ いきます。",ro:"watashi wa tomodachi to nihon e ikimasu",it:"Io vado in Giappone con un amico."},
+   {jp:"いたりあ から きます。",ro:"itaria kara kimasu",it:"Vengo dall’Italia."},
+   {jp:"どこ から きます か。",ro:"doko kara kimasu ka",it:"Di dove vieni? (da dove vieni)"},
+   {jp:"えき から くうこう まで でんしゃ で いきます。",ro:"eki kara kuukou made densha de ikimasu",it:"Vado in treno dalla stazione all’aeroporto."},
+   {jp:"うち から がっこう まで じてんしゃ で いきます。",ro:"uchi kara gakkou made jitensha de ikimasu",it:"Vado in bicicletta da casa a scuola."},
+   {jp:"がっこう は くじ から さんじ まで です。",ro:"gakkou wa kuji kara sanji made desu",it:"La scuola va dalle nove alle tre."},
+   {jp:"いま から ごはん を たべます。",ro:"ima kara gohan o tabemasu",it:"Adesso mangio."},
+   {jp:"なんじ まで ねます か。",ro:"nanji made nemasu ka",it:"Fino a che ora dormi?"}],ex:[
+    {type:"mcq",q:"Che cosa vuol dire と in ともだち と いきます。?",opts:["con","da","fino a","in"],a:0},
+    {type:"mcq",q:"Come si dice “dalle nove alle tre”?",opts:["くじ から さんじ まで","くじ まで さんじ から","くじ と さんじ に","くじ で さんじ を"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire いたりあ から きます。?",opts:["Vengo dall’Italia.","Vado in Italia.","Vivo in Italia.","Parlo italiano."],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -833,7 +907,8 @@ const POI=[
 {e:"📛",t:"Il cognome prima del nome",w:"Tutto il Giappone",x:"In giapponese il cognome viene prima del nome: la persona che si chiama Tanaka Hanako ha Tanaka come cognome e Hanako come nome. Per questo, alla domanda おなまえ は なん です か。 si dice prima il cognome. In italiano, e in molte lingue occidentali, l’ordine è l’inverso, e per circa un secolo e mezzo anche i giapponesi hanno invertito i loro nomi quando scrivevano con l’alfabeto latino, a partire dall’era Meiji. Dal 1° gennaio 2020 il governo giapponese scrive invece prima il cognome anche in alfabeto latino nei documenti ufficiali, salvo eccezioni, a volte con il cognome in maiuscolo per evitare dubbi, come in TANAKA Hanako."},
 {e:"🔢",t:"Il 4 e il 9, numeri da evitare",w:"Tutto il Giappone",x:"Il 4 si può leggere し, come la parola “morte”, e il 9 si può leggere く, come la parola “sofferenza”. Per questo di solito si dice よん e きゅう. Non succede ovunque, ma in certi alberghi e ospedali mancano le stanze o i piani con il 4, e per i regali si evitano le confezioni da quattro: meglio tre o cinque. Nei prezzi e nell’ora, invece, i numeri si dicono senza pensieri: ti serviranno subito per chiedere いくら です か。"},
 {e:"👟",t:"Le scarpe restano all’ingresso",w:"Case, locande tradizionali, templi e molti ristoranti",x:"In una casa giapponese l’ingresso si chiama げんかん ed è un piccolo spazio al livello della strada, con un gradino che porta al resto della casa. Le scarpe, くつ, si tolgono lì, prima di salire, e si lasciano in ordine con la punta verso la porta. Spesso ci sono pantofole per gli ospiti, che si tolgono entrando in una stanza con i tatami, e il bagno ha di solito le sue. Entrando in casa d’altri si dice おじゃまします, “scusate il disturbo”, mentre chi rientra a casa sua dice ただいま. Lo stesso vale in molti templi, nelle locande tradizionali e in alcuni ristoranti: se vedi un gradino o file di scarpe, togli le tue."},
-{e:"🥢",t:"Le bacchette: due cose da non fare",w:"A tavola in Giappone",x:"Le bacchette si chiamano はし. A tavola ci sono due gesti da evitare più degli altri, perché ricordano i funerali buddhisti. Il primo è piantarle dritte nel riso: così si offre il riso ai defunti. Il secondo è passare il cibo da una coppia di bacchette all’altra: ricorda il rito in cui, dopo la cremazione, le ossa si passano così tra i parenti. Se vuoi offrire un boccone a qualcuno, mettilo sul suo piatto. Quando non mangi, appoggia le bacchette sul はしおき, il piccolo supporto che spesso trovi in tavola. Prima di mangiare si dice いただきます, alla fine ごちそうさまでした."}];
+{e:"🥢",t:"Le bacchette: due cose da non fare",w:"A tavola in Giappone",x:"Le bacchette si chiamano はし. A tavola ci sono due gesti da evitare più degli altri, perché ricordano i funerali buddhisti. Il primo è piantarle dritte nel riso: così si offre il riso ai defunti. Il secondo è passare il cibo da una coppia di bacchette all’altra: ricorda il rito in cui, dopo la cremazione, le ossa si passano così tra i parenti. Se vuoi offrire un boccone a qualcuno, mettilo sul suo piatto. Quando non mangi, appoggia le bacchette sul はしおき, il piccolo supporto che spesso trovi in tavola. Prima di mangiare si dice いただきます, alla fine ごちそうさまでした."},
+{e:"🚆",t:"In treno si sta in silenzio",w:"Treni e metropolitane giapponesi",x:"Su un でんしゃ giapponese, anche nelle ore di punta, di solito si sta in silenzio: si parla a voce bassa e si evita il chiasso. Il telefono si mette in “modalità silenziosa” (in Giappone si dice “manner mode”) e si evitano le chiamate, でんわ: non c’è una legge, è una regola di buona educazione, che spesso ricordano avvisi e annunci. Se arriva una chiamata si dice che si richiamerà più tardi, oppure si scende alla fermata dopo. Alle estremità delle carrozze ci sono i posti riservati, ゆうせんせき, per anziani, persone con disabilità, donne incinte, feriti e chi ha bambini piccoli: se sono liberi ci si può sedere, ma si cedono appena sale chi ne ha bisogno."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);
