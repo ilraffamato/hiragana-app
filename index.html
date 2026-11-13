@@ -396,6 +396,7 @@ const PATH=L.length===44?[
  {id:"K7",kind:"k",cap:7,sec:"",t:"Katakana タ・ナ・ハ",from:24,to:26,poi:6,test:{n:30},needs:["K6"]},
  {id:"G7",kind:"g",cap:7,sec:"",t:"Particelle",poi:17,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7"]},
  {id:"K8",kind:"k",cap:8,sec:"",t:"Katakana マ・ヤ・ラ・ワ",from:27,to:30,poi:7,test:{n:30},needs:["K7"]},
+ {id:"G8",kind:"g",cap:8,sec:"",t:"Passato e negazione",poi:18,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8"]},
  {id:"K9",kind:"k",cap:9,sec:"",t:"Katakana dakuon e handakuon",from:31,to:35,poi:8,test:{n:30},needs:["K8"]},
  {id:"K10",kind:"k",cap:10,sec:"",t:"Katakana yōon",from:36,to:41,poi:9,test:{n:30},needs:["K9"]},
  {id:"K11",kind:"k",cap:11,sec:"",t:"Katakana estesi",from:42,to:43,poi:10,test:{n:30},needs:["K10"]}
@@ -852,7 +853,80 @@ const GU={
    {jp:"なんじ まで ねます か。",ro:"nanji made nemasu ka",it:"Fino a che ora dormi?"}],ex:[
     {type:"mcq",q:"Che cosa vuol dire と in ともだち と いきます。?",opts:["con","da","fino a","in"],a:0},
     {type:"mcq",q:"Come si dice “dalle nove alle tre”?",opts:["くじ から さんじ まで","くじ まで さんじ から","くじ と さんじ に","くじ で さんじ を"],a:0},
-    {type:"mcq",q:"Che cosa vuol dire いたりあ から きます。?",opts:["Vengo dall’Italia.","Vado in Italia.","Vivo in Italia.","Parlo italiano."],a:0}]}]}
+    {type:"mcq",q:"Che cosa vuol dire いたりあ から きます。?",opts:["Vengo dall’Italia.","Vado in Italia.","Vivo in Italia.","Parlo italiano."],a:0}]}]},
+ G8:{id:"G8",t:"Passato e negazione",needs:["K1","K2","K3","K4","K5","K6","K7","K8"],test:{n:25,review:5},lessons:[
+  {id:"G8-1",t:"ません: non faccio",teach:[
+   {jp:"たべません",ro:"tabemasen",it:"non mangio (non mangiare)",note:"ます diventa ません: è la negazione gentile. Vale per il presente e per il futuro, come ます."},
+   {jp:"のみません",ro:"nomimasen",it:"non bevo"},
+   {jp:"いきません",ro:"ikimasen",it:"non vado"},
+   {jp:"みません",ro:"mimasen",it:"non guardo / non vedo"},
+   {jp:"ごはん を たべません。",ro:"gohan o tabemasen",it:"Non mangio il riso."},
+   {jp:"おちゃ を のみません。",ro:"ocha o nomimasen",it:"Non bevo il tè."},
+   {jp:"ほん を よみません。",ro:"hon o yomimasen",it:"Non leggo il libro."},
+   {jp:"わたし は えいが を みません。",ro:"watashi wa eiga o mimasen",it:"Io non guardo film."},
+   {jp:"たなか さん は にほん へ いきません。",ro:"tanaka san wa nihon e ikimasen",it:"Il signor Tanaka non va in Giappone."},
+   {jp:"あした がっこう へ いきません。",ro:"ashita gakkou e ikimasen",it:"Domani non vado a scuola."},
+   {jp:"ともだち に あいません。",ro:"tomodachi ni aimasen",it:"Non incontro un amico."},
+   {jp:"なにも たべません。",ro:"nanimo tabemasen",it:"Non mangio niente.",note:"なにも si usa solo con il verbo negativo: なにも ～ません vuol dire “niente”."},
+   {jp:"どこ へ も いきません。",ro:"doko e mo ikimasen",it:"Non vado da nessuna parte.",note:"Con どこ へ も e un verbo negativo si dice “da nessuna parte”."},
+   {jp:"いいえ、 たべません。",ro:"iie, tabemasen",it:"No, non mangio."}],ex:[
+    {type:"mcq",q:"Come si forma la negazione gentile di たべます?",opts:["たべません","たべました","たべませんでした","たべます か"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire なにも たべません。?",opts:["Non mangio niente.","Mangio tutto.","Che cosa mangi?","Non ho mangiato."],a:0},
+    {type:"mcq",q:"Che cosa vuol dire いきません?",opts:["non vado","sono andato","vado","non sono andato"],a:0}]},
+  {id:"G8-2",t:"ました: ho fatto",teach:[
+   {jp:"たべました",ro:"tabemashita",it:"ho mangiato / mangiai",note:"ます diventa ました: è il passato gentile, uguale per tutte le persone."},
+   {jp:"のみました",ro:"nomimashita",it:"ho bevuto"},
+   {jp:"いきました",ro:"ikimashita",it:"sono andato"},
+   {jp:"みました",ro:"mimashita",it:"ho guardato / ho visto"},
+   {jp:"きのう",ro:"kinou",it:"ieri"},
+   {jp:"けさ",ro:"kesa",it:"stamattina"},
+   {jp:"ゆうべ",ro:"yuube",it:"ieri sera / stanotte"},
+   {jp:"きのう ごはん を たべました。",ro:"kinou gohan o tabemashita",it:"Ieri ho mangiato il riso."},
+   {jp:"けさ おちゃ を のみました。",ro:"kesa ocha o nomimashita",it:"Stamattina ho bevuto il tè."},
+   {jp:"きのう えいが を みました。",ro:"kinou eiga o mimashita",it:"Ieri ho guardato un film."},
+   {jp:"きのう がっこう へ いきました。",ro:"kinou gakkou e ikimashita",it:"Ieri sono andato a scuola."},
+   {jp:"きのう ともだち に あいました。",ro:"kinou tomodachi ni aimashita",it:"Ieri ho incontrato un amico."},
+   {jp:"きのう なに を しました か。",ro:"kinou nani o shimashita ka",it:"Che cosa hai fatto ieri?"},
+   {jp:"ゆうべ じゅうじ に ねました。",ro:"yuube juuji ni nemashita",it:"Ieri sera sono andato a letto alle dieci."}],ex:[
+    {type:"mcq",q:"Come si forma il passato gentile di un verbo in ます?",opts:["ます → ました","ます → ません","ます → でした","ます → ませんでした"],a:0},
+    {type:"mcq",q:"Quale parola vuol dire “ieri”?",opts:["きのう","けさ","きょう","あした"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire きのう えいが を みました。?",opts:["Ieri ho guardato un film.","Domani guardo un film.","Ieri non ho guardato un film.","Guardi un film?"],a:0}]},
+  {id:"G8-3",t:"ませんでした: non ho fatto",teach:[
+   {jp:"たべませんでした",ro:"tabemasen deshita",it:"non ho mangiato",note:"ません + でした: è il passato negativo gentile."},
+   {jp:"のみませんでした",ro:"nomimasen deshita",it:"non ho bevuto"},
+   {jp:"いきませんでした",ro:"ikimasen deshita",it:"non sono andato"},
+   {jp:"みませんでした",ro:"mimasen deshita",it:"non ho guardato / non ho visto"},
+   {jp:"きのう ごはん を たべませんでした。",ro:"kinou gohan o tabemasen deshita",it:"Ieri non ho mangiato il riso."},
+   {jp:"けさ おちゃ を のみませんでした。",ro:"kesa ocha o nomimasen deshita",it:"Stamattina non ho bevuto il tè."},
+   {jp:"きのう がっこう へ いきませんでした。",ro:"kinou gakkou e ikimasen deshita",it:"Ieri non sono andato a scuola."},
+   {jp:"きのう えいが を みませんでした。",ro:"kinou eiga o mimasen deshita",it:"Ieri non ho guardato un film."},
+   {jp:"きのう ともだち に あいませんでした。",ro:"kinou tomodachi ni aimasen deshita",it:"Ieri non ho incontrato un amico."},
+   {jp:"きのう なにも しませんでした。",ro:"kinou nanimo shimasen deshita",it:"Ieri non ho fatto niente."},
+   {jp:"けさ なにも たべませんでした。",ro:"kesa nanimo tabemasen deshita",it:"Stamattina non ho mangiato niente."},
+   {jp:"きのう どこ へ も いきませんでした。",ro:"kinou doko e mo ikimasen deshita",it:"Ieri non sono andato da nessuna parte."},
+   {jp:"ゆうべ ねませんでした。",ro:"yuube nemasen deshita",it:"Ieri sera non ho dormito."},
+   {jp:"いいえ、 いきませんでした。",ro:"iie, ikimasen deshita",it:"No, non sono andato."}],ex:[
+    {type:"mcq",q:"Come si dice “non ho mangiato”?",opts:["たべませんでした","たべません","たべました","たべます"],a:0},
+    {type:"mcq",q:"Qual è il passato negativo gentile di いきます?",opts:["いきませんでした","いきました","いきません","いきます か"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire きのう なにも しませんでした。?",opts:["Ieri non ho fatto niente.","Ieri ho fatto tutto.","Domani non faccio niente.","Che cosa hai fatto ieri?"],a:0}]},
+  {id:"G8-4",t:"でした e じゃ ありません",teach:[
+   {jp:"でした",ro:"deshita",it:"era / è stato",note:"です diventa でした: è il passato di です. È la forma da usare con i nomi, non con i verbi in ます."},
+   {jp:"じゃ ありません",ro:"ja arimasen",it:"non è / non sono",note:"È la negazione di です. Nella lingua scritta più formale si trova では ありません."},
+   {jp:"じゃ ありませんでした",ro:"ja arimasen deshita",it:"non era / non è stato"},
+   {jp:"わたし は がくせい じゃ ありません。",ro:"watashi wa gakusei ja arimasen",it:"Io non sono studente."},
+   {jp:"これ は わたし の ほん じゃ ありません。",ro:"kore wa watashi no hon ja arimasen",it:"Questo non è il mio libro."},
+   {jp:"あれ は えき じゃ ありません。",ro:"are wa eki ja arimasen",it:"Quella là non è una stazione."},
+   {jp:"たなか さん は せんせい じゃ ありません。",ro:"tanaka san wa sensei ja arimasen",it:"Il signor Tanaka non è un insegnante."},
+   {jp:"たなか さん は いたりあじん じゃ ありません。",ro:"tanaka san wa itariajin ja arimasen",it:"Il signor Tanaka non è italiano."},
+   {jp:"きのう は やすみ でした。",ro:"kinou wa yasumi deshita",it:"Ieri era un giorno libero."},
+   {jp:"きのう は あめ でした。",ro:"kinou wa ame deshita",it:"Ieri c’era la pioggia."},
+   {jp:"きょう は やすみ じゃ ありません。",ro:"kyou wa yasumi ja arimasen",it:"Oggi non è un giorno libero."},
+   {jp:"きのう は やすみ じゃ ありませんでした。",ro:"kinou wa yasumi ja arimasen deshita",it:"Ieri non era un giorno libero."},
+   {jp:"いいえ、 そう じゃ ありません。",ro:"iie, sou ja arimasen",it:"No, non è così."},
+   {jp:"あなた は がくせい でした か。",ro:"anata wa gakusei deshita ka",it:"Eri studente?"}],ex:[
+    {type:"mcq",q:"Come si dice “non è” (negazione di です)?",opts:["じゃ ありません","でした","ません","ました"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire きのう は やすみ でした。?",opts:["Ieri era un giorno libero.","Ieri non era un giorno libero.","Oggi è un giorno libero.","Domani è un giorno libero."],a:0},
+    {type:"mcq",q:"Come si dice “Questo non è il mio libro.”?",opts:["これ は わたし の ほん じゃ ありません。","これ は わたし の ほん ません。","これ は わたし の ほん でした。","これ を わたし の ほん じゃ ありません。"],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -908,7 +982,8 @@ const POI=[
 {e:"🔢",t:"Il 4 e il 9, numeri da evitare",w:"Tutto il Giappone",x:"Il 4 si può leggere し, come la parola “morte”, e il 9 si può leggere く, come la parola “sofferenza”. Per questo di solito si dice よん e きゅう. Non succede ovunque, ma in certi alberghi e ospedali mancano le stanze o i piani con il 4, e per i regali si evitano le confezioni da quattro: meglio tre o cinque. Nei prezzi e nell’ora, invece, i numeri si dicono senza pensieri: ti serviranno subito per chiedere いくら です か。"},
 {e:"👟",t:"Le scarpe restano all’ingresso",w:"Case, locande tradizionali, templi e molti ristoranti",x:"In una casa giapponese l’ingresso si chiama げんかん ed è un piccolo spazio al livello della strada, con un gradino che porta al resto della casa. Le scarpe, くつ, si tolgono lì, prima di salire, e si lasciano in ordine con la punta verso la porta. Spesso ci sono pantofole per gli ospiti, che si tolgono entrando in una stanza con i tatami, e il bagno ha di solito le sue. Entrando in casa d’altri si dice おじゃまします, “scusate il disturbo”, mentre chi rientra a casa sua dice ただいま. Lo stesso vale in molti templi, nelle locande tradizionali e in alcuni ristoranti: se vedi un gradino o file di scarpe, togli le tue."},
 {e:"🥢",t:"Le bacchette: due cose da non fare",w:"A tavola in Giappone",x:"Le bacchette si chiamano はし. A tavola ci sono due gesti da evitare più degli altri, perché ricordano i funerali buddhisti. Il primo è piantarle dritte nel riso: così si offre il riso ai defunti. Il secondo è passare il cibo da una coppia di bacchette all’altra: ricorda il rito in cui, dopo la cremazione, le ossa si passano così tra i parenti. Se vuoi offrire un boccone a qualcuno, mettilo sul suo piatto. Quando non mangi, appoggia le bacchette sul はしおき, il piccolo supporto che spesso trovi in tavola. Prima di mangiare si dice いただきます, alla fine ごちそうさまでした."},
-{e:"🚆",t:"In treno si sta in silenzio",w:"Treni e metropolitane giapponesi",x:"Su un でんしゃ giapponese, anche nelle ore di punta, di solito si sta in silenzio: si parla a voce bassa e si evita il chiasso. Il telefono si mette in “modalità silenziosa” (in Giappone si dice “manner mode”) e si evitano le chiamate, でんわ: non c’è una legge, è una regola di buona educazione, che spesso ricordano avvisi e annunci. Se arriva una chiamata si dice che si richiamerà più tardi, oppure si scende alla fermata dopo. Alle estremità delle carrozze ci sono i posti riservati, ゆうせんせき, per anziani, persone con disabilità, donne incinte, feriti e chi ha bambini piccoli: se sono liberi ci si può sedere, ma si cedono appena sale chi ne ha bisogno."}];
+{e:"🚆",t:"In treno si sta in silenzio",w:"Treni e metropolitane giapponesi",x:"Su un でんしゃ giapponese, anche nelle ore di punta, di solito si sta in silenzio: si parla a voce bassa e si evita il chiasso. Il telefono si mette in “modalità silenziosa” (in Giappone si dice “manner mode”) e si evitano le chiamate, でんわ: non c’è una legge, è una regola di buona educazione, che spesso ricordano avvisi e annunci. Se arriva una chiamata si dice che si richiamerà più tardi, oppure si scende alla fermata dopo. Alle estremità delle carrozze ci sono i posti riservati, ゆうせんせき, per anziani, persone con disabilità, donne incinte, feriti e chi ha bambini piccoli: se sono liberi ci si può sedere, ma si cedono appena sale chi ne ha bisogno."},
+{e:"🙅",t:"Il “no” che non si dice",w:"Rifiutare con garbo",x:"Il no netto, いいえ, in Giappone si usa meno di quanto ci si aspetti. Per non mettere a disagio, spesso si rifiuta in modo indiretto: si lascia la frase a metà con un ちょっと… (“un po’…”), si dice che è むずかしい (“è difficile”) oppure また こんど (“un’altra volta”). Chi ascolta capisce da solo che la risposta è no: dopo un invito, un ちょっと… di solito vuol dire che non si può, anche se nessuno ha detto ません. Per questo, quando impari a dire ません, ricorda che nella conversazione reale un rifiuto gentile può non contenere nessun no."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);
