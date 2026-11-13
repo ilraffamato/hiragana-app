@@ -326,7 +326,7 @@ async function selftest(app, M) {
     badP('scheda duplicata tra unità', a => { a.GU.G2.lessons[0].teach.push({ jp: a.GU.G1.lessons[0].teach[0].jp, ro: 'x', it: 'x' }); });
     badP('needs che non precede', a => { a.PATH.find(u => u.id === 'G1').needs = ['K4']; }); }
   { const d2 = []; checkDone(app, ['G1-1', 'G1-2', 'G1:t', 'G2-1', 'G2:t'], d2); const ok5 = d2.length === 0; r.push(ok5); console.log((ok5 ? 'ok     ' : 'FALLITO ') + 'done: chiavi G valide accettate');
-    [['G1-9', 'lezione inesistente'], ['G9:t', 'unità inesistente'], ['G1-0', 'lezione 0'], ['K1:t', 'prefisso sbagliato']].forEach(([k, n]) => { const d3 = []; checkDone(app, [k], d3); const ok6 = d3.length === 1; r.push(ok6); console.log((ok6 ? 'ok     ' : 'FALLITO ') + 'done: ' + k + ' rifiutato (' + n + ')'); }); }
+    [['G1-9', 'lezione inesistente'], ['G10:t', 'unità inesistente'], ['G1-0', 'lezione 0'], ['K1:t', 'prefisso sbagliato']].forEach(([k, n]) => { const d3 = []; checkDone(app, [k], d3); const ok6 = d3.length === 1; r.push(ok6); console.log((ok6 ? 'ok     ' : 'FALLITO ') + 'done: ' + k + ' rifiutato (' + n + ')'); }); }
   return r.every(Boolean);
 }
 

@@ -398,6 +398,7 @@ const PATH=L.length===44?[
  {id:"K8",kind:"k",cap:8,sec:"",t:"Katakana マ・ヤ・ラ・ワ",from:27,to:30,poi:7,test:{n:30},needs:["K7"]},
  {id:"G8",kind:"g",cap:8,sec:"",t:"Passato e negazione",poi:18,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8"]},
  {id:"K9",kind:"k",cap:9,sec:"",t:"Katakana dakuon e handakuon",from:31,to:35,poi:8,test:{n:30},needs:["K8"]},
+ {id:"G9",kind:"g",cap:9,sec:"",t:"Aggettivi",poi:19,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9"]},
  {id:"K10",kind:"k",cap:10,sec:"",t:"Katakana yōon",from:36,to:41,poi:9,test:{n:30},needs:["K9"]},
  {id:"K11",kind:"k",cap:11,sec:"",t:"Katakana estesi",from:42,to:43,poi:10,test:{n:30},needs:["K10"]}
 ]:[{id:"K1",kind:"k",cap:1,sec:"",t:"Kana",from:0,to:L.length-1,poi:0,test:{n:30},needs:[]}];
@@ -926,7 +927,80 @@ const GU={
    {jp:"あなた は がくせい でした か。",ro:"anata wa gakusei deshita ka",it:"Eri studente?"}],ex:[
     {type:"mcq",q:"Come si dice “non è” (negazione di です)?",opts:["じゃ ありません","でした","ません","ました"],a:0},
     {type:"mcq",q:"Che cosa vuol dire きのう は やすみ でした。?",opts:["Ieri era un giorno libero.","Ieri non era un giorno libero.","Oggi è un giorno libero.","Domani è un giorno libero."],a:0},
-    {type:"mcq",q:"Come si dice “Questo non è il mio libro.”?",opts:["これ は わたし の ほん じゃ ありません。","これ は わたし の ほん ません。","これ は わたし の ほん でした。","これ を わたし の ほん じゃ ありません。"],a:0}]}]}
+    {type:"mcq",q:"Come si dice “Questo non è il mio libro.”?",opts:["これ は わたし の ほん じゃ ありません。","これ は わたし の ほん ません。","これ は わたし の ほん でした。","これ を わたし の ほん じゃ ありません。"],a:0}]}]},
+ G9:{id:"G9",t:"Aggettivi",needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9"],test:{n:25,review:5},lessons:[
+  {id:"G9-1",t:"Aggettivi in い",teach:[
+   {jp:"おおきい",ro:"ookii",it:"grande",note:"Gli aggettivi in い finiscono in い. Si usano alla fine della frase con です (いえ は おおきい です) e davanti a un nome (おおきい いえ)."},
+   {jp:"ちいさい",ro:"chiisai",it:"piccolo"},
+   {jp:"あたらしい",ro:"atarashii",it:"nuovo"},
+   {jp:"ふるい",ro:"furui",it:"vecchio (di cose, non di persone)"},
+   {jp:"たかい",ro:"takai",it:"alto / caro",note:"Vuol dire sia “alto” sia “di prezzo alto”. Il contesto fa capire quale."},
+   {jp:"やすい",ro:"yasui",it:"economico",note:"Non confonderlo con やすみ (giorno libero, vacanza): sono parole diverse."},
+   {jp:"おいしい",ro:"oishii",it:"buono (da mangiare)"},
+   {jp:"たのしい",ro:"tanoshii",it:"divertente / piacevole"},
+   {jp:"むずかしい",ro:"muzukashii",it:"difficile"},
+   {jp:"やさしい",ro:"yasashii",it:"facile / gentile",note:"Vuol dire “facile” e anche “gentile” (di una persona)."},
+   {jp:"この くるま は あたらしい です。",ro:"kono kuruma wa atarashii desu",it:"Questa macchina è nuova."},
+   {jp:"この とけい は たかい です。",ro:"kono tokei wa takai desu",it:"Questo orologio è caro."},
+   {jp:"ごはん は おいしい です。",ro:"gohan wa oishii desu",it:"Il riso è buono."},
+   {jp:"にほんご は むずかしい です。",ro:"nihongo wa muzukashii desu",it:"Il giapponese è difficile."}],ex:[
+    {type:"mcq",q:"Come finiscono gli aggettivi di questo tipo?",opts:["in い","in な","in です","in ます"],a:0},
+    {type:"mcq",q:"Quale parola vuol dire “difficile”?",opts:["むずかしい","やさしい","たかい","おいしい"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire この くるま は あたらしい です。?",opts:["Questa macchina è nuova.","Questa macchina è vecchia.","Questa macchina è cara.","Questa macchina è grande."],a:0}]},
+  {id:"G9-2",t:"とても, あまり e il negativo",teach:[
+   {jp:"とても",ro:"totemo",it:"molto",note:"Si mette prima dell’aggettivo: とても おいしい です, “è molto buono”."},
+   {jp:"あまり",ro:"amari",it:"non molto (con il negativo)",note:"あまり si usa solo con un verbo o un aggettivo negativo: あまり たかく ありません, “non è molto caro”."},
+   {jp:"おもしろい",ro:"omoshiroi",it:"interessante / divertente"},
+   {jp:"あつい",ro:"atsui",it:"caldo (tempo, cose)",note:"Vale per il caldo del tempo e per le cose calde da toccare."},
+   {jp:"さむい",ro:"samui",it:"freddo (tempo)"},
+   {jp:"いい",ro:"ii",it:"buono / bene",note:"È irregolare: il negativo è よく ありません, non いく ありません."},
+   {jp:"これ は あたらしい くるま です。",ro:"kore wa atarashii kuruma desu",it:"Questa è una macchina nuova."},
+   {jp:"あれ は おおきい いえ です。",ro:"are wa ookii ie desu",it:"Quella là è una casa grande."},
+   {jp:"この ほん は とても おもしろい です。",ro:"kono hon wa totemo omoshiroi desu",it:"Questo libro è molto interessante."},
+   {jp:"きょう は とても あつい です。",ro:"kyou wa totemo atsui desu",it:"Oggi fa molto caldo."},
+   {jp:"この くるま は あまり たかく ありません。",ro:"kono kuruma wa amari takaku arimasen",it:"Questa macchina non è molto cara.",note:"Il negativo di un aggettivo in い: la い finale diventa く, poi ありません. Si sente anche ～く ない です."},
+   {jp:"にほんご は あまり むずかしく ありません。",ro:"nihongo wa amari muzukashiku arimasen",it:"Il giapponese non è molto difficile."},
+   {jp:"この ごはん は あまり おいしく ありません。",ro:"kono gohan wa amari oishiku arimasen",it:"Questo riso non è molto buono."},
+   {jp:"いいえ、 たかく ありません。",ro:"iie, takaku arimasen",it:"No, non è caro."}],ex:[
+    {type:"mcq",q:"Come si forma il negativo di たかい?",opts:["たかく ありません","たかい ありません","たかかった です","たかい じゃ ありません"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire あまり?",opts:["non molto (con il negativo)","molto","sempre","poco tempo fa"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire この ほん は とても おもしろい です。?",opts:["Questo libro è molto interessante.","Questo libro non è interessante.","Questo libro è nuovo.","Questo libro è caro."],a:0}]},
+  {id:"G9-3",t:"Aggettivi in な",teach:[
+   {jp:"きれい",ro:"kirei",it:"bello / pulito",note:"Finisce in い ma è un aggettivo in な: si comporta come un nome (きれい です). Davanti a un nome vuole な: きれい な はな."},
+   {jp:"しずか",ro:"shizuka",it:"tranquillo / silenzioso"},
+   {jp:"にぎやか",ro:"nigiyaka",it:"animato / vivace"},
+   {jp:"げんき",ro:"genki",it:"in forma / pieno di energia",note:"げんき です か。 vuol dire “Come stai?” e la risposta è げんき です."},
+   {jp:"すき",ro:"suki",it:"che piace",note:"すき です vuol dire “mi piace”. La cosa che piace va con が: わたし は えいが が すき です."},
+   {jp:"きらい",ro:"kirai",it:"che non piace",note:"È più forte di “non mi piace”: vuol dire “mi è antipatico”. Anche きらい finisce in い ma è in な."},
+   {jp:"じょうず",ro:"jouzu",it:"bravo (in qualcosa)"},
+   {jp:"へた",ro:"heta",it:"poco bravo",note:"È brusco: si usa per sé stessi, per gli altri meglio evitarlo."},
+   {jp:"まち",ro:"machi",it:"città / quartiere"},
+   {jp:"これ は きれい です。",ro:"kore wa kirei desu",it:"Questo è bello."},
+   {jp:"しずか な みせ です。",ro:"shizuka na mise desu",it:"È un negozio tranquillo.",note:"Davanti a un nome gli aggettivi in な vogliono な: しずか な みせ."},
+   {jp:"まち は にぎやか です。",ro:"machi wa nigiyaka desu",it:"La città è animata."},
+   {jp:"わたし は えいが が すき です。",ro:"watashi wa eiga ga suki desu",it:"Mi piacciono i film."},
+   {jp:"たなか さん は にほんご が じょうず です。",ro:"tanaka san wa nihongo ga jouzu desu",it:"Il signor Tanaka è bravo in giapponese."}],ex:[
+    {type:"mcq",q:"Che cosa segna が in わたし は えいが が すき です。?",opts:["la cosa che piace","chi parla","il luogo","il tempo"],a:0},
+    {type:"mcq",q:"Che particella serve davanti a un nome dopo しずか?",opts:["な","の","を","で"],a:0},
+    {type:"mcq",q:"Quale parola vuol dire “animato, vivace”?",opts:["にぎやか","しずか","きれい","げんき"],a:0}]},
+  {id:"G9-4",t:"Passato e negativo",teach:[
+   {jp:"おいしかった です。",ro:"oishikatta desu",it:"Era buono.",note:"Passato degli aggettivi in い: la い finale diventa かった, poi です."},
+   {jp:"たのしかった です。",ro:"tanoshikatta desu",it:"È stato divertente."},
+   {jp:"きのう は あつかった です。",ro:"kinou wa atsukatta desu",it:"Ieri faceva caldo."},
+   {jp:"きのう の えいが は とても おもしろかった です。",ro:"kinou no eiga wa totemo omoshirokatta desu",it:"Il film di ieri era molto interessante."},
+   {jp:"えいが は あまり おもしろく ありませんでした。",ro:"eiga wa amari omoshiroku arimasen deshita",it:"Il film non era molto interessante.",note:"Passato negativo di un aggettivo in い: ～く ありませんでした."},
+   {jp:"きのう は あまり さむく ありませんでした。",ro:"kinou wa amari samuku arimasen deshita",it:"Ieri non faceva molto freddo."},
+   {jp:"この まち は しずか でした。",ro:"kono machi wa shizuka deshita",it:"Questa città era tranquilla.",note:"Gli aggettivi in な si coniugano come です: でした, じゃ ありません, じゃ ありませんでした."},
+   {jp:"きのう は とても にぎやか でした。",ro:"kinou wa totemo nigiyaka deshita",it:"Ieri era molto animato."},
+   {jp:"この まち は しずか じゃ ありません。",ro:"kono machi wa shizuka ja arimasen",it:"Questa città non è tranquilla."},
+   {jp:"この まち は きれい じゃ ありませんでした。",ro:"kono machi wa kirei ja arimasen deshita",it:"Questa città non era bella."},
+   {jp:"わたし は おちゃ が すき じゃ ありません。",ro:"watashi wa ocha ga suki ja arimasen",it:"Non mi piace il tè."},
+   {jp:"わたし は ごはん が きらい じゃ ありません。",ro:"watashi wa gohan ga kirai ja arimasen",it:"Non mi dispiace il riso."},
+   {jp:"きのう は げんき じゃ ありませんでした。",ro:"kinou wa genki ja arimasen deshita",it:"Ieri non stavo bene."},
+   {jp:"えいが は どう でした か。",ro:"eiga wa dou deshita ka",it:"Com’era il film?",note:"どう vuol dire “come?” e serve per chiedere un’opinione."}],ex:[
+    {type:"mcq",q:"Come si forma il passato di おいしい?",opts:["おいしかった です","おいしい でした","おいしく ありません","おいしいか"],a:0},
+    {type:"mcq",q:"Come si dice “Ieri non stavo bene.”?",opts:["きのう は げんき じゃ ありませんでした。","きのう は げんき じゃ ありません。","きのう は げんき でした。","きのう は げんきかった です。"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire どう?",opts:["come?","dove?","quando?","chi?"],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -983,7 +1057,8 @@ const POI=[
 {e:"👟",t:"Le scarpe restano all’ingresso",w:"Case, locande tradizionali, templi e molti ristoranti",x:"In una casa giapponese l’ingresso si chiama げんかん ed è un piccolo spazio al livello della strada, con un gradino che porta al resto della casa. Le scarpe, くつ, si tolgono lì, prima di salire, e si lasciano in ordine con la punta verso la porta. Spesso ci sono pantofole per gli ospiti, che si tolgono entrando in una stanza con i tatami, e il bagno ha di solito le sue. Entrando in casa d’altri si dice おじゃまします, “scusate il disturbo”, mentre chi rientra a casa sua dice ただいま. Lo stesso vale in molti templi, nelle locande tradizionali e in alcuni ristoranti: se vedi un gradino o file di scarpe, togli le tue."},
 {e:"🥢",t:"Le bacchette: due cose da non fare",w:"A tavola in Giappone",x:"Le bacchette si chiamano はし. A tavola ci sono due gesti da evitare più degli altri, perché ricordano i funerali buddhisti. Il primo è piantarle dritte nel riso: così si offre il riso ai defunti. Il secondo è passare il cibo da una coppia di bacchette all’altra: ricorda il rito in cui, dopo la cremazione, le ossa si passano così tra i parenti. Se vuoi offrire un boccone a qualcuno, mettilo sul suo piatto. Quando non mangi, appoggia le bacchette sul はしおき, il piccolo supporto che spesso trovi in tavola. Prima di mangiare si dice いただきます, alla fine ごちそうさまでした."},
 {e:"🚆",t:"In treno si sta in silenzio",w:"Treni e metropolitane giapponesi",x:"Su un でんしゃ giapponese, anche nelle ore di punta, di solito si sta in silenzio: si parla a voce bassa e si evita il chiasso. Il telefono si mette in “modalità silenziosa” (in Giappone si dice “manner mode”) e si evitano le chiamate, でんわ: non c’è una legge, è una regola di buona educazione, che spesso ricordano avvisi e annunci. Se arriva una chiamata si dice che si richiamerà più tardi, oppure si scende alla fermata dopo. Alle estremità delle carrozze ci sono i posti riservati, ゆうせんせき, per anziani, persone con disabilità, donne incinte, feriti e chi ha bambini piccoli: se sono liberi ci si può sedere, ma si cedono appena sale chi ne ha bisogno."},
-{e:"🙅",t:"Il “no” che non si dice",w:"Rifiutare con garbo",x:"Il no netto, いいえ, in Giappone si usa meno di quanto ci si aspetti. Per non mettere a disagio, spesso si rifiuta in modo indiretto: si lascia la frase a metà con un ちょっと… (“un po’…”), si dice che è むずかしい (“è difficile”) oppure また こんど (“un’altra volta”). Chi ascolta capisce da solo che la risposta è no: dopo un invito, un ちょっと… di solito vuol dire che non si può, anche se nessuno ha detto ません. Per questo, quando impari a dire ません, ricorda che nella conversazione reale un rifiuto gentile può non contenere nessun no."}];
+{e:"🙅",t:"Il “no” che non si dice",w:"Rifiutare con garbo",x:"Il no netto, いいえ, in Giappone si usa meno di quanto ci si aspetti. Per non mettere a disagio, spesso si rifiuta in modo indiretto: si lascia la frase a metà con un ちょっと… (“un po’…”), si dice che è むずかしい (“è difficile”) oppure また こんど (“un’altra volta”). Chi ascolta capisce da solo che la risposta è no: dopo un invito, un ちょっと… di solito vuol dire che non si può, anche se nessuno ha detto ません. Per questo, quando impari a dire ません, ricorda che nella conversazione reale un rifiuto gentile può non contenere nessun no."},
+{e:"🌸",t:"Hanami: guardare i fiori",w:"Primavera in Giappone",x:"はなみ vuol dire “guardare i fiori”: in primavera, quando fioriscono i さくら, i ciliegi giapponesi, amici, famiglie e colleghi si ritrovano nei parchi e fanno un picnic sotto gli alberi, con cibo, bevande e spesso canti. La fioritura dura solo una o due settimane, di solito tra fine marzo e inizio aprile, e la data cambia da regione a regione: per questo le previsioni si seguono con attenzione. Si stende un telo per terra e, come in casa, si tolgono le scarpe prima di salirci. È una tradizione antica di oltre mille anni: all’inizio era un’abitudine della corte, poi è diventata di tutti."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);
