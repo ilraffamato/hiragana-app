@@ -400,6 +400,7 @@ const PATH=L.length===44?[
  {id:"K9",kind:"k",cap:9,sec:"",t:"Katakana dakuon e handakuon",from:31,to:35,poi:8,test:{n:30},needs:["K8"]},
  {id:"G9",kind:"g",cap:9,sec:"",t:"Aggettivi",poi:19,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9"]},
  {id:"K10",kind:"k",cap:10,sec:"",t:"Katakana yōon",from:36,to:41,poi:9,test:{n:30},needs:["K9"]},
+ {id:"G10",kind:"g",cap:10,sec:"",t:"Esistere e posizione",poi:20,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10"]},
  {id:"K11",kind:"k",cap:11,sec:"",t:"Katakana estesi",from:42,to:43,poi:10,test:{n:30},needs:["K10"]}
 ]:[{id:"K1",kind:"k",cap:1,sec:"",t:"Kana",from:0,to:L.length-1,poi:0,test:{n:30},needs:[]}];
 /* WP-08: soglia per unità (min): 100 per i kana, 90 per la lingua. Per i kana resta in vigore MINK. */
@@ -1000,7 +1001,80 @@ const GU={
    {jp:"えいが は どう でした か。",ro:"eiga wa dou deshita ka",it:"Com’era il film?",note:"どう vuol dire “come?” e serve per chiedere un’opinione."}],ex:[
     {type:"mcq",q:"Come si forma il passato di おいしい?",opts:["おいしかった です","おいしい でした","おいしく ありません","おいしいか"],a:0},
     {type:"mcq",q:"Come si dice “Ieri non stavo bene.”?",opts:["きのう は げんき じゃ ありませんでした。","きのう は げんき じゃ ありません。","きのう は げんき でした。","きのう は げんきかった です。"],a:0},
-    {type:"mcq",q:"Che cosa vuol dire どう?",opts:["come?","dove?","quando?","chi?"],a:0}]}]}
+    {type:"mcq",q:"Che cosa vuol dire どう?",opts:["come?","dove?","quando?","chi?"],a:0}]}]},
+ G10:{id:"G10",t:"Esistere e posizione",needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10"],test:{n:25,review:5},lessons:[
+  {id:"G10-1",t:"あります e います",teach:[
+   {jp:"あります",ro:"arimasu",it:"c’è / ci sono / ho (cose)",note:"Si usa per le cose e le piante, per ciò che non si muove da solo. Il giapponese non ha un plurale: ほん が あります vuol dire sia “c’è un libro” sia “ci sono dei libri”."},
+   {jp:"います",ro:"imasu",it:"c’è / ci sono / ho (persone e animali)",note:"Si usa per le persone e gli animali, cioè per ciò che si muove da solo. Vale anche per “avere” un amico: ともだち が います."},
+   {jp:"ありません",ro:"arimasen",it:"non c’è / non ci sono / non ho (cose)",note:"È la negazione di あります. L’hai già vista in じゃ ありません."},
+   {jp:"いません",ro:"imasen",it:"non c’è / non ci sono / non ho (persone e animali)"},
+   {jp:"ここ に ほん が あります。",ro:"koko ni hon ga arimasu",it:"Qui c’è un libro.",note:"Schema: luogo に + cosa che c’è が + あります. に segna il luogo, が segna ciò che c’è."},
+   {jp:"えき に みせ が あります。",ro:"eki ni mise ga arimasu",it:"Alla stazione c’è un negozio."},
+   {jp:"くうこう に ぎんこう が あります。",ro:"kuukou ni ginkou ga arimasu",it:"All’aeroporto c’è una banca."},
+   {jp:"うち に ねこ が います。",ro:"uchi ni neko ga imasu",it:"In casa c’è un gatto."},
+   {jp:"こうえん に ひと が います。",ro:"kouen ni hito ga imasu",it:"Nel parco ci sono delle persone."},
+   {jp:"がっこう に せんせい が います。",ro:"gakkou ni sensei ga imasu",it:"A scuola c’è un insegnante."},
+   {jp:"あそこ に ともだち が います。",ro:"asoko ni tomodachi ga imasu",it:"Là c’è un mio amico."},
+   {jp:"えき は どこ に あります か。",ro:"eki wa doko ni arimasu ka",it:"Dov’è la stazione?",note:"Per chiedere dove sta qualcosa di noto: 〜 は どこ に あります か。 Il tema va con は."},
+   {jp:"えき は あそこ に あります。",ro:"eki wa asoko ni arimasu",it:"La stazione è laggiù."},
+   {jp:"ともだち は どこ に います か。",ro:"tomodachi wa doko ni imasu ka",it:"Dov’è il tuo amico?"}],ex:[
+    {type:"mcq",q:"Quale verbo si usa per le persone e gli animali?",opts:["います","あります","ありません","きます"],a:0},
+    {type:"mcq",q:"Che cosa segna が in ここ に ほん が あります。?",opts:["ciò che c’è","il luogo","il tempo","il mezzo"],a:0},
+    {type:"mcq",q:"Come si dice “In casa c’è un gatto.”?",opts:["うち に ねこ が います。","うち に ねこ が あります。","うち で ねこ が います。","うち を ねこ が います。"],a:0}]},
+  {id:"G10-2",t:"Dove si trova",teach:[
+   {jp:"うえ",ro:"ue",it:"sopra",note:"うえ, した, なか, まえ, うしろ, となり, ちかく sono nomi di posizione: si mettono dopo il nome con の e prima di に. ほん の うえ に, “sopra il libro”."},
+   {jp:"した",ro:"shita",it:"sotto"},
+   {jp:"なか",ro:"naka",it:"dentro"},
+   {jp:"まえ",ro:"mae",it:"davanti"},
+   {jp:"うしろ",ro:"ushiro",it:"dietro"},
+   {jp:"となり",ro:"tonari",it:"accanto",note:"Si usa per ciò che sta vicino e dello stesso tipo, come l’edificio a fianco."},
+   {jp:"ちかく",ro:"chikaku",it:"vicino / nei dintorni"},
+   {jp:"ほん の うえ に さいふ が あります。",ro:"hon no ue ni saifu ga arimasu",it:"Sopra il libro c’è un portafoglio."},
+   {jp:"くるま の した に ねこ が います。",ro:"kuruma no shita ni neko ga imasu",it:"Sotto la macchina c’è un gatto."},
+   {jp:"かばん の なか に けいたい が あります。",ro:"kaban no naka ni keitai ga arimasu",it:"Nella borsa c’è un telefono cellulare."},
+   {jp:"えき の まえ に くるま が あります。",ro:"eki no mae ni kuruma ga arimasu",it:"Davanti alla stazione c’è una macchina."},
+   {jp:"いえ の うしろ に こうえん が あります。",ro:"ie no ushiro ni kouen ga arimasu",it:"Dietro la casa c’è un parco."},
+   {jp:"ぎんこう の となり に ゆうびんきょく が あります。",ro:"ginkou no tonari ni yuubinkyoku ga arimasu",it:"Accanto alla banca c’è l’ufficio postale."},
+   {jp:"えき の ちかく に ぎんこう が あります。",ro:"eki no chikaku ni ginkou ga arimasu",it:"Vicino alla stazione c’è una banca."}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “sotto”?",opts:["した","うえ","なか","まえ"],a:0},
+    {type:"mcq",q:"Come si dice “sopra il libro”?",opts:["ほん の うえ","うえ の ほん","ほん を うえ","ほん と うえ"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire かばん の なか に けいたい が あります。?",opts:["Nella borsa c’è un telefono cellulare.","Sopra la borsa c’è un telefono cellulare.","Il telefono cellulare è dietro la borsa.","Non ho il telefono cellulare."],a:0}]},
+  {id:"G10-3",t:"Contare le cose",teach:[
+   {jp:"ひとつ",ro:"hitotsu",it:"uno (cosa)",note:"I numeri in つ servono per contare le cose da uno a dieci: ひとつ, ふたつ, みっつ... Oltre il dieci si usano i numeri normali."},
+   {jp:"ふたつ",ro:"futatsu",it:"due (cose)"},
+   {jp:"みっつ",ro:"mittsu",it:"tre (cose)",note:"Il piccolo っ raddoppia la t: mittsu."},
+   {jp:"よっつ",ro:"yottsu",it:"quattro (cose)"},
+   {jp:"いつつ",ro:"itsutsu",it:"cinque (cose)"},
+   {jp:"むっつ",ro:"muttsu",it:"sei (cose)"},
+   {jp:"ななつ",ro:"nanatsu",it:"sette (cose)"},
+   {jp:"やっつ",ro:"yattsu",it:"otto (cose)"},
+   {jp:"ここのつ",ro:"kokonotsu",it:"nove (cose)"},
+   {jp:"とお",ro:"too",it:"dieci (cose)",note:"Qui non c’è つ: とお è diverso dagli altri."},
+   {jp:"いくつ",ro:"ikutsu",it:"quanti? (cose)"},
+   {jp:"ここ に ほん が みっつ あります。",ro:"koko ni hon ga mittsu arimasu",it:"Qui ci sono tre libri.",note:"Il numero sta davanti al verbo, dopo が."},
+   {jp:"いくつ あります か。",ro:"ikutsu arimasu ka",it:"Quanti ce ne sono?"},
+   {jp:"ひとつ あります。",ro:"hitotsu arimasu",it:"Ce n’è uno."}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “tre (cose)”?",opts:["みっつ","ふたつ","よっつ","いつつ"],a:0},
+    {type:"mcq",q:"Quale numero in つ non finisce in つ?",opts:["とお","ここのつ","ななつ","やっつ"],a:0},
+    {type:"mcq",q:"Come si chiede “Quanti ce ne sono?”",opts:["いくつ あります か。","なに が あります か。","どこ に あります か。","いつ あります か。"],a:0}]},
+  {id:"G10-4",t:"Contare le persone",teach:[
+   {jp:"ひとり",ro:"hitori",it:"una persona",note:"Per le persone si usa un contatore diverso: ひとり e ふたり sono particolari, poi si aggiunge にん."},
+   {jp:"ふたり",ro:"futari",it:"due persone"},
+   {jp:"さんにん",ro:"sannin",it:"tre persone"},
+   {jp:"よにん",ro:"yonin",it:"quattro persone",note:"Si dice よにん, non よんにん."},
+   {jp:"なんにん",ro:"nannin",it:"quante persone?"},
+   {jp:"かぞく は よにん です。",ro:"kazoku wa yonin desu",it:"La famiglia è di quattro persone."},
+   {jp:"かぞく は なんにん です か。",ro:"kazoku wa nannin desu ka",it:"Quante persone ci sono in famiglia?"},
+   {jp:"こうえん に ひと が ふたり います。",ro:"kouen ni hito ga futari imasu",it:"Nel parco ci sono due persone."},
+   {jp:"ここ に ひと が さんにん います。",ro:"koko ni hito ga sannin imasu",it:"Qui ci sono tre persone."},
+   {jp:"ともだち が ひとり います。",ro:"tomodachi ga hitori imasu",it:"Ho un amico."},
+   {jp:"いもうと が ひとり います。",ro:"imouto ga hitori imasu",it:"Ho una sorella minore."},
+   {jp:"あなた は いもうと が います か。",ro:"anata wa imouto ga imasu ka",it:"Hai una sorella minore?"},
+   {jp:"はい、 ひとり います。",ro:"hai, hitori imasu",it:"Sì, ne ho una."},
+   {jp:"いいえ、 いません。",ro:"iie, imasen",it:"No, non ce l’ho."}],ex:[
+    {type:"mcq",q:"Come si dice “due persone”?",opts:["ふたり","ふたつ","にん","にひき"],a:0},
+    {type:"mcq",q:"Come si dice “quattro persone”?",opts:["よにん","よんにん","よっつ","しにん"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire ともだち が ひとり います。?",opts:["Ho un amico.","Non ho amici.","Ho due amici.","Il mio amico è qui."],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -1058,7 +1132,8 @@ const POI=[
 {e:"🥢",t:"Le bacchette: due cose da non fare",w:"A tavola in Giappone",x:"Le bacchette si chiamano はし. A tavola ci sono due gesti da evitare più degli altri, perché ricordano i funerali buddhisti. Il primo è piantarle dritte nel riso: così si offre il riso ai defunti. Il secondo è passare il cibo da una coppia di bacchette all’altra: ricorda il rito in cui, dopo la cremazione, le ossa si passano così tra i parenti. Se vuoi offrire un boccone a qualcuno, mettilo sul suo piatto. Quando non mangi, appoggia le bacchette sul はしおき, il piccolo supporto che spesso trovi in tavola. Prima di mangiare si dice いただきます, alla fine ごちそうさまでした."},
 {e:"🚆",t:"In treno si sta in silenzio",w:"Treni e metropolitane giapponesi",x:"Su un でんしゃ giapponese, anche nelle ore di punta, di solito si sta in silenzio: si parla a voce bassa e si evita il chiasso. Il telefono si mette in “modalità silenziosa” (in Giappone si dice “manner mode”) e si evitano le chiamate, でんわ: non c’è una legge, è una regola di buona educazione, che spesso ricordano avvisi e annunci. Se arriva una chiamata si dice che si richiamerà più tardi, oppure si scende alla fermata dopo. Alle estremità delle carrozze ci sono i posti riservati, ゆうせんせき, per anziani, persone con disabilità, donne incinte, feriti e chi ha bambini piccoli: se sono liberi ci si può sedere, ma si cedono appena sale chi ne ha bisogno."},
 {e:"🙅",t:"Il “no” che non si dice",w:"Rifiutare con garbo",x:"Il no netto, いいえ, in Giappone si usa meno di quanto ci si aspetti. Per non mettere a disagio, spesso si rifiuta in modo indiretto: si lascia la frase a metà con un ちょっと… (“un po’…”), si dice che è むずかしい (“è difficile”) oppure また こんど (“un’altra volta”). Chi ascolta capisce da solo che la risposta è no: dopo un invito, un ちょっと… di solito vuol dire che non si può, anche se nessuno ha detto ません. Per questo, quando impari a dire ません, ricorda che nella conversazione reale un rifiuto gentile può non contenere nessun no."},
-{e:"🌸",t:"Hanami: guardare i fiori",w:"Primavera in Giappone",x:"はなみ vuol dire “guardare i fiori”: in primavera, quando fioriscono i さくら, i ciliegi giapponesi, amici, famiglie e colleghi si ritrovano nei parchi e fanno un picnic sotto gli alberi, con cibo, bevande e spesso canti. La fioritura dura solo una o due settimane, di solito tra fine marzo e inizio aprile, e la data cambia da regione a regione: per questo le previsioni si seguono con attenzione. Si stende un telo per terra e, come in casa, si tolgono le scarpe prima di salirci. È una tradizione antica di oltre mille anni: all’inizio era un’abitudine della corte, poi è diventata di tutti."}];
+{e:"🌸",t:"Hanami: guardare i fiori",w:"Primavera in Giappone",x:"はなみ vuol dire “guardare i fiori”: in primavera, quando fioriscono i さくら, i ciliegi giapponesi, amici, famiglie e colleghi si ritrovano nei parchi e fanno un picnic sotto gli alberi, con cibo, bevande e spesso canti. La fioritura dura solo una o due settimane, di solito tra fine marzo e inizio aprile, e la data cambia da regione a regione: per questo le previsioni si seguono con attenzione. Si stende un telo per terra e, come in casa, si tolgono le scarpe prima di salirci. È una tradizione antica di oltre mille anni: all’inizio era un’abitudine della corte, poi è diventata di tutti."},
+{e:"🗺️",t:"Indirizzi senza nome di strada",w:"Orientarsi in Giappone",x:"In Giappone la maggior parte delle strade non ha un nome, e gli indirizzi non indicano la via: vanno dall’area più grande alla più piccola, con i numeri del quartiere, dell’isolato e dell’edificio. Per questo, quando si dà un’indicazione, si usano molto i punti di riferimento: un negozio, un parco, una stazione. Le frasi di questa unità servono proprio a questo, per esempio えき の ちかく に こうえん が あります. Se ti perdi, cerca il こうばん, il piccolo posto di polizia che c’è nella maggior parte dei quartieri: gli agenti hanno le mappe della zona e aiutano chi non trova un indirizzo. Qualche eccezione c’è, come Kyoto, dove si usa anche un sistema basato sulle strade."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);
