@@ -402,7 +402,8 @@ const PATH=L.length===44?[
  {id:"K10",kind:"k",cap:10,sec:"",t:"Katakana yōon",from:36,to:41,poi:9,test:{n:30},needs:["K9"]},
  {id:"G10",kind:"g",cap:10,sec:"",t:"Esistere e posizione",poi:20,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10"]},
  {id:"K11",kind:"k",cap:11,sec:"",t:"Katakana estesi",from:42,to:43,poi:10,test:{n:30},needs:["K10"]},
- {id:"G11",kind:"g",cap:11,sec:"",t:"Desideri e inviti",poi:21,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]}
+ {id:"G11",kind:"g",cap:11,sec:"",t:"Desideri e inviti",poi:21,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]},
+ {id:"G12",kind:"g",cap:12,sec:"",t:"Forma て",poi:22,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]}
 ]:[{id:"K1",kind:"k",cap:1,sec:"",t:"Kana",from:0,to:L.length-1,poi:0,test:{n:30},needs:[]}];
 /* WP-08: soglia per unità (min): 100 per i kana, 90 per la lingua. Per i kana resta in vigore MINK. */
 PATH.forEach(u=>{if(u.min===undefined)u.min=u.kind==="g"?90:100});
@@ -1148,7 +1149,80 @@ const GU={
    {jp:"ざんねん です。",ro:"zannen desu",it:"Peccato."}],ex:[
     {type:"mcq",q:"Che cosa vuol dire いっしょ に いきましょう。?",opts:["Andiamo insieme.","Sono andato insieme.","Non vado insieme.","Voglio andare insieme."],a:0},
     {type:"mcq",q:"Che cosa vuol dire いっしょ に いきません か。?",opts:["Vuoi venire insieme?","Non sono andato insieme.","Non voglio andare insieme.","Siamo andati insieme."],a:0},
-    {type:"mcq",q:"Quale frase rifiuta un invito con garbo?",opts:["すみません、 あした は ちょっと むずかしい です。","いきたく ありません。","いいえ、 いきます。","はい、 いきましょう。"],a:0}]}]}
+    {type:"mcq",q:"Quale frase rifiuta un invito con garbo?",opts:["すみません、 あした は ちょっと むずかしい です。","いきたく ありません。","いいえ、 いきます。","はい、 いきましょう。"],a:0}]}]},
+ G12:{id:"G12",t:"Forma て",needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"],test:{n:25,review:5},lessons:[
+  {id:"G12-1",t:"て ください: verbi semplici",teach:[
+   {jp:"たべて",ro:"tabete",it:"mangia / mangiando (forma て)",note:"La forma て serve per costruire molte espressioni: 〜 て ください, 〜 て います, 〜 て も いい です か. Per i verbi come たべます si toglie ます e si aggiunge て: たべます → たべて."},
+   {jp:"みて",ro:"mite",it:"guarda / guardando (forma て)",note:"みます → みて. Attenzione: のみます non fa のみて ma のんで, vedi la lezione 2."},
+   {jp:"ねて",ro:"nete",it:"dormi / dormendo (forma て)"},
+   {jp:"おきて",ro:"okite",it:"alzati / alzandosi (forma て)",note:"おきます → おきて. Verbi come おきます, たべます, みます, ねます si comportano così, ma non tutti i verbi con き prima di ます: かきます fa かいて, vedi la lezione 2."},
+   {jp:"して",ro:"shite",it:"fa / facendo (forma て)",note:"します è irregolare: します → して."},
+   {jp:"きて",ro:"kite",it:"vieni / venendo (forma て)",note:"きます è irregolare: きます → きて."},
+   {jp:"ちょっと",ro:"chotto",it:"un po’ / un momento"},
+   {jp:"もう いちど",ro:"mou ichido",it:"ancora una volta"},
+   {jp:"たべて ください。",ro:"tabete kudasai",it:"Mangi, per favore.",note:"〜 て ください vuol dire “per favore, faccia...”. Il verbo in forma て sta davanti a ください."},
+   {jp:"ここ を みて ください。",ro:"koko o mite kudasai",it:"Guardi qui, per favore."},
+   {jp:"ここ に きて ください。",ro:"koko ni kite kudasai",it:"Venga qui, per favore."},
+   {jp:"これ を たべて ください。",ro:"kore o tabete kudasai",it:"Mangi questo, per favore."},
+   {jp:"ちょっと みて ください。",ro:"chotto mite kudasai",it:"Guardi un momento, per favore."},
+   {jp:"もう いちど みて ください。",ro:"mou ichido mite kudasai",it:"Guardi ancora una volta, per favore."}],ex:[
+    {type:"mcq",q:"Come si forma la forma て di たべます?",opts:["たべて","たべって","たべんで","たべいて"],a:0},
+    {type:"mcq",q:"Qual è la forma て di します?",opts:["して","しいて","しって","しんで"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire ここ に きて ください。?",opts:["Venga qui, per favore.","Vado qui.","Qui c’è un amico.","Non venga qui."],a:0}]},
+  {id:"G12-2",t:"Forma て: gli altri verbi",teach:[
+   {jp:"かって",ro:"katte",it:"compra / comprando (forma て)",note:"Se prima di ます c’è い, ち o り, la forma て finisce in って: かいます → かって, あいます → あって, まちます → まって, かえります → かえって. Il piccolo っ raddoppia la consonante."},
+   {jp:"あって",ro:"atte",it:"incontra / incontrando (forma て)",note:"Anche あります fa あって."},
+   {jp:"まって",ro:"matte",it:"aspetta / aspettando (forma て)"},
+   {jp:"かえって",ro:"kaette",it:"torna / tornando (forma て)"},
+   {jp:"のんで",ro:"nonde",it:"bevi / bevendo (forma て)",note:"Se prima di ます c’è み, び o に, la forma て finisce in んで: のみます → のんで, よみます → よんで. Attenzione: みます (guardare) fa みて, ma のみます (bere) fa のんで."},
+   {jp:"よんで",ro:"yonde",it:"leggi / leggendo (forma て)"},
+   {jp:"かいて",ro:"kaite",it:"scrivi / scrivendo (forma て)",note:"Se prima di ます c’è き, la forma て finisce in いて: かきます → かいて, ききます → きいて. Ma おきます fa おきて: i verbi con き vanno imparati uno per uno."},
+   {jp:"きいて",ro:"kiite",it:"ascolta / ascoltando (forma て)"},
+   {jp:"いって",ro:"itte",it:"va / andando (forma て)",note:"いきます è un’eccezione: non fa いいて ma いって. Anche いいます (dire) fa いって: il senso si capisce dalla frase."},
+   {jp:"はなして",ro:"hanashite",it:"parla / parlando (forma て)",note:"Se prima di ます c’è し, la forma て finisce in して: はなします → はなして."},
+   {jp:"ここ で まって ください。",ro:"koko de matte kudasai",it:"Aspetti qui, per favore."},
+   {jp:"みず を のんで ください。",ro:"mizu o nonde kudasai",it:"Beva dell’acqua, per favore."},
+   {jp:"ここ に かいて ください。",ro:"koko ni kaite kudasai",it:"Scriva qui, per favore."},
+   {jp:"ほん を よんで ください。",ro:"hon o yonde kudasai",it:"Legga il libro, per favore."}],ex:[
+    {type:"mcq",q:"Qual è la forma て di のみます?",opts:["のんで","のみて","のって","のいて"],a:0},
+    {type:"mcq",q:"Qual è la forma て di かきます?",opts:["かいて","かって","かんで","かして"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire ここ で まって ください。?",opts:["Aspetti qui, per favore.","Torni qui, per favore.","Venga qui, per favore.","Scriva qui, per favore."],a:0}]},
+  {id:"G12-3",t:"Frasi di viaggio",teach:[
+   {jp:"ゆっくり",ro:"yukkuri",it:"lentamente / con calma"},
+   {jp:"みち",ro:"michi",it:"strada / via"},
+   {jp:"おしえて",ro:"oshiete",it:"insegna / indica (forma て)",note:"おしえます vuol dire “insegnare” e anche “dire, indicare”: みち を おしえて ください, “mi indichi la strada”."},
+   {jp:"みせて",ro:"misete",it:"mostra / mostrando (forma て)"},
+   {jp:"のって",ro:"notte",it:"sali / salendo (forma て)",note:"のります (salire, prendere un mezzo) vuole に: でんしゃ に のります."},
+   {jp:"ゆっくり はなして ください。",ro:"yukkuri hanashite kudasai",it:"Parli lentamente, per favore."},
+   {jp:"ゆっくり おねがいします。",ro:"yukkuri onegaishimasu",it:"Più piano, per favore."},
+   {jp:"もう いちど おねがいします。",ro:"mou ichido onegaishimasu",it:"Ancora una volta, per favore."},
+   {jp:"もう いちど いって ください。",ro:"mou ichido itte kudasai",it:"Lo ripeta, per favore.",note:"いって qui viene da いいます, “dire”."},
+   {jp:"みち を おしえて ください。",ro:"michi o oshiete kudasai",it:"Mi indichi la strada, per favore."},
+   {jp:"ちょっと おしえて ください。",ro:"chotto oshiete kudasai",it:"Mi dica una cosa, per favore."},
+   {jp:"これ を みせて ください。",ro:"kore o misete kudasai",it:"Mi faccia vedere questo, per favore."},
+   {jp:"でんしゃ に のって ください。",ro:"densha ni notte kudasai",it:"Salga sul treno, per favore."},
+   {jp:"すみません、 ちょっと まって ください。",ro:"sumimasen, chotto matte kudasai",it:"Scusi, aspetti un momento, per favore."}],ex:[
+    {type:"mcq",q:"Come si chiede di parlare piano?",opts:["ゆっくり はなして ください。","もう いちど いって ください。","みち を おしえて ください。","ここ で まって ください。"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire もう いちど おねがいします。?",opts:["Ancora una volta, per favore.","Più piano, per favore.","Il conto, per favore.","Un po’ di acqua, per favore."],a:0},
+    {type:"mcq",q:"Come si chiede “Mi indichi la strada, per favore.”?",opts:["みち を おしえて ください。","みち を のんで ください。","みち を みせて ください。","みち に まって ください。"],a:0}]},
+  {id:"G12-4",t:"て います, て も いい, て は いけません",teach:[
+   {jp:"いけません",ro:"ikemasen",it:"non si deve / non va bene",note:"Si usa dopo 〜 て は: たべて は いけません, “non si deve mangiare”."},
+   {jp:"いま ごはん を たべて います。",ro:"ima gohan o tabete imasu",it:"Adesso sto mangiando.",note:"〜 て います vuol dire che l’azione è in corso: “sto facendo...”. Si forma con la forma て e います."},
+   {jp:"いま えいが を みて います。",ro:"ima eiga o mite imasu",it:"Adesso sto guardando un film."},
+   {jp:"いま ほん を よんで います。",ro:"ima hon o yonde imasu",it:"Adesso sto leggendo un libro."},
+   {jp:"たなか さん は いま ねて います。",ro:"tanaka san wa ima nete imasu",it:"Il signor Tanaka adesso sta dormendo."},
+   {jp:"ここ で まって います。",ro:"koko de matte imasu",it:"Sto aspettando qui."},
+   {jp:"なに を して います か。",ro:"nani o shite imasu ka",it:"Che cosa stai facendo?"},
+   {jp:"ここ で たべて も いい です か。",ro:"koko de tabete mo ii desu ka",it:"Posso mangiare qui?",note:"〜 て も いい です か chiede il permesso: “posso...?”."},
+   {jp:"ここ に かいて も いい です か。",ro:"koko ni kaite mo ii desu ka",it:"Posso scrivere qui?"},
+   {jp:"みて も いい です か。",ro:"mite mo ii desu ka",it:"Posso guardare?"},
+   {jp:"はい、 いい です。",ro:"hai, ii desu",it:"Sì, va bene."},
+   {jp:"ここ で たべて は いけません。",ro:"koko de tabete wa ikemasen",it:"Qui non si può mangiare.",note:"〜 て は いけません vuol dire “non si deve...”: è un divieto."},
+   {jp:"ここ で のんで は いけません。",ro:"koko de nonde wa ikemasen",it:"Qui non si può bere."},
+   {jp:"ここ に はいって は いけません。",ro:"koko ni haitte wa ikemasen",it:"Qui non si può entrare.",note:"はいります vuol dire “entrare”: forma て はいって."}],ex:[
+    {type:"mcq",q:"Che cosa vuol dire いま ごはん を たべて います。?",opts:["Adesso sto mangiando.","Ho mangiato il riso.","Voglio mangiare il riso.","Mangiamo il riso."],a:0},
+    {type:"mcq",q:"Come si chiede il permesso: “Posso scrivere qui?”",opts:["ここ に かいて も いい です か。","ここ に かいて ください。","ここ に かいて います。","ここ に かいて は いけません。"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire ここ で たべて は いけません。?",opts:["Qui non si può mangiare.","Posso mangiare qui?","Sto mangiando qui.","Mangi qui, per favore."],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -1208,7 +1282,8 @@ const POI=[
 {e:"🙅",t:"Il “no” che non si dice",w:"Rifiutare con garbo",x:"Il no netto, いいえ, in Giappone si usa meno di quanto ci si aspetti. Per non mettere a disagio, spesso si rifiuta in modo indiretto: si lascia la frase a metà con un ちょっと… (“un po’…”), si dice che è むずかしい (“è difficile”) oppure また こんど (“un’altra volta”). Chi ascolta capisce da solo che la risposta è no: dopo un invito, un ちょっと… di solito vuol dire che non si può, anche se nessuno ha detto ません. Per questo, quando impari a dire ません, ricorda che nella conversazione reale un rifiuto gentile può non contenere nessun no."},
 {e:"🌸",t:"Hanami: guardare i fiori",w:"Primavera in Giappone",x:"はなみ vuol dire “guardare i fiori”: in primavera, quando fioriscono i さくら, i ciliegi giapponesi, amici, famiglie e colleghi si ritrovano nei parchi e fanno un picnic sotto gli alberi, con cibo, bevande e spesso canti. La fioritura dura solo una o due settimane, di solito tra fine marzo e inizio aprile, e la data cambia da regione a regione: per questo le previsioni si seguono con attenzione. Si stende un telo per terra e, come in casa, si tolgono le scarpe prima di salirci. È una tradizione antica di oltre mille anni: all’inizio era un’abitudine della corte, poi è diventata di tutti."},
 {e:"🗺️",t:"Indirizzi senza nome di strada",w:"Orientarsi in Giappone",x:"In Giappone la maggior parte delle strade non ha un nome, e gli indirizzi non indicano la via: vanno dall’area più grande alla più piccola, con i numeri del quartiere, dell’isolato e dell’edificio. Per questo, quando si dà un’indicazione, si usano molto i punti di riferimento: un negozio, un parco, una stazione. Le frasi di questa unità servono proprio a questo, per esempio えき の ちかく に こうえん が あります. Se ti perdi, cerca il こうばん, il piccolo posto di polizia che c’è nella maggior parte dei quartieri: gli agenti hanno le mappe della zona e aiutano chi non trova un indirizzo. Qualche eccezione c’è, come Kyoto, dove si usa anche un sistema basato sulle strade."},
-{e:"🍵",t:"Al ristorante si chiama il cameriere",w:"Mangiare fuori in Giappone",x:"In molti ristoranti giapponesi il personale non gira intorno al tavolo: quando sei pronto a ordinare, alzi un po’ la mano e dici すみません, oppure premi il pulsante di chiamata, se c’è. Di solito ti portano subito acqua o tè gratis (se ne vuoi ancora basta chiederlo) e spesso un おしぼり, un asciugamano umido da usare solo per le mani. Per ordinare basta indicare il menu e dire これ を ください, oppure おちゃ を ください. Non si lascia la mancia: il prezzo del menu è quello che si paga, e i soldi lasciati sul tavolo creano solo confusione. Alla fine, nella maggior parte dei locali si paga alla cassa vicino all’uscita, portando lo scontrino, e per chiedere il conto si dice おかいけい を おねがいします."}];
+{e:"🍵",t:"Al ristorante si chiama il cameriere",w:"Mangiare fuori in Giappone",x:"In molti ristoranti giapponesi il personale non gira intorno al tavolo: quando sei pronto a ordinare, alzi un po’ la mano e dici すみません, oppure premi il pulsante di chiamata, se c’è. Di solito ti portano subito acqua o tè gratis (se ne vuoi ancora basta chiederlo) e spesso un おしぼり, un asciugamano umido da usare solo per le mani. Per ordinare basta indicare il menu e dire これ を ください, oppure おちゃ を ください. Non si lascia la mancia: il prezzo del menu è quello che si paga, e i soldi lasciati sul tavolo creano solo confusione. Alla fine, nella maggior parte dei locali si paga alla cassa vicino all’uscita, portando lo scontrino, e per chiedere il conto si dice おかいけい を おねがいします."},
+{e:"🍱",t:"Mangiare in treno: dipende dal treno",w:"Shinkansen e treni locali",x:"Sullo しんかんせん e sugli altri treni a lunga percorrenza mangiare è normale: ci sono i tavolini ribaltabili e molti viaggiatori comprano un えきべん, il cestino da viaggio venduto in stazione, spesso con piatti tipici della regione. Meglio però evitare i cibi dall’odore forte e tenere in ordine il proprio posto. Sui treni locali e in metropolitana, soprattutto nelle ore di punta, mangiare un pasto è invece sconsigliato, e di solito si può al massimo bere o mangiare uno spuntino discreto. Anche camminare per strada mangiando è considerato maleducato da molti: in Giappone si mangia da fermi. Per questo la domanda ここ で たべて も いい です か。 ha una risposta che dipende dal posto."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);
