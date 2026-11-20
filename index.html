@@ -401,7 +401,8 @@ const PATH=L.length===44?[
  {id:"G9",kind:"g",cap:9,sec:"",t:"Aggettivi",poi:19,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9"]},
  {id:"K10",kind:"k",cap:10,sec:"",t:"Katakana yōon",from:36,to:41,poi:9,test:{n:30},needs:["K9"]},
  {id:"G10",kind:"g",cap:10,sec:"",t:"Esistere e posizione",poi:20,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10"]},
- {id:"K11",kind:"k",cap:11,sec:"",t:"Katakana estesi",from:42,to:43,poi:10,test:{n:30},needs:["K10"]}
+ {id:"K11",kind:"k",cap:11,sec:"",t:"Katakana estesi",from:42,to:43,poi:10,test:{n:30},needs:["K10"]},
+ {id:"G11",kind:"g",cap:11,sec:"",t:"Desideri e inviti",poi:21,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]}
 ]:[{id:"K1",kind:"k",cap:1,sec:"",t:"Kana",from:0,to:L.length-1,poi:0,test:{n:30},needs:[]}];
 /* WP-08: soglia per unità (min): 100 per i kana, 90 per la lingua. Per i kana resta in vigore MINK. */
 PATH.forEach(u=>{if(u.min===undefined)u.min=u.kind==="g"?90:100});
@@ -1074,7 +1075,80 @@ const GU={
    {jp:"いいえ、 いません。",ro:"iie, imasen",it:"No, non ce l’ho."}],ex:[
     {type:"mcq",q:"Come si dice “due persone”?",opts:["ふたり","ふたつ","にん","にひき"],a:0},
     {type:"mcq",q:"Come si dice “quattro persone”?",opts:["よにん","よんにん","よっつ","しにん"],a:0},
-    {type:"mcq",q:"Che cosa vuol dire ともだち が ひとり います。?",opts:["Ho un amico.","Non ho amici.","Ho due amici.","Il mio amico è qui."],a:0}]}]}
+    {type:"mcq",q:"Che cosa vuol dire ともだち が ひとり います。?",opts:["Ho un amico.","Non ho amici.","Ho due amici.","Il mio amico è qui."],a:0}]}]},
+ G11:{id:"G11",t:"Desideri e inviti",needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"],test:{n:25,review:5},lessons:[
+  {id:"G11-1",t:"〜 たい: voglio fare",teach:[
+   {jp:"たべたい",ro:"tabetai",it:"voglio mangiare",note:"Per dire “voglio fare” si toglie ます dal verbo e si aggiunge たい: たべます → たべたい. Con です diventa gentile: たべたい です."},
+   {jp:"のみたい",ro:"nomitai",it:"voglio bere"},
+   {jp:"いきたい",ro:"ikitai",it:"voglio andare"},
+   {jp:"みたい",ro:"mitai",it:"voglio guardare / voglio vedere"},
+   {jp:"かいたい",ro:"kaitai",it:"voglio comprare"},
+   {jp:"わたし は ごはん を たべたい です。",ro:"watashi wa gohan o tabetai desu",it:"Io voglio mangiare il riso."},
+   {jp:"わたし は おちゃ を のみたい です。",ro:"watashi wa ocha o nomitai desu",it:"Io voglio bere il tè."},
+   {jp:"にほん へ いきたい です。",ro:"nihon e ikitai desu",it:"Voglio andare in Giappone."},
+   {jp:"えいが を みたい です。",ro:"eiga o mitai desu",it:"Voglio guardare un film."},
+   {jp:"きっぷ を かいたい です。",ro:"kippu o kaitai desu",it:"Voglio comprare un biglietto."},
+   {jp:"なに を たべたい です か。",ro:"nani o tabetai desu ka",it:"Che cosa vuoi mangiare?"},
+   {jp:"どこ へ いきたい です か。",ro:"doko e ikitai desu ka",it:"Dove vuoi andare?"},
+   {jp:"いま は なにも たべたく ありません。",ro:"ima wa nanimo tabetaku arimasen",it:"Adesso non voglio mangiare niente.",note:"たい si comporta come un aggettivo in い: il negativo è たく ありません e il passato たかった です."},
+   {jp:"あした は がっこう へ いきたく ありません。",ro:"ashita wa gakkou e ikitaku arimasen",it:"Domani non voglio andare a scuola."}],ex:[
+    {type:"mcq",q:"Come si forma “voglio mangiare” da たべます?",opts:["たべたい","たべました","たべません","たべましょう"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire にほん へ いきたい です。?",opts:["Voglio andare in Giappone.","Sono andato in Giappone.","Non vado in Giappone.","Andiamo in Giappone."],a:0},
+    {type:"mcq",q:"Che cosa vuol dire たべたく ありません?",opts:["non voglio mangiare","non ho mangiato","non mangio","voglio mangiare"],a:0}]},
+  {id:"G11-2",t:"ほしい: voglio una cosa",teach:[
+   {jp:"ほしい",ro:"hoshii",it:"desiderato / che si vuole",note:"ほしい è un aggettivo in い e serve per le cose: くるま が ほしい です, “voglio una macchina”. La cosa voluta va con が. Per le azioni si usa invece たい."},
+   {jp:"じかん",ro:"jikan",it:"tempo / ora (durata)"},
+   {jp:"おかね",ro:"okane",it:"soldi"},
+   {jp:"わたし は くるま が ほしい です。",ro:"watashi wa kuruma ga hoshii desu",it:"Io voglio una macchina."},
+   {jp:"わたし は とけい が ほしい です。",ro:"watashi wa tokei ga hoshii desu",it:"Io voglio un orologio."},
+   {jp:"わたし は じかん が ほしい です。",ro:"watashi wa jikan ga hoshii desu",it:"Io voglio del tempo."},
+   {jp:"わたし は おかね が ほしい です。",ro:"watashi wa okane ga hoshii desu",it:"Io voglio dei soldi."},
+   {jp:"あなた は なに が ほしい です か。",ro:"anata wa nani ga hoshii desu ka",it:"Che cosa vuoi?"},
+   {jp:"これ が ほしい です。",ro:"kore ga hoshii desu",it:"Voglio questo."},
+   {jp:"それ は ほしく ありません。",ro:"sore wa hoshiku arimasen",it:"Quello non lo voglio."},
+   {jp:"わたし は なにも ほしく ありません。",ro:"watashi wa nanimo hoshiku arimasen",it:"Io non voglio niente."},
+   {jp:"わたし は ともだち が ほしい です。",ro:"watashi wa tomodachi ga hoshii desu",it:"Io vorrei degli amici."},
+   {jp:"みず が ほしい です。",ro:"mizu ga hoshii desu",it:"Vorrei dell’acqua."},
+   {jp:"ほん が ほしかった です。",ro:"hon ga hoshikatta desu",it:"Volevo un libro.",note:"Passato di un aggettivo in い: ほしい → ほしかった です."}],ex:[
+    {type:"mcq",q:"Che particella segna la cosa che si vuole con ほしい?",opts:["が","を","に","で"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire わたし は くるま が ほしい です。?",opts:["Io voglio una macchina.","Io ho una macchina.","Io compro una macchina.","Io non voglio una macchina."],a:0},
+    {type:"mcq",q:"Come si dice “Io non voglio niente.”?",opts:["わたし は なにも ほしく ありません。","わたし は なにも ほしい です。","わたし は なに が ほしい です。","わたし は なにも ほしかった です。"],a:0}]},
+  {id:"G11-3",t:"ください: ordinare",teach:[
+   {jp:"ください",ro:"kudasai",it:"mi dia / mi dà (per favore)",note:"Per chiedere qualcosa: cosa を ください. È gentile ma diretto; con おねがいします è ancora più cortese."},
+   {jp:"ちゅうもん",ro:"chuumon",it:"ordine / ordinazione",note:"ちゅうもん を おねがいします vuol dire “Vorrei ordinare”."},
+   {jp:"おかいけい",ro:"okaikei",it:"il conto",note:"Si dice al ristorante quando si vuole pagare."},
+   {jp:"ぜんぶ",ro:"zenbu",it:"tutto / in tutto"},
+   {jp:"みず を ください。",ro:"mizu o kudasai",it:"Mi dia dell’acqua, per favore."},
+   {jp:"おちゃ を ください。",ro:"ocha o kudasai",it:"Mi dia del tè, per favore."},
+   {jp:"これ を ください。",ro:"kore o kudasai",it:"Mi dia questo, per favore.",note:"Si usa indicando l’oggetto, per esempio sul menu o in negozio."},
+   {jp:"これ を ひとつ ください。",ro:"kore o hitotsu kudasai",it:"Mi dia questo, uno, per favore.",note:"Il numero va davanti a ください, con i numeri in つ di G10."},
+   {jp:"おちゃ を ふたつ ください。",ro:"ocha o futatsu kudasai",it:"Mi dia due tè, per favore."},
+   {jp:"きっぷ を ふたつ ください。",ro:"kippu o futatsu kudasai",it:"Mi dia due biglietti, per favore."},
+   {jp:"すみません、 みず を ください。",ro:"sumimasen, mizu o kudasai",it:"Scusi, mi dia dell’acqua, per favore."},
+   {jp:"おちゃ を おねがいします。",ro:"ocha o onegaishimasu",it:"Del tè, per favore.",note:"おねがいします si può usare al posto di ください ed è un po’ più cortese."},
+   {jp:"おかいけい を おねがいします。",ro:"okaikei o onegaishimasu",it:"Il conto, per favore."},
+   {jp:"ぜんぶ で いくら です か。",ro:"zenbu de ikura desu ka",it:"Quanto costa in tutto?"}],ex:[
+    {type:"mcq",q:"Come si chiede “Mi dia dell’acqua, per favore.”?",opts:["みず を ください。","みず が ください。","みず に ください。","みず で ください。"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire おかいけい を おねがいします。?",opts:["Il conto, per favore.","Il menu, per favore.","Vorrei ordinare.","Dov’è il bagno?"],a:0},
+    {type:"mcq",q:"Come si dice “Mi dia due tè, per favore.”?",opts:["おちゃ を ふたつ ください。","おちゃ を ふたり ください。","おちゃ が ふたつ ください。","おちゃ を ふたつ ありません。"],a:0}]},
+  {id:"G11-4",t:"Inviti e rifiuti",teach:[
+   {jp:"いきましょう",ro:"ikimashou",it:"andiamo!",note:"Per proporre “facciamo...” si cambia ます in ましょう: いきます → いきましょう. Con か diventa “facciamo...?”."},
+   {jp:"たべましょう",ro:"tabemashou",it:"mangiamo!"},
+   {jp:"いっしょ",ro:"issho",it:"insieme",note:"Si usa con に: いっしょ に, “insieme”."},
+   {jp:"いっしょ に いきましょう。",ro:"issho ni ikimashou",it:"Andiamo insieme."},
+   {jp:"いっしょ に えいが を みましょう。",ro:"issho ni eiga o mimashou",it:"Guardiamo un film insieme."},
+   {jp:"えき で あいましょう。",ro:"eki de aimashou",it:"Incontriamoci alla stazione."},
+   {jp:"なに を たべましょう か。",ro:"nani o tabemashou ka",it:"Che cosa mangiamo?"},
+   {jp:"いっしょ に いきません か。",ro:"issho ni ikimasen ka",it:"Vuoi venire insieme?",note:"ません か è una domanda negativa che vuol dire “non vuoi...?”: è un invito, più morbido di ましょう."},
+   {jp:"いっしょ に ごはん を たべません か。",ro:"issho ni gohan o tabemasen ka",it:"Vuoi mangiare insieme?"},
+   {jp:"あした えいが を みません か。",ro:"ashita eiga o mimasen ka",it:"Domani vuoi guardare un film?"},
+   {jp:"はい、 いきましょう。",ro:"hai, ikimashou",it:"Sì, andiamo."},
+   {jp:"すみません、 あした は ちょっと むずかしい です。",ro:"sumimasen, ashita wa chotto muzukashii desu",it:"Scusa, domani è un po’ difficile.",note:"È un rifiuto gentile: si evita il “no” netto e si dice che è difficile."},
+   {jp:"また こんど おねがいします。",ro:"mata kondo onegaishimasu",it:"Un’altra volta, per favore."},
+   {jp:"ざんねん です。",ro:"zannen desu",it:"Peccato."}],ex:[
+    {type:"mcq",q:"Che cosa vuol dire いっしょ に いきましょう。?",opts:["Andiamo insieme.","Sono andato insieme.","Non vado insieme.","Voglio andare insieme."],a:0},
+    {type:"mcq",q:"Che cosa vuol dire いっしょ に いきません か。?",opts:["Vuoi venire insieme?","Non sono andato insieme.","Non voglio andare insieme.","Siamo andati insieme."],a:0},
+    {type:"mcq",q:"Quale frase rifiuta un invito con garbo?",opts:["すみません、 あした は ちょっと むずかしい です。","いきたく ありません。","いいえ、 いきます。","はい、 いきましょう。"],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -1133,7 +1207,8 @@ const POI=[
 {e:"🚆",t:"In treno si sta in silenzio",w:"Treni e metropolitane giapponesi",x:"Su un でんしゃ giapponese, anche nelle ore di punta, di solito si sta in silenzio: si parla a voce bassa e si evita il chiasso. Il telefono si mette in “modalità silenziosa” (in Giappone si dice “manner mode”) e si evitano le chiamate, でんわ: non c’è una legge, è una regola di buona educazione, che spesso ricordano avvisi e annunci. Se arriva una chiamata si dice che si richiamerà più tardi, oppure si scende alla fermata dopo. Alle estremità delle carrozze ci sono i posti riservati, ゆうせんせき, per anziani, persone con disabilità, donne incinte, feriti e chi ha bambini piccoli: se sono liberi ci si può sedere, ma si cedono appena sale chi ne ha bisogno."},
 {e:"🙅",t:"Il “no” che non si dice",w:"Rifiutare con garbo",x:"Il no netto, いいえ, in Giappone si usa meno di quanto ci si aspetti. Per non mettere a disagio, spesso si rifiuta in modo indiretto: si lascia la frase a metà con un ちょっと… (“un po’…”), si dice che è むずかしい (“è difficile”) oppure また こんど (“un’altra volta”). Chi ascolta capisce da solo che la risposta è no: dopo un invito, un ちょっと… di solito vuol dire che non si può, anche se nessuno ha detto ません. Per questo, quando impari a dire ません, ricorda che nella conversazione reale un rifiuto gentile può non contenere nessun no."},
 {e:"🌸",t:"Hanami: guardare i fiori",w:"Primavera in Giappone",x:"はなみ vuol dire “guardare i fiori”: in primavera, quando fioriscono i さくら, i ciliegi giapponesi, amici, famiglie e colleghi si ritrovano nei parchi e fanno un picnic sotto gli alberi, con cibo, bevande e spesso canti. La fioritura dura solo una o due settimane, di solito tra fine marzo e inizio aprile, e la data cambia da regione a regione: per questo le previsioni si seguono con attenzione. Si stende un telo per terra e, come in casa, si tolgono le scarpe prima di salirci. È una tradizione antica di oltre mille anni: all’inizio era un’abitudine della corte, poi è diventata di tutti."},
-{e:"🗺️",t:"Indirizzi senza nome di strada",w:"Orientarsi in Giappone",x:"In Giappone la maggior parte delle strade non ha un nome, e gli indirizzi non indicano la via: vanno dall’area più grande alla più piccola, con i numeri del quartiere, dell’isolato e dell’edificio. Per questo, quando si dà un’indicazione, si usano molto i punti di riferimento: un negozio, un parco, una stazione. Le frasi di questa unità servono proprio a questo, per esempio えき の ちかく に こうえん が あります. Se ti perdi, cerca il こうばん, il piccolo posto di polizia che c’è nella maggior parte dei quartieri: gli agenti hanno le mappe della zona e aiutano chi non trova un indirizzo. Qualche eccezione c’è, come Kyoto, dove si usa anche un sistema basato sulle strade."}];
+{e:"🗺️",t:"Indirizzi senza nome di strada",w:"Orientarsi in Giappone",x:"In Giappone la maggior parte delle strade non ha un nome, e gli indirizzi non indicano la via: vanno dall’area più grande alla più piccola, con i numeri del quartiere, dell’isolato e dell’edificio. Per questo, quando si dà un’indicazione, si usano molto i punti di riferimento: un negozio, un parco, una stazione. Le frasi di questa unità servono proprio a questo, per esempio えき の ちかく に こうえん が あります. Se ti perdi, cerca il こうばん, il piccolo posto di polizia che c’è nella maggior parte dei quartieri: gli agenti hanno le mappe della zona e aiutano chi non trova un indirizzo. Qualche eccezione c’è, come Kyoto, dove si usa anche un sistema basato sulle strade."},
+{e:"🍵",t:"Al ristorante si chiama il cameriere",w:"Mangiare fuori in Giappone",x:"In molti ristoranti giapponesi il personale non gira intorno al tavolo: quando sei pronto a ordinare, alzi un po’ la mano e dici すみません, oppure premi il pulsante di chiamata, se c’è. Di solito ti portano subito acqua o tè gratis (se ne vuoi ancora basta chiederlo) e spesso un おしぼり, un asciugamano umido da usare solo per le mani. Per ordinare basta indicare il menu e dire これ を ください, oppure おちゃ を ください. Non si lascia la mancia: il prezzo del menu è quello che si paga, e i soldi lasciati sul tavolo creano solo confusione. Alla fine, nella maggior parte dei locali si paga alla cassa vicino all’uscita, portando lo scontrino, e per chiedere il conto si dice おかいけい を おねがいします."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);
