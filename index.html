@@ -404,7 +404,8 @@ const PATH=L.length===44?[
  {id:"K11",kind:"k",cap:11,sec:"",t:"Katakana estesi",from:42,to:43,poi:10,test:{n:30},needs:["K10"]},
  {id:"G11",kind:"g",cap:11,sec:"",t:"Desideri e inviti",poi:21,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]},
  {id:"G12",kind:"g",cap:12,sec:"",t:"Forma て",poi:22,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]},
- {id:"G13",kind:"g",cap:13,sec:"",t:"Viaggio in pratica",poi:23,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]}
+ {id:"G13",kind:"g",cap:13,sec:"",t:"Viaggio in pratica",poi:23,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]},
+ {id:"G14",kind:"g",cap:14,sec:"",t:"Giapponese informale",poi:24,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]}
 ]:[{id:"K1",kind:"k",cap:1,sec:"",t:"Kana",from:0,to:L.length-1,poi:0,test:{n:30},needs:[]}];
 /* WP-08: soglia per unità (min): 100 per i kana, 90 per la lingua. Per i kana resta in vigore MINK. */
 PATH.forEach(u=>{if(u.min===undefined)u.min=u.kind==="g"?90:100});
@@ -1314,7 +1315,98 @@ const GU={
    {jp:"さいふ を なくしました。",ro:"saifu o nakushimashita",it:"Ho perso il portafoglio.",note:"なくします vuol dire “perdere”: なくしました è il passato."}],ex:[
     {type:"mcq",q:"Hai bisogno di un’ambulanza. Che cosa dici?",opts:["きゅうきゅうしゃ を よんで ください。","きゅうきゅうしゃ を たべて ください。","きゅうきゅうしゃ は ありません。","きゅうきゅうしゃ に あって ください。"],a:0},
     {type:"mcq",q:"Che cosa vuol dire ねつ が あります。?",opts:["Ho la febbre.","Ho mal di testa.","Ho perso la medicina.","Ho fame."],a:0},
-    {type:"mcq",q:"Che cosa vuol dire さいふ を なくしました。?",opts:["Ho perso il portafoglio.","Voglio un portafoglio.","Compro un portafoglio.","Non ho il portafoglio."],a:0}]}]}
+    {type:"mcq",q:"Che cosa vuol dire さいふ を なくしました。?",opts:["Ho perso il portafoglio.","Voglio un portafoglio.","Compro un portafoglio.","Non ho il portafoglio."],a:0}]}]},
+ G14:{id:"G14",t:"Giapponese informale",needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"],test:{n:25,review:5},lessons:[
+  {id:"G14-1",t:"Forma piana: presente",teach:[
+   {jp:"たべる",ro:"taberu",it:"mangio / mangi (forma piana)",note:"La forma piana, o del dizionario, è quella informale: si usa con familiari e amici stretti, non con persone da rispettare. Per i verbi come たべます si toglie ます e si aggiunge る: たべます → たべる."},
+   {jp:"みる",ro:"miru",it:"guardo / vedo (forma piana)",note:"みます → みる."},
+   {jp:"のむ",ro:"nomu",it:"bevo (forma piana)",note:"Gli altri verbi: l’ultima sillaba prima di ます passa dalla riga い alla riga う. のみます → のむ, かきます → かく, はなします → はなす, かいます → かう."},
+   {jp:"いく",ro:"iku",it:"vado (forma piana)"},
+   {jp:"かう",ro:"kau",it:"compro (forma piana)"},
+   {jp:"かく",ro:"kaku",it:"scrivo (forma piana)"},
+   {jp:"よむ",ro:"yomu",it:"leggo (forma piana)"},
+   {jp:"はなす",ro:"hanasu",it:"parlo (forma piana)"},
+   {jp:"する",ro:"suru",it:"faccio (forma piana)",note:"します → する e きます → くる sono irregolari."},
+   {jp:"くる",ro:"kuru",it:"vengo (forma piana)"},
+   {jp:"ごはん を たべる。",ro:"gohan o taberu",it:"Mangio il riso."},
+   {jp:"なに を たべる？",ro:"nani o taberu",it:"Che cosa mangi?",note:"Nel parlato informale la domanda si fa senza か, con il tono che sale: si scrive con ？."},
+   {jp:"あした いく？",ro:"ashita iku",it:"Domani vai?"},
+   {jp:"えいが を みる？",ro:"eiga o miru",it:"Guardi un film?"}],ex:[
+    {type:"mcq",q:"Con un amico, quale forma è informale per “mangio”?",opts:["たべる","たべます","たべました","たべません"],a:0},
+    {type:"mcq",q:"Qual è la forma piana di のみます?",opts:["のむ","のみる","のまる","のもる"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire あした いく？?",opts:["Domani vai?","Ieri sono andato.","Domani non vado.","Andiamo domani."],a:0}]},
+  {id:"G14-2",t:"Forma piana: ない",teach:[
+   {jp:"たべない",ro:"tabenai",it:"non mangio (forma piana)",note:"Verbi come たべる: si toglie る e si aggiunge ない: たべる → たべない. Gli altri verbi: l’ultima sillaba passa alla riga あ e si aggiunge ない: のむ → のまない, かく → かかない, いく → いかない."},
+   {jp:"みない",ro:"minai",it:"non guardo (forma piana)"},
+   {jp:"のまない",ro:"nomanai",it:"non bevo (forma piana)"},
+   {jp:"いかない",ro:"ikanai",it:"non vado (forma piana)"},
+   {jp:"かわない",ro:"kawanai",it:"non compro (forma piana)",note:"かう → かわない: con le sillabe in う la riga あ è わ, non あ."},
+   {jp:"かかない",ro:"kakanai",it:"non scrivo (forma piana)"},
+   {jp:"しない",ro:"shinai",it:"non faccio (forma piana)",note:"する → しない e くる → こない sono irregolari."},
+   {jp:"こない",ro:"konai",it:"non vengo (forma piana)"},
+   {jp:"ない",ro:"nai",it:"non c’è / non ho",note:"ない vuol dire anche “non c’è”: è il negativo informale di ある (G10). おかね が ない vuol dire “non ho soldi”."},
+   {jp:"ごはん を たべない。",ro:"gohan o tabenai",it:"Non mangio il riso."},
+   {jp:"あした は いかない。",ro:"ashita wa ikanai",it:"Domani non vado."},
+   {jp:"なに も のまない。",ro:"nani mo nomanai",it:"Non bevo niente."},
+   {jp:"なに も かわない。",ro:"nani mo kawanai",it:"Non compro niente."},
+   {jp:"いっしょ に いかない？",ro:"issho ni ikanai",it:"Non vieni con me? (Vieni insieme?)",note:"È l’invito informale: corrisponde a いっしょ に いきません か。 (G11)."}],ex:[
+    {type:"mcq",q:"Qual è la forma piana negativa di のむ?",opts:["のまない","のみない","のむない","のんない"],a:0},
+    {type:"mcq",q:"Qual è la forma piana negativa di かう?",opts:["かわない","かあない","かない","かうない"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire あした は いかない。?",opts:["Domani non vado.","Domani vado.","Ieri non sono andato.","Andiamo domani."],a:0}]},
+  {id:"G14-3",t:"Forma piana: passato",teach:[
+   {jp:"たべた",ro:"tabeta",it:"ho mangiato (forma piana)",note:"Il passato piano si ricava dalla forma て: て diventa た e で diventa だ. たべて → たべた, のんで → のんだ, いって → いった, かいて → かいた, はなして → はなした."},
+   {jp:"みた",ro:"mita",it:"ho guardato / ho visto (forma piana)"},
+   {jp:"のんだ",ro:"nonda",it:"ho bevuto (forma piana)"},
+   {jp:"いった",ro:"itta",it:"sono andato (forma piana)"},
+   {jp:"かった",ro:"katta",it:"ho comprato (forma piana)",note:"かって → かった. Si legge allo stesso modo di “ha vinto”, ma il senso si capisce dalla frase."},
+   {jp:"かいた",ro:"kaita",it:"ho scritto (forma piana)"},
+   {jp:"はなした",ro:"hanashita",it:"ho parlato (forma piana)"},
+   {jp:"きた",ro:"kita",it:"sono venuto (forma piana)",note:"くる → きた, e する → した sono irregolari."},
+   {jp:"たべなかった",ro:"tabenakatta",it:"non ho mangiato (forma piana)",note:"Il passato negativo piano è ない → なかった: たべない → たべなかった."},
+   {jp:"いかなかった",ro:"ikanakatta",it:"non sono andato (forma piana)"},
+   {jp:"しなかった",ro:"shinakatta",it:"non ho fatto (forma piana)"},
+   {jp:"きのう ごはん を たべた。",ro:"kinou gohan o tabeta",it:"Ieri ho mangiato il riso."},
+   {jp:"きのう えいが を みた？",ro:"kinou eiga o mita",it:"Ieri hai guardato un film?"},
+   {jp:"きのう は なに も しなかった。",ro:"kinou wa nani mo shinakatta",it:"Ieri non ho fatto niente."}],ex:[
+    {type:"mcq",q:"Qual è il passato piano di のむ?",opts:["のんだ","のみた","のんた","のむた"],a:0},
+    {type:"mcq",q:"Qual è il passato piano di いく?",opts:["いった","いいた","いきた","いんだ"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire きのう は なに も しなかった。?",opts:["Ieri non ho fatto niente.","Ieri ho fatto tutto.","Domani non faccio niente.","Che cosa hai fatto ieri?"],a:0}]},
+  {id:"G14-4",t:"だ, じゃ ない, よ e ね",teach:[
+   {jp:"だ",ro:"da",it:"è / sono (forma piana di です)",note:"だ è la forma piana di です: これ は ほん だ, “questo è un libro”. Nelle domande informali di solito si toglie: これ は ほん？"},
+   {jp:"だった",ro:"datta",it:"era (forma piana di でした)"},
+   {jp:"じゃ ない",ro:"ja nai",it:"non è (forma piana di じゃ ありません)"},
+   {jp:"じゃ なかった",ro:"ja nakatta",it:"non era (forma piana di じゃ ありませんでした)"},
+   {jp:"よ",ro:"yo",it:"(particella: “te lo dico io”)",note:"よ in fondo alla frase dà un’informazione all’ascoltatore: “sai, è così”."},
+   {jp:"ね",ro:"ne",it:"(particella: “vero?”)",note:"ね cerca conferma o condivide un’opinione: “vero?”, “non è così?”."},
+   {jp:"てんき",ro:"tenki",it:"tempo (atmosferico)"},
+   {jp:"だいじょうぶ",ro:"daijoubu",it:"va bene / tutto a posto",note:"Si usa sia per chiedere (だいじょうぶ？) sia per rispondere."},
+   {jp:"これ は わたし の ほん だ。",ro:"kore wa watashi no hon da",it:"Questo è il mio libro."},
+   {jp:"あれ は えき じゃ ない。",ro:"are wa eki ja nai",it:"Quella là non è una stazione."},
+   {jp:"きのう は やすみ だった。",ro:"kinou wa yasumi datta",it:"Ieri era un giorno libero."},
+   {jp:"いい てんき だ ね。",ro:"ii tenki da ne",it:"Bel tempo, vero?"},
+   {jp:"そう だ よ。",ro:"sou da yo",it:"È così, sai."},
+   {jp:"あした は だいじょうぶ？",ro:"ashita wa daijoubu",it:"Domani va bene?"}],ex:[
+    {type:"mcq",q:"Qual è la forma piana di です?",opts:["だ","だった","ます","じゃ ない"],a:0},
+    {type:"mcq",q:"Che cosa fa ね in いい てんき だ ね。?",opts:["cerca conferma, come “vero?”","fa una domanda","indica il passato","dà un ordine"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire あれ は えき じゃ ない。?",opts:["Quella là non è una stazione.","Quella là è una stazione.","Quella là era una stazione.","Dov’è la stazione?"],a:0}]},
+  {id:"G14-5",t:"Parole da anime e da film",teach:[
+   {jp:"すごい",ro:"sugoi",it:"fantastico / pazzesco",note:"Attenzione al registro: queste parole di questa lezione sono informali, da usare con amici e non con chi si deve rispettare (insegnanti, superiori, sconosciuti). Si sentono moltissimo in anime e film. すごい si usa per cose belle o sorprendenti."},
+   {jp:"やばい",ro:"yabai",it:"che pericolo / che figata (slang)",note:"Slang: vuol dire “pericoloso, grave” e tra giovani anche “fortissimo”: il senso dipende dal tono. Informale, da non usare con persone da rispettare."},
+   {jp:"まじ",ro:"maji",it:"davvero / sul serio",note:"Molto informale, da amici: まじ？ vuol dire “davvero?”."},
+   {jp:"だめ",ro:"dame",it:"no / non va / vietato",note:"È diretto: con chi si deve rispettare risulta scortese."},
+   {jp:"うそ",ro:"uso",it:"bugia / non è possibile!",note:"うそ？ si dice anche per sorpresa: “non ci credo!”."},
+   {jp:"かわいい",ro:"kawaii",it:"carino / tenero",note:"Aggettivo in い: si usa per persone, animali e cose tenere."},
+   {jp:"うるさい",ro:"urusai",it:"rumoroso / che fastidio",note:"Detto a qualcuno vuol dire “smettila!”: può essere scortese."},
+   {jp:"ごめん",ro:"gomen",it:"scusa",note:"È la forma informale di ごめんなさい. Con persone da rispettare si usa すみません o ごめんなさい."},
+   {jp:"ちがう",ro:"chigau",it:"non è così / è diverso / sbagli",note:"ちがう vuol dire “no, non è così”: è più diretto di そう じゃ ない."},
+   {jp:"ねえ",ro:"nee",it:"ehi / senti (per attirare l’attenzione)"},
+   {jp:"これ は すごい ね。",ro:"kore wa sugoi ne",it:"Questo è pazzesco, vero?"},
+   {jp:"ごめん、 ちょっと むずかしい。",ro:"gomen, chotto muzukashii",it:"Scusa, è un po’ difficile.",note:"È il rifiuto gentile tra amici: come ごめんなさい, ちょっと むずかしい です (G11), senza il “no”."},
+   {jp:"ねえ、 あした いく？",ro:"nee, ashita iku",it:"Senti, domani vai?"},
+   {jp:"ここ は だめ だ よ。",ro:"koko wa dame da yo",it:"Qui non si può, sai."}],ex:[
+    {type:"mcq",q:"Con chi NON si usa やばい?",opts:["con insegnanti e persone da rispettare","con amici stretti","con i fratelli","con i familiari"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire まじ？?",opts:["Davvero?","Scusa.","Non è così.","Che bello."],a:0},
+    {type:"mcq",q:"Con un amico, quale frase rifiuta con garbo un invito?",opts:["ごめん、 ちょっと むずかしい。","うるさい。","ちがう。","まじ？"],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -1376,7 +1468,8 @@ const POI=[
 {e:"🗺️",t:"Indirizzi senza nome di strada",w:"Orientarsi in Giappone",x:"In Giappone la maggior parte delle strade non ha un nome, e gli indirizzi non indicano la via: vanno dall’area più grande alla più piccola, con i numeri del quartiere, dell’isolato e dell’edificio. Per questo, quando si dà un’indicazione, si usano molto i punti di riferimento: un negozio, un parco, una stazione. Le frasi di questa unità servono proprio a questo, per esempio えき の ちかく に こうえん が あります. Se ti perdi, cerca il こうばん, il piccolo posto di polizia che c’è nella maggior parte dei quartieri: gli agenti hanno le mappe della zona e aiutano chi non trova un indirizzo. Qualche eccezione c’è, come Kyoto, dove si usa anche un sistema basato sulle strade."},
 {e:"🍵",t:"Al ristorante si chiama il cameriere",w:"Mangiare fuori in Giappone",x:"In molti ristoranti giapponesi il personale non gira intorno al tavolo: quando sei pronto a ordinare, alzi un po’ la mano e dici すみません, oppure premi il pulsante di chiamata, se c’è. Di solito ti portano subito acqua o tè gratis (se ne vuoi ancora basta chiederlo) e spesso un おしぼり, un asciugamano umido da usare solo per le mani. Per ordinare basta indicare il menu e dire これ を ください, oppure おちゃ を ください. Non si lascia la mancia: il prezzo del menu è quello che si paga, e i soldi lasciati sul tavolo creano solo confusione. Alla fine, nella maggior parte dei locali si paga alla cassa vicino all’uscita, portando lo scontrino, e per chiedere il conto si dice おかいけい を おねがいします."},
 {e:"🍱",t:"Mangiare in treno: dipende dal treno",w:"Shinkansen e treni locali",x:"Sullo しんかんせん e sugli altri treni a lunga percorrenza mangiare è normale: ci sono i tavolini ribaltabili e molti viaggiatori comprano un えきべん, il cestino da viaggio venduto in stazione, spesso con piatti tipici della regione. Meglio però evitare i cibi dall’odore forte e tenere in ordine il proprio posto. Sui treni locali e in metropolitana, soprattutto nelle ore di punta, mangiare un pasto è invece sconsigliato, e di solito si può al massimo bere o mangiare uno spuntino discreto. Anche camminare per strada mangiando è considerato maleducato da molti: in Giappone si mangia da fermi. Per questo la domanda ここ で たべて も いい です か。 ha una risposta che dipende dal posto."},
-{e:"🚑",t:"110 e 119: i numeri di emergenza",w:"Se qualcosa va storto",x:"In Giappone si chiama il 110 per la polizia, けいさつ, e il 119 per l’ambulanza, きゅうきゅうしゃ, e per i vigili del fuoco. Le chiamate sono gratuite, anche da un telefono pubblico o da un cellulare. Alcuni servizi hanno interpreti in inglese e in altre lingue, ma non sempre e non ovunque: per questo conviene conoscere qualche frase in giapponese, come たすけて ください. e きゅうきゅうしゃ を よんで ください. Per i problemi meno gravi, come un portafoglio perso o una strada da chiedere, di solito si va al こうばん, il piccolo posto di polizia di quartiere."}];
+{e:"🚑",t:"110 e 119: i numeri di emergenza",w:"Se qualcosa va storto",x:"In Giappone si chiama il 110 per la polizia, けいさつ, e il 119 per l’ambulanza, きゅうきゅうしゃ, e per i vigili del fuoco. Le chiamate sono gratuite, anche da un telefono pubblico o da un cellulare. Alcuni servizi hanno interpreti in inglese e in altre lingue, ma non sempre e non ovunque: per questo conviene conoscere qualche frase in giapponese, come たすけて ください. e きゅうきゅうしゃ を よんで ください. Per i problemi meno gravi, come un portafoglio perso o una strada da chiedere, di solito si va al こうばん, il piccolo posto di polizia di quartiere."},
+{e:"🎌",t:"Amici o sconosciuti: due modi di parlare",w:"Giapponese cortese e informale",x:"In giapponese il modo di parlare cambia a seconda di chi hai davanti. Con sconosciuti, insegnanti, colleghi con cui non c’è confidenza, persone più anziane o appena conosciute si usa la forma cortese, です e ます: è la scelta sicura, e quella che hai imparato nella maggior parte di questo percorso. La forma piana, quella di たべる e だ, si usa tra familiari e amici stretti, oppure quando due persone si accordano per passare al registro informale; usata con la persona sbagliata può sembrare scortese o presuntuosa. Nei film e negli anime senti spesso parlare in modo informale, ma il giapponese degli anime è stilizzato e a volte volutamente sopra le righe: va benissimo per allenare l’orecchio, ma da imitare con cautela, e nel dubbio resta sul cortese. Anche ありがとう diventa ありがとう ございます quando serve più rispetto."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);
