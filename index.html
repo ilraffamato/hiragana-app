@@ -403,7 +403,8 @@ const PATH=L.length===44?[
  {id:"G10",kind:"g",cap:10,sec:"",t:"Esistere e posizione",poi:20,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10"]},
  {id:"K11",kind:"k",cap:11,sec:"",t:"Katakana estesi",from:42,to:43,poi:10,test:{n:30},needs:["K10"]},
  {id:"G11",kind:"g",cap:11,sec:"",t:"Desideri e inviti",poi:21,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]},
- {id:"G12",kind:"g",cap:12,sec:"",t:"Forma て",poi:22,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]}
+ {id:"G12",kind:"g",cap:12,sec:"",t:"Forma て",poi:22,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]},
+ {id:"G13",kind:"g",cap:13,sec:"",t:"Viaggio in pratica",poi:23,test:{n:25},needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"]}
 ]:[{id:"K1",kind:"k",cap:1,sec:"",t:"Kana",from:0,to:L.length-1,poi:0,test:{n:30},needs:[]}];
 /* WP-08: soglia per unità (min): 100 per i kana, 90 per la lingua. Per i kana resta in vigore MINK. */
 PATH.forEach(u=>{if(u.min===undefined)u.min=u.kind==="g"?90:100});
@@ -1222,7 +1223,98 @@ const GU={
    {jp:"ここ に はいって は いけません。",ro:"koko ni haitte wa ikemasen",it:"Qui non si può entrare.",note:"はいります vuol dire “entrare”: forma て はいって."}],ex:[
     {type:"mcq",q:"Che cosa vuol dire いま ごはん を たべて います。?",opts:["Adesso sto mangiando.","Ho mangiato il riso.","Voglio mangiare il riso.","Mangiamo il riso."],a:0},
     {type:"mcq",q:"Come si chiede il permesso: “Posso scrivere qui?”",opts:["ここ に かいて も いい です か。","ここ に かいて ください。","ここ に かいて います。","ここ に かいて は いけません。"],a:0},
-    {type:"mcq",q:"Che cosa vuol dire ここ で たべて は いけません。?",opts:["Qui non si può mangiare.","Posso mangiare qui?","Sto mangiando qui.","Mangi qui, per favore."],a:0}]}]}
+    {type:"mcq",q:"Che cosa vuol dire ここ で たべて は いけません。?",opts:["Qui non si può mangiare.","Posso mangiare qui?","Sto mangiando qui.","Mangi qui, per favore."],a:0}]}]},
+ G13:{id:"G13",t:"Viaggio in pratica",needs:["K1","K2","K3","K4","K5","K6","K7","K8","K9","K10","K11"],test:{n:25,review:5},lessons:[
+  {id:"G13-1",t:"Stazione e treni",teach:[
+   {jp:"ホーム",it:"binario / banchina",note:"Nei katakana la vocale lunga si scrive con il segno ー: ホーム si legge hoomu (ho + o + mu). Il segno ー si usa nei katakana e non è una lettera: allunga la vocale prima."},
+   {jp:"しんかんせん",ro:"shinkansen",it:"shinkansen (treno ad alta velocità)"},
+   {jp:"でぐち",ro:"deguchi",it:"uscita"},
+   {jp:"いりぐち",ro:"iriguchi",it:"ingresso"},
+   {jp:"のりかえ",ro:"norikae",it:"cambio (di treno)"},
+   {jp:"つぎ",ro:"tsugi",it:"prossimo"},
+   {jp:"とうきょう",ro:"toukyou",it:"Tokyo"},
+   {jp:"しんかんせん の きっぷ を ください。",ro:"shinkansen no kippu o kudasai",it:"Un biglietto per lo shinkansen, per favore."},
+   {jp:"ホーム は どこ です か。",it:"Dov’è il binario?"},
+   {jp:"でぐち は どこ です か。",ro:"deguchi wa doko desu ka",it:"Dov’è l’uscita?"},
+   {jp:"この でんしゃ は とうきょう へ いきます か。",ro:"kono densha wa toukyou e ikimasu ka",it:"Questo treno va a Tokyo?"},
+   {jp:"とうきょう まで いくら です か。",ro:"toukyou made ikura desu ka",it:"Quanto costa fino a Tokyo?"},
+   {jp:"つぎ の でんしゃ は なんじ です か。",ro:"tsugi no densha wa nanji desu ka",it:"A che ora è il prossimo treno?"},
+   {jp:"のりかえ は どこ です か。",ro:"norikae wa doko desu ka",it:"Dove si cambia treno?"}],ex:[
+    {type:"mcq",q:"Alla biglietteria vuoi un biglietto per lo shinkansen. Che cosa dici?",opts:["しんかんせん の きっぷ を ください。","しんかんせん を たべて ください。","しんかんせん は ゆっくり です。","しんかんせん に はいって は いけません。"],a:0},
+    {type:"mcq",q:"Non trovi l’uscita. Che cosa chiedi?",opts:["でぐち は どこ です か。","でぐち は いくら です か。","でぐち は だれ です か。","でぐち は いつ です か。"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire この でんしゃ は とうきょう へ いきます か。?",opts:["Questo treno va a Tokyo?","Questo treno viene da Tokyo?","Vado a Tokyo in treno.","Quanto costa il treno per Tokyo?"],a:0}]},
+  {id:"G13-2",t:"Albergo",teach:[
+   {jp:"ホテル",it:"albergo"},
+   {jp:"へや",ro:"heya",it:"camera / stanza"},
+   {jp:"ベッド",it:"letto",note:"Anche nei katakana il piccolo ッ raddoppia la consonante dopo: ベッド si legge beddo. Funziona come il っ degli hiragana."},
+   {jp:"シャワー",it:"doccia"},
+   {jp:"かぎ",ro:"kagi",it:"chiave"},
+   {jp:"よやく",ro:"yoyaku",it:"prenotazione"},
+   {jp:"チェックイン",it:"check-in",note:"Le parole prese dall’inglese si scrivono in katakana. チェ è una delle combinazioni estese di K11."},
+   {jp:"チェックアウト",it:"check-out"},
+   {jp:"パスポート",it:"passaporto"},
+   {jp:"よやく を して います。",ro:"yoyaku o shite imasu",it:"Ho una prenotazione.",note:"よやく を して います vuol dire letteralmente “sto facendo/ho fatto la prenotazione”: è la frase usata alla reception."},
+   {jp:"チェックイン を おねがいします。",it:"Il check-in, per favore."},
+   {jp:"チェックアウト は なんじ まで です か。",it:"Fino a che ora è il check-out?"},
+   {jp:"パスポート を みせて ください。",it:"Mi faccia vedere il passaporto, per favore."},
+   {jp:"へや に シャワー は あります か。",it:"In camera c’è la doccia?"}],ex:[
+    {type:"mcq",q:"Arrivi in albergo e hai già prenotato. Che cosa dici?",opts:["よやく を して います。","よやく を ください。","よやく は どこ です か。","よやく を のみます。"],a:0},
+    {type:"mcq",q:"Vuoi sapere fino a che ora devi lasciare la camera. Che cosa chiedi?",opts:["チェックアウト は なんじ まで です か。","チェックアウト は いくら です か。","チェックアウト を たべて ください。","チェックアウト は だれ です か。"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire パスポート を みせて ください。?",opts:["Mi faccia vedere il passaporto, per favore.","Ho perso il passaporto.","Dov’è il passaporto?","Scriva il passaporto qui."],a:0}]},
+  {id:"G13-3",t:"Negozio e konbini",teach:[
+   {jp:"コンビニ",it:"konbini (minimarket)",note:"I konbini sono i minimarket giapponesi, e molti sono aperti 24 ore su 24: vendono cibo, bevande e molte altre cose."},
+   {jp:"トイレ",it:"bagno / toilette",note:"おてあらい (G3) è la forma più cortese; トイレ è la parola comune."},
+   {jp:"レジ",it:"cassa"},
+   {jp:"おにぎり",ro:"onigiri",it:"onigiri (polpetta di riso)"},
+   {jp:"パン",it:"pane"},
+   {jp:"コーヒー",it:"caffè"},
+   {jp:"サンドイッチ",it:"sandwich / tramezzino",note:"Il piccolo ッ prima di チ fa sandoicchi: raddoppia la consonante."},
+   {jp:"カード",it:"carta (di credito)"},
+   {jp:"コンビニ は どこ です か。",it:"Dov’è il konbini?"},
+   {jp:"トイレ は どこ です か。",it:"Dov’è il bagno?"},
+   {jp:"おちゃ と おにぎり を ください。",ro:"ocha to onigiri o kudasai",it:"Mi dia un tè e un onigiri, per favore.",note:"と qui vuol dire “e” e collega due nomi: A と B."},
+   {jp:"コーヒー と パン を ください。",it:"Mi dia un caffè e del pane, per favore."},
+   {jp:"カード で おねがいします。",it:"Con la carta, per favore.",note:"で segna il mezzo di pagamento."},
+   {jp:"もって かえります。",ro:"motte kaerimasu",it:"Lo porto via (da asporto).",note:"もって viene da もちます, “portare, tenere”: もって かえります vuol dire “lo porto a casa”, cioè da asporto."}],ex:[
+    {type:"mcq",q:"Cerchi il bagno. Che cosa chiedi?",opts:["トイレ は どこ です か。","トイレ を よんで ください。","トイレ は いくら です か。","トイレ を かいます。"],a:0},
+    {type:"mcq",q:"Vuoi un tè e un onigiri. Che cosa dici?",opts:["おちゃ と おにぎり を ください。","おちゃ に おにぎり を ください。","おちゃ で おにぎり を ください。","おちゃ を おにぎり ください。"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire カード で おねがいします。?",opts:["Con la carta, per favore.","Dov’è la carta?","Ho perso la carta.","Mi dia due carte."],a:0}]},
+  {id:"G13-4",t:"Indicazioni",teach:[
+   {jp:"まっすぐ",ro:"massugu",it:"dritto"},
+   {jp:"みぎ",ro:"migi",it:"destra"},
+   {jp:"ひだり",ro:"hidari",it:"sinistra"},
+   {jp:"かど",ro:"kado",it:"angolo / svolta"},
+   {jp:"しんごう",ro:"shingou",it:"semaforo"},
+   {jp:"まがって",ro:"magatte",it:"gira / girando (forma て)",note:"まがります vuol dire “girare, svoltare”: まがって ください, “giri, per favore”."},
+   {jp:"とおい",ro:"tooi",it:"lontano"},
+   {jp:"ちかい",ro:"chikai",it:"vicino"},
+   {jp:"ちず",ro:"chizu",it:"mappa / cartina"},
+   {jp:"あるいて",ro:"aruite",it:"a piedi / camminando (forma て)",note:"あるきます vuol dire “camminare”: あるいて いきます, “vado a piedi”."},
+   {jp:"まっすぐ いって ください。",ro:"massugu itte kudasai",it:"Vada dritto, per favore."},
+   {jp:"つぎ の かど を ひだり へ まがって ください。",ro:"tsugi no kado o hidari e magatte kudasai",it:"Al prossimo angolo giri a sinistra, per favore.",note:"Con まがります il luogo dove si gira va con を: かど を まがります."},
+   {jp:"すみません、 えき は どこ です か。",ro:"sumimasen, eki wa doko desu ka",it:"Scusi, dov’è la stazione?"},
+   {jp:"ここ から あるいて ごふん です。",ro:"koko kara aruite gofun desu",it:"Da qui sono cinque minuti a piedi."}],ex:[
+    {type:"mcq",q:"Quale parola vuol dire “sinistra”?",opts:["ひだり","みぎ","まっすぐ","かど"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire まっすぐ いって ください。?",opts:["Vada dritto, per favore.","Giri a destra, per favore.","Aspetti qui, per favore.","Torni indietro, per favore."],a:0},
+    {type:"mcq",q:"Che cosa vuol dire ここ から あるいて ごふん です。?",opts:["Da qui sono cinque minuti a piedi.","Da qui sono cinque minuti in treno.","Torno tra cinque minuti.","Aspetti cinque minuti."],a:0}]},
+  {id:"G13-5",t:"Emergenze e salute",teach:[
+   {jp:"たすけて",ro:"tasukete",it:"aiuto! (aiutami)",note:"たすけて! è il grido per chiedere aiuto. たすけます vuol dire “aiutare”."},
+   {jp:"きゅうきゅうしゃ",ro:"kyuukyuusha",it:"ambulanza",note:"Si chiama il 119, lo stesso numero dei vigili del fuoco."},
+   {jp:"けいさつ",ro:"keisatsu",it:"polizia",note:"Il numero della polizia è il 110."},
+   {jp:"くすり",ro:"kusuri",it:"medicina / farmaco"},
+   {jp:"あたま",ro:"atama",it:"testa"},
+   {jp:"おなか",ro:"onaka",it:"pancia / stomaco"},
+   {jp:"いたい",ro:"itai",it:"che fa male / dolorante",note:"È un aggettivo in い: あたま が いたい です vuol dire “mi fa male la testa”, cioè “ho mal di testa”."},
+   {jp:"ねつ",ro:"netsu",it:"febbre"},
+   {jp:"たすけて ください。",ro:"tasukete kudasai",it:"Mi aiuti, per favore."},
+   {jp:"きゅうきゅうしゃ を よんで ください。",ro:"kyuukyuusha o yonde kudasai",it:"Chiami un’ambulanza, per favore."},
+   {jp:"あたま が いたい です。",ro:"atama ga itai desu",it:"Ho mal di testa."},
+   {jp:"おなか が いたい です。",ro:"onaka ga itai desu",it:"Ho mal di pancia."},
+   {jp:"ねつ が あります。",ro:"netsu ga arimasu",it:"Ho la febbre."},
+   {jp:"さいふ を なくしました。",ro:"saifu o nakushimashita",it:"Ho perso il portafoglio.",note:"なくします vuol dire “perdere”: なくしました è il passato."}],ex:[
+    {type:"mcq",q:"Hai bisogno di un’ambulanza. Che cosa dici?",opts:["きゅうきゅうしゃ を よんで ください。","きゅうきゅうしゃ を たべて ください。","きゅうきゅうしゃ は ありません。","きゅうきゅうしゃ に あって ください。"],a:0},
+    {type:"mcq",q:"Che cosa vuol dire ねつ が あります。?",opts:["Ho la febbre.","Ho mal di testa.","Ho perso la medicina.","Ho fame."],a:0},
+    {type:"mcq",q:"Che cosa vuol dire さいふ を なくしました。?",opts:["Ho perso il portafoglio.","Voglio un portafoglio.","Compro un portafoglio.","Non ho il portafoglio."],a:0}]}]}
 };
 const passL=i=>isD(i,"c")&&(topicWords(i).length<2||isD(i,"w"));
 const unitLocked=u=>{const [a,b]=unitRange(u);for(let x=a;x<=b;x++)if(!passL(x))return true;return false};
@@ -1283,7 +1375,8 @@ const POI=[
 {e:"🌸",t:"Hanami: guardare i fiori",w:"Primavera in Giappone",x:"はなみ vuol dire “guardare i fiori”: in primavera, quando fioriscono i さくら, i ciliegi giapponesi, amici, famiglie e colleghi si ritrovano nei parchi e fanno un picnic sotto gli alberi, con cibo, bevande e spesso canti. La fioritura dura solo una o due settimane, di solito tra fine marzo e inizio aprile, e la data cambia da regione a regione: per questo le previsioni si seguono con attenzione. Si stende un telo per terra e, come in casa, si tolgono le scarpe prima di salirci. È una tradizione antica di oltre mille anni: all’inizio era un’abitudine della corte, poi è diventata di tutti."},
 {e:"🗺️",t:"Indirizzi senza nome di strada",w:"Orientarsi in Giappone",x:"In Giappone la maggior parte delle strade non ha un nome, e gli indirizzi non indicano la via: vanno dall’area più grande alla più piccola, con i numeri del quartiere, dell’isolato e dell’edificio. Per questo, quando si dà un’indicazione, si usano molto i punti di riferimento: un negozio, un parco, una stazione. Le frasi di questa unità servono proprio a questo, per esempio えき の ちかく に こうえん が あります. Se ti perdi, cerca il こうばん, il piccolo posto di polizia che c’è nella maggior parte dei quartieri: gli agenti hanno le mappe della zona e aiutano chi non trova un indirizzo. Qualche eccezione c’è, come Kyoto, dove si usa anche un sistema basato sulle strade."},
 {e:"🍵",t:"Al ristorante si chiama il cameriere",w:"Mangiare fuori in Giappone",x:"In molti ristoranti giapponesi il personale non gira intorno al tavolo: quando sei pronto a ordinare, alzi un po’ la mano e dici すみません, oppure premi il pulsante di chiamata, se c’è. Di solito ti portano subito acqua o tè gratis (se ne vuoi ancora basta chiederlo) e spesso un おしぼり, un asciugamano umido da usare solo per le mani. Per ordinare basta indicare il menu e dire これ を ください, oppure おちゃ を ください. Non si lascia la mancia: il prezzo del menu è quello che si paga, e i soldi lasciati sul tavolo creano solo confusione. Alla fine, nella maggior parte dei locali si paga alla cassa vicino all’uscita, portando lo scontrino, e per chiedere il conto si dice おかいけい を おねがいします."},
-{e:"🍱",t:"Mangiare in treno: dipende dal treno",w:"Shinkansen e treni locali",x:"Sullo しんかんせん e sugli altri treni a lunga percorrenza mangiare è normale: ci sono i tavolini ribaltabili e molti viaggiatori comprano un えきべん, il cestino da viaggio venduto in stazione, spesso con piatti tipici della regione. Meglio però evitare i cibi dall’odore forte e tenere in ordine il proprio posto. Sui treni locali e in metropolitana, soprattutto nelle ore di punta, mangiare un pasto è invece sconsigliato, e di solito si può al massimo bere o mangiare uno spuntino discreto. Anche camminare per strada mangiando è considerato maleducato da molti: in Giappone si mangia da fermi. Per questo la domanda ここ で たべて も いい です か。 ha una risposta che dipende dal posto."}];
+{e:"🍱",t:"Mangiare in treno: dipende dal treno",w:"Shinkansen e treni locali",x:"Sullo しんかんせん e sugli altri treni a lunga percorrenza mangiare è normale: ci sono i tavolini ribaltabili e molti viaggiatori comprano un えきべん, il cestino da viaggio venduto in stazione, spesso con piatti tipici della regione. Meglio però evitare i cibi dall’odore forte e tenere in ordine il proprio posto. Sui treni locali e in metropolitana, soprattutto nelle ore di punta, mangiare un pasto è invece sconsigliato, e di solito si può al massimo bere o mangiare uno spuntino discreto. Anche camminare per strada mangiando è considerato maleducato da molti: in Giappone si mangia da fermi. Per questo la domanda ここ で たべて も いい です か。 ha una risposta che dipende dal posto."},
+{e:"🚑",t:"110 e 119: i numeri di emergenza",w:"Se qualcosa va storto",x:"In Giappone si chiama il 110 per la polizia, けいさつ, e il 119 per l’ambulanza, きゅうきゅうしゃ, e per i vigili del fuoco. Le chiamate sono gratuite, anche da un telefono pubblico o da un cellulare. Alcuni servizi hanno interpreti in inglese e in altre lingue, ma non sempre e non ovunque: per questo conviene conoscere qualche frase in giapponese, come たすけて ください. e きゅうきゅうしゃ を よんで ください. Per i problemi meno gravi, come un portafoglio perso o una strada da chiedere, di solito si va al こうばん, il piccolo posto di polizia di quartiere."}];
 const seenP=c=>{try{return JSON.parse(localStorage.getItem("hira-seen")||"[]").includes(c)}catch(e){return false}};
 function openPoi(c){const p=POI[PATH[c].poi];if(!p)return;const o=el("div","sh"),k=el("div","card");k.style.cssText="width:min(420px,92vw);max-height:82vh;overflow:auto";o.setAttribute("role","dialog");
  const lk=!utDone(c);

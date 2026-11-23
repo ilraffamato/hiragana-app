@@ -39,8 +39,8 @@ const KANJI = {
 /* Segni che nessun capitolo K insegna con una lezione (nell'app stanno nella Tabella e nelle Regole): si ammettono dall'unità
    indicata, ma con un avviso, perché il piano non dice dove insegnarli. */
 const EXTRA = { 'っ': 'K5', 'ッ': 'K6', 'ー': 'K6' };
-/* Dal WP-13 il piccolo っ si insegna in una lezione di lingua (G4-3, ろっぴゃく): dall'unità indicata nessun avviso, prima è un errore. */
-const TAUGHT = { 'っ': 'G4' };
+/* Dal WP-13 il piccolo っ si insegna in una lezione di lingua (G4-3, ろっぴゃく); dal WP-22 anche ッ e ー (G13-1 ホーム, G13-2 ベッド): dall'unità indicata nessun avviso, prima è un errore. */
+const TAUGHT = { 'っ': 'G4', 'ッ': 'G13', 'ー': 'G13' };
 const NEUTRAL = /[\s\u3000。、，．！？「」『』（）・〜～…\u30fb]/;
 const KEYS = new Set(['jp', 'q', 'opts', 'tiles', 'ans', 'w', 'kana', 'text', 'k', 'note', 'say']);
 
@@ -289,7 +289,9 @@ async function selftest(app, M) {
     t('G11 レストラン (dopo K11)', 'G11', 'レストラン', false),
     t('G12 ちょっと (っ insegnato in G4: nessun avviso)', 'G12', 'ちょっと', false, false),
     t('G3 いっぷん (っ prima di G4: errore)', 'G3', 'いっぷん', true),
-    t('G11 こーひー (ー senza lezione: avviso)', 'G11', 'こーひー', false, true),
+    t('G11 こーひー (ー si insegna in G13: errore)', 'G11', 'こーひー', true),
+    t('G13 コーヒー (ー insegnato in G13: nessun avviso)', 'G13', 'コーヒー', false, false),
+    t('G12 ベッド (ッ prima di G13: errore)', 'G12', 'ベッド', true),
     t('G4 kanji 一 (previsto)', 'G4', '一ひゃく', false),
     t('G4 kanji 日 (previsto in G5)', 'G4', '日', true),
     t('G9 kanji 私 (non nel piano)', 'G9', '私', true),
@@ -326,7 +328,7 @@ async function selftest(app, M) {
     badP('scheda duplicata tra unità', a => { a.GU.G2.lessons[0].teach.push({ jp: a.GU.G1.lessons[0].teach[0].jp, ro: 'x', it: 'x' }); });
     badP('needs che non precede', a => { a.PATH.find(u => u.id === 'G1').needs = ['K4']; }); }
   { const d2 = []; checkDone(app, ['G1-1', 'G1-2', 'G1:t', 'G2-1', 'G2:t'], d2); const ok5 = d2.length === 0; r.push(ok5); console.log((ok5 ? 'ok     ' : 'FALLITO ') + 'done: chiavi G valide accettate');
-    [['G1-9', 'lezione inesistente'], ['G13:t', 'unità inesistente'], ['G1-0', 'lezione 0'], ['K1:t', 'prefisso sbagliato']].forEach(([k, n]) => { const d3 = []; checkDone(app, [k], d3); const ok6 = d3.length === 1; r.push(ok6); console.log((ok6 ? 'ok     ' : 'FALLITO ') + 'done: ' + k + ' rifiutato (' + n + ')'); }); }
+    [['G1-9', 'lezione inesistente'], ['G14:t', 'unità inesistente'], ['G1-0', 'lezione 0'], ['K1:t', 'prefisso sbagliato']].forEach(([k, n]) => { const d3 = []; checkDone(app, [k], d3); const ok6 = d3.length === 1; r.push(ok6); console.log((ok6 ? 'ok     ' : 'FALLITO ') + 'done: ' + k + ' rifiutato (' + n + ')'); }); }
   return r.every(Boolean);
 }
 
